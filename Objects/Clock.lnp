@@ -1,0 +1,5 @@
+".\Objects\STARTUP.obj",
+".\Objects\main.obj",
+".\Objects\LCD.obj" 
+TO ".\Objects\Clock" 
+PRINT(".\Listings\Clock.m51") CODE( 0X0000-0X0FFF )

@@ -1,0 +1,44 @@
+C51 COMPILER V9.56.0.0   LCD                                                               08/07/2017 17:45:19 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE LCD
+OBJECT MODULE PLACED IN .\Objects\LCD.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE LCD.c ROM(SMALL) OPTIMIZE(8,SPEED) BROWSE DEBUG OBJECTEXTEND PRINT(.\Lis
+                    -tings\LCD.lst) TABS(2) PREPRINT(.\Listings\LCD.i) OBJECT(.\Objects\LCD.obj)
+
+line level    source
+
+   1          #include "LCD.h"
+   2          
+   3          void backlight_toggle()
+   4          {
+   5   1        sbit backlight = 0;
+*** ERROR C141 IN LINE 5 OF LCD.c: syntax error near 'sbit'
+   6   1        backlight = ~backlight;
+   7   1        //~backlight;
+   8   1        //!backlight;
+   9   1      }
+  10          
+  11          void backlight_button()
+  12          {
+  13   1        if(backlight_button == 0)
+  14   1        {
+  15   2          //backlight = 1;
+  16   2          Delay(200);
+  17   2          //backlight = 0;
+  18   2        }
+  19   1      }
+  20          
+  21          void Delay(int k)
+  22          {
+  23   1        int j;
+  24   1        int i;
+  25   1        for(i=0;i<k;i++)
+  26   1        {
+  27   2          for(j=0;j<1000;j++)
+  28   2          {
+  29   3          }
+  30   2        }
+  31   1      }
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  1 ERROR(S)
