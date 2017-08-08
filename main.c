@@ -20,4 +20,5 @@ void main()
 /*
 	* Add timer
 	* Add interupt
+	* send screen clear command, start of init()
 */
