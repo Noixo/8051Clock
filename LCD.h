@@ -1,26 +1,31 @@
 #ifndef LCD_h_
 #define LCD_h_
 
-extern bit D0;
-extern bit D1;
-extern bit D2;
-extern bit D3;
-extern bit D4;
-extern bit D5;
-extern bit D6;
-extern bit D7;
+sfr write_byte = 0xA0;
 
-extern bit RS;
-extern bit E;
+sbit D0 = 0xA0;
+sbit D1 = 0xA1;
+sbit D2 = 0xA2;
+sbit D3 = 0xA3;
+sbit D4 = 0xA4;
+sbit D5 = 0xA5;
+sbit D6 = 0xA6;
+sbit D7 = 0xA7;
 
-extern bit backlight;
-//#define backlight P2^3;
-//extern bit lcd_button;
+sbit RS = 0x81;
+sbit E = 0x82;
+
+sbit backlight = 0xA7;	//Reusing location
+sbit lcd_button = 0xA6;
 
 //---------------
 
+extern void init();
+extern void write_char(char hex, bit command);
 extern void backlight_toggle(void);
-extern void backlight_button(void);
-extern void Delay(int k);
+extern void backlight_light(void);
+extern void write_string(char string[]);
+extern void delay(int t);
+extern void write_string(char string[]);
 
-#endif
+//#endif

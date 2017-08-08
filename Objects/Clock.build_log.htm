@@ -5,7 +5,7 @@
 <h2>Tool Versions:</h2>
 IDE-Version: µVision V5.20.0.39
 Copyright (C) 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: Matthew Whiteley, N.A, LIC=----
+License Information: Matthew Matthew, NA, LIC=----
  
 Tool Versions:
 Toolchain:       PK51 Prof. Develpers Kit  Version: 9.56.0.0
@@ -18,14 +18,28 @@ Hex Converter:   OH51.exe V2.7.0.0
 CPU DLL:         S8051.DLL V3.106.0.0
 Dialog DLL:      DP51.DLL V2.63.0.0 
 <h2>Project:</h2>
-E:\Programming\ATMEL\Clock\Clock.uvproj
-Project File Date:  08/07/2017
+C:\Users\Matthew\Desktop\8051Clock\8051Clock\Clock.uvproj
+Project File Date:  08/08/2017
 
 <h2>Output:</h2>
 Build target 'Target 1'
+compiling main.c...
+main.c(17): warning C316: unterminated conditionals
 compiling LCD.c...
-LCD.c(5): error C141: syntax error near 'sbit'
-Target not created.
+LCD.c(52): warning C235: parameter 1: different types
+LCD.c(60): warning C316: unterminated conditionals
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?INIT?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_WRITE_CHAR?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?BACKLIGHT_TOGGLE?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?BACKLIGHT_LIGHT?LCD
+Program Size: data=12.1 xdata=0 code=199
+creating hex file from ".\Objects\Clock"...
+".\Objects\Clock" - 0 Error(s), 7 Warning(s).
 Build Time Elapsed:  00:00:00
 </pre>
 </body>

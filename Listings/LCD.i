@@ -5,27 +5,28 @@
  
  
  
- extern bit D0;
- extern bit D1;
- extern bit D2;
- extern bit D3;
- extern bit D4;
- extern bit D5;
- extern bit D6;
- extern bit D7;
+ sfr write_byte = 0xA0;
  
- extern bit RS;
- extern bit E;
+ sbit D0 = 0xA1;
+ sbit D1 = 0xA2;
+ sbit D2 = 0xA3;
+ sbit D3 = 0xA4;
+ sbit D4 = 0xA5;
+ sbit D5 = 0xA6;
+ sbit D6 = 0xA7;
+ sbit D7 = 0xA8;
  
- extern bit backlight;
+ sbit RS = 0x81;
+ sbit E = 0x82;
  
- 
+ sbit backlight = 0xA8;	 
+ sbit lcd_button = 0xA7;
  
  
  
  extern void backlight_toggle(void);
  extern void backlight_button(void);
- extern void Delay(int k);
+ extern void delay(int t);
  
  
 #line 1 "LCD.c" /0
@@ -33,29 +34,15 @@
  
  void backlight_toggle()
  {
- sbit backlight = 0;
  backlight = ~backlight;
- 
- 
  }
  
- void backlight_button()
+ void delay(unsigned int t)
  {
- if(backlight_button == 0)
+ int i, j;
+ for(i = 0; i < t; i++)
  {
- 
- Delay(200);
- 
- }
- }
- 
- void Delay(int k)
- {
- int j;
- int i;
- for(i=0;i<k;i++)
- {
- for(j=0;j<1000;j++)
+ for(j = 0; j < 100; j++)
  {
  }
  }
