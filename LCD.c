@@ -3,20 +3,33 @@
 void init()
 {
 	RS = 0;	//command
-	write_byte = 0x38;
-	delay(10);
-	RS = 1;
-	//write_byte(0x30);
-	//delay(10);
-	//write_byte(0x30);
-	//delay(10);
+	
+	write_byte = 0x38;	//Function set (8 bit, 2 line, 5x7)
+	E = 0;
+	delay(100);
+	E = 1;
+	delay(100);
+	
+	write_byte = 0x06;	//Entry mode (Left to right, inc)
+	E = 0;
+	delay(100);
+	E = 1;
+	delay(100);
+	
+	write_byte = 0x0F;	//display (Display on, cursor blinking)
+	E = 0;
+	delay(100);
+	E = 1;
+	delay(100);
+	
 }
 
 void write_char(char hex, bit command)
 {
 	RS = command;
-	E = 0;
 	write_byte = hex;
+	E = 0;
+	delay(100);
 	E = 1;
 }
 
@@ -30,22 +43,26 @@ void backlight_light()
 	if(lcd_button == 1)
 	{
 		backlight = 1;
-		delay(2000);
+		delay(20);
 		backlight = 0;
 	}
 }
 
 void write_string(char string[])
 {
-	int i;
+	unsigned int i;
+
 	RS = 1;	//ensure we are writing string
-	E = 0;
-	
-	for(i = 0; i < sizeof(string); i++)
+	for(i = 0; i < string[i] != '\0'; i++)
 	{
 		write_byte = string[i];
+		E = 0;
+		delay(100);
+		E = 1;
+		delay(100);
 	}
-	E = 1;
+	//write_char(0x02, 0);	//Return to 0,0
+	//write_char(0x01, 0);	//Clear display
 }
 
 void delay(unsigned int t)

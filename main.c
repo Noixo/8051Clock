@@ -3,12 +3,14 @@
 
 void main()
 {
+	backlight = 0;
+	
+	init();
+	
 	while(1)
 	{
-		//backlight_toggle();
-		//write_byte = ''; // Write char directly
 		write_string("Hello, World!");
-		//delay(20);
-		//backlight_light();
+		//write_string("Test");
+		//write_char('A',1);
 	}
 }

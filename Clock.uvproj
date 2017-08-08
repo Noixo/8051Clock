@@ -378,6 +378,21 @@
               <FileType>1</FileType>
               <FilePath>.\LCD.c</FilePath>
             </File>
+            <File>
+              <FileName>DHT11.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\DHT11.c</FilePath>
+            </File>
+            <File>
+              <FileName>DHT11.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\DHT11.h</FilePath>
+            </File>
+            <File>
+              <FileName>TODO.txt</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\TODO.txt</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
