@@ -25,7 +25,9 @@ const CLEAR = 0x01;
 const char ENTRY.INC.L = 0x07;
 const char ENTRY.INC.R = 0x06;
 const char ENTRY.DEC.L = 0x05;
-const char ENTRY.DEC.R = 0x04;	*/
+const char ENTRY.DEC.R = 0x04;
+0x80 //first line
+*/
 
 //const DISPLAY.ON = 
 //---------------
