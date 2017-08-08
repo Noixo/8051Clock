@@ -25,7 +25,7 @@ extern void write_char(char hex, bit command);
 extern void backlight_toggle(void);
 extern void backlight_light(void);
 extern void write_string(char string[]);
-extern void delay(int t);
+extern void delay(unsigned int t);
 extern void write_string(char string[]);
 
 //#endif

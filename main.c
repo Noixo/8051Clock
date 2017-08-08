@@ -1,11 +1,8 @@
-//#include <reg51.h>
 #include "LCD.h"
+#include "DHT11.h"
 
 void main()
 {
-	//D0 = P1^7;
-	//backlight = 1;	//Set pin to detect high.
-	
 	while(1)
 	{
 		//backlight_toggle();
