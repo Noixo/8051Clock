@@ -14,9 +14,9 @@ void main()
 		unsigned int i = 0;
 		//cmd(HOME);
 		//cmd(LINE_1);
-		ms_delay();
+		//ms_delay();
 		write_string("Hello, World!");
-		ms_delay();
+		//ms_delay();
 		/*for(i = 0; i < 1024; i++)
 		{
 			//char x = i;
