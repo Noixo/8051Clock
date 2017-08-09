@@ -393,6 +393,11 @@
               <FileType>5</FileType>
               <FilePath>.\TODO.txt</FilePath>
             </File>
+            <File>
+              <FileName>external.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\external.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
