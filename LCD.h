@@ -1,5 +1,5 @@
-#ifndef LCD_h_
-#define LCD_h_
+#ifndef LCD_H_
+#define LCD_H_
 
 sfr write_byte = 0xA0;
 

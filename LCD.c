@@ -1,5 +1,5 @@
 #include "LCD.h"
-
+#include "timing.h"
 current_line = 0;
 
 void init()
@@ -10,21 +10,21 @@ void init()
 	
 	write_byte = 0x38;	//Function set (8 bit, 2 line, 5x7)
 	E = 0;
-	delay(50);
+	ms_delay(50);
 	E = 1;
-	delay(50);
+	ms_delay(50);
 	
 	write_byte = 0x06;	//Entry mode (Left to right, inc)
 	E = 0;
-	delay(50);
+	ms_delay(50);
 	E = 1;
-	delay(50);
+	ms_delay(50);
 	
 	write_byte = 0x0F;	//display (Display on, cursor blinking)
 	E = 0;
-	delay(50);
+	ms_delay(50);
 	E = 1;
-	delay(50);
+	ms_delay(50);
 	
 }
 
@@ -33,7 +33,7 @@ void cmd(char cmd)
 	RS = 0;
 	write_byte = cmd;
 	E = 0;
-	delay(50);
+	ms_delay(50);
 	E = 1;
 }
 
@@ -42,7 +42,7 @@ void write_char(char letter)
 	RS = 1; //word;
 	write_byte = letter;
 	E = 0;
-	delay(50);
+	ms_delay(50);
 	E = 1;
 }
 
@@ -56,7 +56,7 @@ void backlight_light()
 	if(lcd_button == 1)
 	{
 		backlight = 1;
-		delay(50);
+		ms_delay(50);
 		backlight = 0;
 	}
 }
@@ -71,9 +71,9 @@ void write_string(char string[])
 	{
 		write_byte = string[i];
 		E = 0;
-		delay(50);
+		ms_delay(50);
 		E = 1;
-		delay(50);
+		ms_delay(50);
 	}
 	new_line();
 }
@@ -105,6 +105,11 @@ void new_line()
 		cmd(0xC0);	//LINE_2
 	}
 }*/
+
+void int_to_ascii()
+{
+	
+}
 
 void delay(unsigned int t)
 {

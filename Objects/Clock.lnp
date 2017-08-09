@@ -2,6 +2,7 @@
 ".\Objects\main.obj",
 ".\Objects\LCD.obj",
 ".\Objects\DHT11.obj",
-".\Objects\external.obj" 
+".\Objects\external.obj",
+".\Objects\timing.obj" 
 TO ".\Objects\Clock" 
 PRINT(".\Listings\Clock.m51") CODE( 0X0000-0X0FFF )
