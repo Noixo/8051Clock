@@ -398,6 +398,11 @@
               <FileType>1</FileType>
               <FilePath>.\external.c</FilePath>
             </File>
+            <File>
+              <FileName>timing.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\timing.c</FilePath>
+            </File>
           </Files>
         </Group>
       </Groups>
