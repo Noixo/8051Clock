@@ -1,31 +1,27 @@
 #include "LCD.h"
 #include "timing.h"
-current_line = 0;
 
 void init()
 {
-	cmd(CLEAR);
-	
 	RS = 0;	//command
+	ms_delay(15);
 	
 	write_byte = 0x38;	//Function set (8 bit, 2 line, 5x7)
 	E = 0;
-	ms_delay(50);
+	ms_delay(5);
 	E = 1;
-	ms_delay(50);
 	
 	write_byte = 0x06;	//Entry mode (Left to right, inc)
 	E = 0;
-	ms_delay(50);
+	us_delay(110);
 	E = 1;
-	ms_delay(50);
 	
 	write_byte = 0x0F;	//display (Display on, cursor blinking)
 	E = 0;
-	ms_delay(50);
+	us_delay(110);
 	E = 1;
-	ms_delay(50);
 	
+	cmd(CLEAR);
 }
 
 void cmd(char cmd)
@@ -33,7 +29,7 @@ void cmd(char cmd)
 	RS = 0;
 	write_byte = cmd;
 	E = 0;
-	ms_delay(50);
+	us_delay(100);
 	E = 1;
 }
 
@@ -42,23 +38,13 @@ void write_char(char letter)
 	RS = 1; //word;
 	write_byte = letter;
 	E = 0;
-	ms_delay(50);
+	us_delay(100);
 	E = 1;
 }
 
 void backlight_toggle()
 {
 	backlight = ~backlight;
-}
-
-void backlight_light()
-{
-	if(lcd_button == 1)
-	{
-		backlight = 1;
-		ms_delay(50);
-		backlight = 0;
-	}
 }
 
 void write_string(char string[])
@@ -71,9 +57,8 @@ void write_string(char string[])
 	{
 		write_byte = string[i];
 		E = 0;
-		ms_delay(50);
+		us_delay(100);
 		E = 1;
-		ms_delay(50);
 	}
 	new_line();
 }
@@ -109,15 +94,4 @@ void new_line()
 void int_to_ascii()
 {
 	
-}
-
-void delay(unsigned int t)
-{
-	int i, j;
-	for(i = 0; i < t; i++)
-	{
-		for(j = 0; j < 100; j++)
-		{
-		}
-	}
 }

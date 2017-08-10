@@ -1,5 +1,6 @@
 #include "external.h"
 #include "LCD.h"
+#include "timing.h"
 //photoresistor
 
 void photo_resistor()
@@ -19,7 +20,7 @@ void lcd_button_press()
 	if (lcd_button == 0 && comparator == 1)
 	{
 		backlight == 1;
-		delay(1000);
+		ms_delay(500);
 		backlight == 0;
 	}
 }

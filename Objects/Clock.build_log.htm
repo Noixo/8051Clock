@@ -26,21 +26,18 @@ Rebuild target 'Target 1'
 assembling STARTUP.A51...
 compiling main.c...
 compiling LCD.c...
-LCD.c(3): warning C231: 'current_line': redefinition
 compiling DHT11.c...
 compiling external.c...
-external.c(9): warning C275: expression with possibly no effect
-external.c(13): warning C275: expression with possibly no effect
-external.c(21): warning C275: expression with possibly no effect
-external.c(23): warning C275: expression with possibly no effect
+external.c(10): warning C275: expression with possibly no effect
+external.c(14): warning C275: expression with possibly no effect
+external.c(22): warning C275: expression with possibly no effect
+external.c(24): warning C275: expression with possibly no effect
 compiling timing.c...
 linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_WRITE_CHAR?LCD
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?BACKLIGHT_TOGGLE?LCD
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BACKLIGHT_LIGHT?LCD
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?INT_TO_ASCII?LCD
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
@@ -51,9 +48,20 @@ linking...
     SEGMENT: ?PR?LCD_BUTTON_PRESS?EXTERNAL
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?NEXT_SCREEN?EXTERNAL
-Program Size: data=20.0 xdata=0 code=520
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  CURRENT_LINE
+    MODULE:  .\Objects\LCD.obj (LCD)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  CURRENT_LINE
+    MODULE:  .\Objects\LCD.obj (LCD)
+    ADDRESS: 099DH
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  CURRENT_LINE
+    MODULE:  .\Objects\LCD.obj (LCD)
+    ADDRESS: 09AAH
+Program Size: data=25.0 xdata=0 code=517
 creating hex file from ".\Objects\Clock"...
-".\Objects\Clock" - 0 Error(s), 13 Warning(s).
+".\Objects\Clock" - 0 Error(s), 14 Warning(s).
 Build Time Elapsed:  00:00:02
 </pre>
 </body>

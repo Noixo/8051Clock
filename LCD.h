@@ -1,5 +1,5 @@
-#ifndef LCD_H_
-#define LCD_H_
+#ifndef _LCD_H_
+#define _LCD_H_
 
 sfr write_byte = 0xA0;
 
@@ -18,9 +18,17 @@ sbit E = 0x81;
 sbit backlight = 0x90;
 sbit lcd_button = 0x91;		
 
+sbit a = 0xB7;
+
 //---------------
 
 static char CLEAR = 0x01;
+static char HOME = 0x02;
+
+static char LINE_1 = 0x80;
+static char LINE_2 = 0xC0;
+
+//static char CURSOR = 
 
 /*
 const char HOME = 0x02;
@@ -44,7 +52,6 @@ extern void cmd(char cmd);
 extern void backlight_toggle(void);
 extern void backlight_light(void);
 extern void write_string(char string[]);
-extern void delay(unsigned int t);
 extern void write_string(char string[]);
 extern void new_line(void);
 
