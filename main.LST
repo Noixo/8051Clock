@@ -1,10 +1,10 @@
-C51 COMPILER V9.56.0.0   MAIN                                                              08/11/2017 23:44:22 PAGE 1   
+C51 COMPILER V9.56.0.0   MAIN                                                              08/12/2017 01:24:57 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE MAIN
 OBJECT MODULE PLACED IN .\Objects\main.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c ROM(SMALL) OPTIMIZE(9,SIZE) BROWSE DEBUG OBJECTEXTEND TABS(2) OBJ
-                    -ECT(.\Objects\main.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c ROM(SMALL) OPTIMIZE(9,SIZE) BROWSE DEBUG OBJECTEXTEND CODE TABS(2
+                    -) OBJECT(.\Objects\main.obj)
 
 line level    source
 
@@ -52,6 +52,27 @@ line level    source
   42            -----------------------------
   43           * String prints on second line after first printing on first line
   44          */
+C51 COMPILER V9.56.0.0   MAIN                                                              08/12/2017 01:24:57 PAGE 2   
+
+ASSEMBLY LISTING OF GENERATED OBJECT CODE
+
+
+             ; FUNCTION main (BEGIN)
+                                           ; SOURCE LINE # 6
+                                           ; SOURCE LINE # 7
+                                           ; SOURCE LINE # 11
+0000 C290              CLR     backlight
+                                           ; SOURCE LINE # 13
+0002 1100        E     ACALL   init
+                                           ; SOURCE LINE # 16
+0004 1100        E     ACALL   readDHT11
+0006         ?C0001:
+                                           ; SOURCE LINE # 17
+                                           ; SOURCE LINE # 18
+                                           ; SOURCE LINE # 27
+0006 80FE              SJMP    ?C0001
+             ; FUNCTION main (END)
+
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
@@ -62,8 +83,6 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    DATA SIZE        =      4    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
-C51 COMPILER V9.56.0.0   MAIN                                                              08/11/2017 23:44:22 PAGE 2   
-
 END OF MODULE INFORMATION.
 
 

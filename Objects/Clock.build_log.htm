@@ -26,17 +26,43 @@ Rebuild target 'Target 1'
 assembling STARTUP.A51...
 compiling main.c...
 compiling LCD.c...
+LCD.c(83): warning C291: not every exit path returns a value
 compiling DHT11.c...
-DHT11.c(30): error C202: 'MAXTIMINGS': undefined identifier
-DHT11.c(36): error C202: 'MAXTIMINGS': undefined identifier
+DHT11.c(26): warning C294: unreachable code
 compiling external.c...
 external.c(10): warning C275: expression with possibly no effect
 external.c(14): warning C275: expression with possibly no effect
 external.c(22): warning C275: expression with possibly no effect
 external.c(24): warning C275: expression with possibly no effect
 compiling timing.c...
-Target not created.
-Build Time Elapsed:  00:00:01
+linking...
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?BACKLIGHT_TOGGLE?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_WRITE_STRING?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?_VALIDATE?DHT11
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?PHOTO_RESISTOR?EXTERNAL
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?LCD_BUTTON_PRESS?EXTERNAL
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?NEXT_SCREEN?EXTERNAL
+*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
+    SYMBOL:  CURRENT_LINE
+    MODULE:  .\Objects\LCD.obj (LCD)
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  CURRENT_LINE
+    MODULE:  .\Objects\LCD.obj (LCD)
+    ADDRESS: 0AD5H
+*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
+    SYMBOL:  CURRENT_LINE
+    MODULE:  .\Objects\LCD.obj (LCD)
+    ADDRESS: 0AE2H
+Program Size: data=38.0 xdata=0 code=824
+creating hex file from ".\Objects\Clock"...
+".\Objects\Clock" - 0 Error(s), 15 Warning(s).
+Build Time Elapsed:  00:00:02
 </pre>
 </body>
 </html>

@@ -74,7 +74,15 @@ void new_line()
 	current_line = ~current_line;
 }
 
-char int_to_ascii(char integer)
+char int_to_ascii(unsigned char integer)
 {
+	char array[8];
+	unsigned char i;
+	for (i = 0; i < 8; i++)
+	{
+		if(integer >> i == )
+		array[i] >>= 1;
+	}
+	
 	return integer + '0';
 }
