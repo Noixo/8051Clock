@@ -5,6 +5,7 @@
 
 void main()
 {
+	readDHT11();
 	backlight = 0;
 	
 	init();

@@ -1,12 +1,45 @@
 #include "DHT11.h"
+#include "timing.h"
 
 void readDHT11()
 {
-	DHT11 = 0;
-	//delay(18);	//delay 18ms
-	DHT11 = 1;
+	char i;
+	char count;
+	char store[40];
 	
 	DHT11 = 0;
-	//delay(80); // 80 microseconds
+	ms_delay(18);	//delay 18ms
 	DHT11 = 1;
+	
+	us_delay(20);
+	
+	for(i = 0; i < 40; i++)
+	{
+		while(DHT11 == 0)
+		{
+		}
+		while(DHT11 == 1)
+		{
+			count++;
+			us_delay(1);
+		}
+		if(count > 40)
+		{
+			store[i] << 1;
+		}
+		else
+		{
+			store[i] << 0;
+		}
+		count = 0;
+	}
+	
+	validate(store);
+}
+
+void validate(char store[])
+{
+	char i;
+	
+	
 }
