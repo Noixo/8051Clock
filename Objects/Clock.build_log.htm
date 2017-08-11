@@ -5,7 +5,7 @@
 <h2>Tool Versions:</h2>
 IDE-Version: µVision V5.20.0.39
 Copyright (C) 2016 ARM Ltd and ARM Germany GmbH. All rights reserved.
-License Information: Matthew Matthew, NA, LIC=----
+License Information: Matthew Whiteley, N.A, LIC=----
  
 Tool Versions:
 Toolchain:       PK51 Prof. Develpers Kit  Version: 9.56.0.0
@@ -18,7 +18,7 @@ Hex Converter:   OH51.exe V2.7.0.0
 CPU DLL:         S8051.DLL V3.106.0.0
 Dialog DLL:      DP51.DLL V2.63.0.0 
 <h2>Project:</h2>
-C:\Users\Matthew\Desktop\8051Clock\8051Clock\Clock.uvproj
+E:\Programming\ATMEL\Clock\Clock.uvproj
 Project File Date:  08/10/2017
 
 <h2>Output:</h2>
@@ -27,10 +27,7 @@ assembling STARTUP.A51...
 compiling main.c...
 compiling LCD.c...
 compiling DHT11.c...
-DHT11.c(28): warning C275: expression with possibly no effect
-DHT11.c(32): warning C275: expression with possibly no effect
-DHT11.c(40): warning C280: 'store': unreferenced local variable
-DHT11.c(42): warning C280: 'i': unreferenced local variable
+DHT11.c(13): warning C294: unreachable code
 compiling external.c...
 external.c(10): warning C275: expression with possibly no effect
 external.c(14): warning C275: expression with possibly no effect
@@ -56,14 +53,14 @@ linking...
 *** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
     SYMBOL:  CURRENT_LINE
     MODULE:  .\Objects\LCD.obj (LCD)
-    ADDRESS: 09E6H
+    ADDRESS: 09DEH
 *** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
     SYMBOL:  CURRENT_LINE
     MODULE:  .\Objects\LCD.obj (LCD)
-    ADDRESS: 09F3H
-Program Size: data=67.0 xdata=0 code=574
+    ADDRESS: 09EBH
+Program Size: data=29.0 xdata=0 code=558
 creating hex file from ".\Objects\Clock"...
-".\Objects\Clock" - 0 Error(s), 17 Warning(s).
+".\Objects\Clock" - 0 Error(s), 14 Warning(s).
 Build Time Elapsed:  00:00:01
 </pre>
 </body>
