@@ -5,26 +5,30 @@
 
 void main()
 {
-	char *store;
+	//char *store;
 	//write_string(readDHT11());
 	
 	backlight = 0;
 	
 	init();
 	
-	//write_string("Hello, World!");
-	
+	//write_string("Hello, World!\n");
+	readDHT11();
 	while(1)
 	{
+		//write_string("a\n");
+		//write_string("Hello, World!\n");
 		//DHT11[] = readDHT11();
-		//write_string(DHT11);
-		store = readDHT11();
-		write_string(store);
-		ms_delay(500);
+		//write_string(DHT11());
+		//store = readDHT11();
+		//char *store = readDHT11();
+		//write_string(readDHT11(store));
+		//ms_delay(1);
 	}
 }
 
 /*
+	--------------TODO---------------
 	* Add timer*
 	* Add interupt
 	* send screen clear command, start of init()
@@ -35,5 +39,6 @@ void main()
 */
 
 /*
+	-----------------------------
  * String prints on second line after first printing on first line
 */

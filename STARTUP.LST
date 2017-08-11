@@ -1,10 +1,9 @@
-A51 MACRO ASSEMBLER  STARTUP                                                              08/11/2017 18:07:59 PAGE     1
+A51 MACRO ASSEMBLER  STARTUP                                                              08/11/2017 23:44:22 PAGE     1
 
 
 MACRO ASSEMBLER A51 V8.2.5.0
 OBJECT MODULE PLACED IN .\Objects\STARTUP.obj
-ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE STARTUP.A51 SET(SMALL) DEBUG PRINT(.\Listings\STARTUP.lst) OBJECT(.\Obj
-                      ects\STARTUP.obj) EP
+ASSEMBLER INVOKED BY: C:\Keil_v5\C51\BIN\A51.EXE STARTUP.A51 SET(SMALL) DEBUG OBJECT(.\Objects\STARTUP.obj) EP
 
 LOC  OBJ            LINE     SOURCE
 
@@ -122,9 +121,9 @@ LOC  OBJ            LINE     SOURCE
 
                       57     ;  <q> IBPSTACK: Enable SMALL model reentrant stack
 
-A51 MACRO ASSEMBLER  STARTUP                                                              08/11/2017 18:07:59 PAGE     2
-
                       58     ;     <i> Stack space for reentrant functions in the SMALL model.
+
+A51 MACRO ASSEMBLER  STARTUP                                                              08/11/2017 23:44:22 PAGE     2
 
   0000                59     IBPSTACK        EQU     0       ; set to 1 if small reentrant is used.
 
@@ -256,9 +255,9 @@ LOC  OBJ            LINE     SOURCE
 
                      123                     PUBLIC  ?C_STARTUP
 
-A51 MACRO ASSEMBLER  STARTUP                                                              08/11/2017 18:07:59 PAGE     3
-
                      124     
+
+A51 MACRO ASSEMBLER  STARTUP                                                              08/11/2017 23:44:22 PAGE     3
 
 ----                 125                     CSEG    AT      0
 
@@ -390,9 +389,9 @@ LOC  OBJ            LINE     SOURCE
 
                      189     ; <q> Select Bank 0 for L51_BANK.A51 Mode 4
 
-A51 MACRO ASSEMBLER  STARTUP                                                              08/11/2017 18:07:59 PAGE     4
-
                      190     
+
+A51 MACRO ASSEMBLER  STARTUP                                                              08/11/2017 23:44:22 PAGE     4
 
                              
 
@@ -410,7 +409,7 @@ LOC  OBJ            LINE     SOURCE
 
                      198                     END
 
-A51 MACRO ASSEMBLER  STARTUP                                                              08/11/2017 18:07:59 PAGE     5
+A51 MACRO ASSEMBLER  STARTUP                                                              08/11/2017 23:44:22 PAGE     5
 
 SYMBOL TABLE LISTING
 ------ ----- -------

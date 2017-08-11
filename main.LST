@@ -1,0 +1,70 @@
+C51 COMPILER V9.56.0.0   MAIN                                                              08/11/2017 23:44:22 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c ROM(SMALL) OPTIMIZE(9,SIZE) BROWSE DEBUG OBJECTEXTEND TABS(2) OBJ
+                    -ECT(.\Objects\main.obj)
+
+line level    source
+
+   1          #include "LCD.h"
+   2          #include "DHT11.h"
+   3          //#include "external.h"
+   4          #include "timing.h"
+   5          
+   6          void main()
+   7          {
+   8   1        //char *store;
+   9   1        //write_string(readDHT11());
+  10   1        
+  11   1        backlight = 0;
+  12   1        
+  13   1        init();
+  14   1        
+  15   1        //write_string("Hello, World!\n");
+  16   1        readDHT11();
+  17   1        while(1)
+  18   1        {
+  19   2          //write_string("a\n");
+  20   2          //write_string("Hello, World!\n");
+  21   2          //DHT11[] = readDHT11();
+  22   2          //write_string(DHT11());
+  23   2          //store = readDHT11();
+  24   2          //char *store = readDHT11();
+  25   2          //write_string(readDHT11(store));
+  26   2          //ms_delay(1);
+  27   2        }
+  28   1      }
+  29          
+  30          /*
+  31            --------------TODO---------------
+  32            * Add timer*
+  33            * Add interupt
+  34            * send screen clear command, start of init()
+  35            * Setup function to setup lcd e.g. 16x2, 40x4...
+  36            * i2c bit banging
+  37              - pressure sensor
+  38              - DS3231
+  39          */
+  40          
+  41          /*
+  42            -----------------------------
+  43           * String prints on second line after first printing on first line
+  44          */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =      8    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+C51 COMPILER V9.56.0.0   MAIN                                                              08/11/2017 23:44:22 PAGE 2   
+
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

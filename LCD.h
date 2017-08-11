@@ -18,7 +18,7 @@ sbit E = 0x81;
 sbit backlight = 0x90;
 sbit lcd_button = 0x91;		
 
-sbit a = 0xB7;
+//sbit a = 0xB7;
 
 //---------------
 
@@ -27,8 +27,6 @@ static char HOME = 0x02;
 
 static char LINE_1 = 0x80;
 static char LINE_2 = 0xC0;
-
-//static char CURSOR = 
 
 /*
 const char HOME = 0x02;
@@ -54,5 +52,6 @@ extern void backlight_light(void);
 extern void write_string(char string[]);
 extern void write_string(char string[]);
 extern void new_line(void);
-
+extern char int_to_ascii(char integer);
+//extern void 
 #endif

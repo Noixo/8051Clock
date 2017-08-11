@@ -51,7 +51,7 @@
           <CreateHexFile>1</CreateHexFile>
           <DebugInformation>1</DebugInformation>
           <BrowseInformation>1</BrowseInformation>
-          <ListingPath>.\Listings\</ListingPath>
+          <ListingPath>.\</ListingPath>
           <HexFormatSelection>0</HexFormatSelection>
           <Merge32K>0</Merge32K>
           <CreateBatchFile>0</CreateBatchFile>
@@ -301,9 +301,9 @@
             <uAregs>0</uAregs>
             <UseInterruptVector>1</UseInterruptVector>
             <Fuzzy>3</Fuzzy>
-            <Optimize>8</Optimize>
+            <Optimize>9</Optimize>
             <WarningLevel>2</WarningLevel>
-            <SizeSpeed>1</SizeSpeed>
+            <SizeSpeed>0</SizeSpeed>
             <ObjectExtend>1</ObjectExtend>
             <ACallAJmp>0</ACallAJmp>
             <InterruptVectorAddress>0</InterruptVectorAddress>
@@ -389,11 +389,6 @@
               <FilePath>.\DHT11.h</FilePath>
             </File>
             <File>
-              <FileName>TODO.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\TODO.txt</FilePath>
-            </File>
-            <File>
               <FileName>external.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\external.c</FilePath>
@@ -402,6 +397,11 @@
               <FileName>timing.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\timing.c</FilePath>
+            </File>
+            <File>
+              <FileName>Documentation.txt</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Documentation.txt</FilePath>
             </File>
           </Files>
         </Group>

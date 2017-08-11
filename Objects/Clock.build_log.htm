@@ -19,7 +19,7 @@ CPU DLL:         S8051.DLL V3.106.0.0
 Dialog DLL:      DP51.DLL V2.63.0.0 
 <h2>Project:</h2>
 E:\Programming\ATMEL\Clock\Clock.uvproj
-Project File Date:  08/10/2017
+Project File Date:  08/11/2017
 
 <h2>Output:</h2>
 Rebuild target 'Target 1'
@@ -27,40 +27,15 @@ assembling STARTUP.A51...
 compiling main.c...
 compiling LCD.c...
 compiling DHT11.c...
-DHT11.c(13): warning C294: unreachable code
+DHT11.c(30): error C202: 'MAXTIMINGS': undefined identifier
+DHT11.c(36): error C202: 'MAXTIMINGS': undefined identifier
 compiling external.c...
 external.c(10): warning C275: expression with possibly no effect
 external.c(14): warning C275: expression with possibly no effect
 external.c(22): warning C275: expression with possibly no effect
 external.c(24): warning C275: expression with possibly no effect
 compiling timing.c...
-linking...
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_WRITE_CHAR?LCD
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?BACKLIGHT_TOGGLE?LCD
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?INT_TO_ASCII?LCD
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?PHOTO_RESISTOR?EXTERNAL
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?LCD_BUTTON_PRESS?EXTERNAL
-*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?NEXT_SCREEN?EXTERNAL
-*** WARNING L1: UNRESOLVED EXTERNAL SYMBOL
-    SYMBOL:  CURRENT_LINE
-    MODULE:  .\Objects\LCD.obj (LCD)
-*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
-    SYMBOL:  CURRENT_LINE
-    MODULE:  .\Objects\LCD.obj (LCD)
-    ADDRESS: 09DEH
-*** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
-    SYMBOL:  CURRENT_LINE
-    MODULE:  .\Objects\LCD.obj (LCD)
-    ADDRESS: 09EBH
-Program Size: data=29.0 xdata=0 code=558
-creating hex file from ".\Objects\Clock"...
-".\Objects\Clock" - 0 Error(s), 14 Warning(s).
+Target not created.
 Build Time Elapsed:  00:00:01
 </pre>
 </body>

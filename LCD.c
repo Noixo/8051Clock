@@ -1,26 +1,20 @@
 #include "LCD.h"
 #include "timing.h"
 
+//current_line = 0;
+
 void init()
 {
-	RS = 0;	//command
+	//RS = 0;	//command
 	ms_delay(15);
 	
-	write_byte = 0x38;	//Function set (8 bit, 2 line, 5x7)
-	E = 0;
+	cmd(0x38);	//Function set (8 bit, 2 line, 5x7)
 	ms_delay(5);
-	E = 1;
-	
-	write_byte = 0x06;	//Entry mode (Left to right, inc)
-	E = 0;
-	us_delay(110);
-	E = 1;
-	
-	write_byte = 0x0F;	//display (Display on, cursor blinking)
-	E = 0;
-	us_delay(110);
-	E = 1;
-	
+
+	cmd(0x06);	//Entry mode (Left to right, inc)
+
+	cmd(0x0F);	//display (Display on, cursor blinking)
+
 	cmd(CLEAR);
 }
 
@@ -45,22 +39,24 @@ void write_char(char letter)
 void backlight_toggle()
 {
 	backlight = ~backlight;
-}
+}	
 
-void write_string(char string[])
+void write_string(char *string)//[])
 {
-	unsigned char i = 0;
-	//location_count = 0;
+	char i = 0;
 	
-	RS = 1;	//ensure we are writing string
-	for(i = 0; i < string[i] != '\0'; i++)
+	//RS = 1;	//ensure we are writing string
+	for(i = 0; string[i] != '\0'; i++)
 	{
-		write_byte = string[i];
-		E = 0;
-		us_delay(100);
-		E = 1;
+		if(string[i] == '\n')//0x5C 0x6E)	// 0x5c is '\', 0x6E is 'n'
+		{
+			new_line();
+		}
+		else
+		{
+			write_char(string[i]);
+		}
 	}
-	new_line();
 }
 
 
@@ -68,7 +64,8 @@ void new_line()
 {
 	if(!current_line)
 	{
-		cmd(0xC0);
+		cmd(0xC0);//^ 0xC0);
+		//cmd(0xC0);
 	}
 	else
 	{
@@ -76,22 +73,8 @@ void new_line()
 	}
 	current_line = ~current_line;
 }
-	/*
-	if(location_count == 32)
-	{
-		cmd(0x02);
-		cmd(0x80);	//LINE_1
-		
-		location_count = 0;
-	}
-	else if(location_count == 16)
-	{
-		cmd(0x02);
-		cmd(0xC0);	//LINE_2
-	}
-}*/
 
-void int_to_ascii()
+char int_to_ascii(char integer)
 {
-	
+	return integer + '0';
 }
