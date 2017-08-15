@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   LCD                                                               08/14/2017 01:59:44 PAGE 1   
+C51 COMPILER V9.56.0.0   LCD                                                               08/16/2017 09:49:02 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE LCD
@@ -62,7 +62,7 @@ line level    source
   52          {
   53   1        //unsigned char string[8];
   54   1        unsigned char i = 0;
-C51 COMPILER V9.56.0.0   LCD                                                               08/14/2017 01:59:44 PAGE 2   
+C51 COMPILER V9.56.0.0   LCD                                                               08/16/2017 09:49:02 PAGE 2   
 
   55   1        
   56   1        //if(array == (int) array)
@@ -83,85 +83,63 @@ line level    source
   71   2        }
   72   1      }
   73          
-  74          void write_int(unsigned char value)
+  74          void write_int(unsigned char value) //Rewrite later
   75          {
-  76   1        char i, j;
+  76   1        char i;
   77   1        unsigned char temp = value;
   78   1        unsigned char array[3];
   79   1        
-  80   1        /*
-  81   1        for(i = 0; i < 3; i++)
-  82   1        {
-  83   1          if(temp / 10 == 0 && i > 0)
-  84   1            array[i+1] = '\0';
-  85   1          temp /= 10;
-  86   1        } */
-  87   1        
-  88   1        for(i = 2; i >= 0; i--)
-  89   1        {
-  90   2          array[i] = value % 10 + '0';
-  91   2          if(value / 10 == 0 && i > 0)
-  92   2          {
-  93   3            array[i-1] = '\0';
-  94   3            break;
-  95   3          }
-  96   2          value /= 10;
-  97   2        }
-  98   1        
-  99   1        //reverse_array(array);
- 100   1        
- 101   1        for(i = 0; i < 3; i++)
- 102   1        {
- 103   2          for(j = 0; j < 3-i; j++)
- 104   2          {
- 105   3            if(array[i] == '\0' && array[i+1] > 0)
- 106   3            {
- 107   4              temp = array[i];
- 108   4              array[i] = array[i+1];
- 109   4              array[i+1] = temp;
- 110   4            }
- 111   3          }
- 112   2        }
- 113   1        //push contents of array 
- 114   1        
- 115   1        write_string(array);
- 116   1      }
-C51 COMPILER V9.56.0.0   LCD                                                               08/14/2017 01:59:44 PAGE 3   
+  80   1        for(i = 0; i < 3; i++)
+  81   1        {
+  82   2          array[i] = value % 10 + '0';
+  83   2          if(value / 10 == 0 && i < 3)
+  84   2          {
+  85   3            array[i+1] = '\0';
+  86   3            break;
+  87   3          }
+  88   2          value /= 10;
+  89   2        }
+  90   1        
+  91   1        reverse_array(array, i);
+  92   1        
+  93   1        write_string(array);
+  94   1      }
+  95          
+  96          void reverse_array(unsigned char *array, unsigned char end)
+  97          {
+  98   1        unsigned char start = 0, temp = 0;
+  99   1        while(start < end)
+ 100   1        {
+ 101   2          temp = array[start];
+ 102   2          array[start] = array[end];
+ 103   2          array[end] = temp;
+ 104   2          start++;
+ 105   2          end--;
+ 106   2        }
+ 107   1      }
+ 108          
+ 109          void new_line()
+ 110          {
+ 111   1        if(!current_line)
+ 112   1        {
+ 113   2          cmd(LCD_LINE_2);//^ 0xC0);
+ 114   2        }
+ 115   1        else
+ 116   1        {
+C51 COMPILER V9.56.0.0   LCD                                                               08/16/2017 09:49:02 PAGE 3   
 
- 117          
- 118          void reverse_array(unsigned char *array)
- 119          {
- 120   1        unsigned char start = 0, end = 2, temp = 0;
- 121   1        while(start < end)
- 122   1        {
- 123   2          temp = array[start];
- 124   2          array[start] = array[end];
- 125   2          array[end] = temp;
- 126   2          start++;
- 127   2          end--;
- 128   2        }
- 129   1      }
- 130          
- 131          void new_line()
- 132          {
- 133   1        if(!current_line)
- 134   1        {
- 135   2          cmd(LCD_LINE_2);//^ 0xC0);
- 136   2        }
- 137   1        else
- 138   1        {
- 139   2          cmd(LCD_LINE_1);
- 140   2        }
- 141   1        current_line = ~current_line;
- 142   1      }
+ 117   2          cmd(LCD_LINE_1);
+ 118   2        }
+ 119   1        current_line = ~current_line;
+ 120   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =    293    ----
+   CODE SIZE        =    236    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      8      10
+   DATA SIZE        =      8      11
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

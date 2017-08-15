@@ -71,53 +71,31 @@ void write_string(unsigned char *string)//[])
 	}
 }
 
-void write_int(unsigned char value)
+void write_int(unsigned char value)	//Rewrite later
 {
-	char i, j;
+	char i;
 	unsigned char temp = value;
 	unsigned char array[3];
 	
-	/*
 	for(i = 0; i < 3; i++)
 	{
-		if(temp / 10 == 0 && i > 0)
-			array[i+1] = '\0';
-		temp /= 10;
-	}	*/
-	
-	for(i = 2; i >= 0; i--)
-	{
 		array[i] = value % 10 + '0';
-		if(value / 10 == 0 && i > 0)
+		if(value / 10 == 0 && i < 3)
 		{
-			array[i-1] = '\0';
+			array[i+1] = '\0';
 			break;
 		}
 		value /= 10;
 	}
 	
-	//reverse_array(array);
-	
-	for(i = 0; i < 3; i++)
-	{
-		for(j = 0; j < 3-i; j++)
-		{
-			if(array[i] == '\0' && array[i+1] > 0)
-			{
-				temp = array[i];
-				array[i] = array[i+1];
-				array[i+1] = temp;
-			}
-		}
-	}
-	//push contents of array 
+	reverse_array(array, i);
 	
 	write_string(array);
 }
 
-void reverse_array(unsigned char *array)
+void reverse_array(unsigned char *array, unsigned char end)
 {
-	unsigned char start = 0, end = 2, temp = 0;
+	unsigned char start = 0, temp = 0;
 	while(start < end)
 	{
 		temp = array[start];

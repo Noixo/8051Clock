@@ -6,19 +6,8 @@ void readDHT11()
 {
 	unsigned char i, MAXTIMING;
 	unsigned char count;
-	unsigned char store[5] = {0x2, 0xFF, 2, 3, 4};
-	
-	
-	//int_to_ascii(store[0]);
-	//int_to_ascii(store[1]);
-	//int_to_ascii(0x);
-	//write_char(store[0]);
-	
-	//store[1] = int_to_ascii(store[1]);
-	//write_char(store[1]);
-		//write_char('\n');
-	//write_char(store[2]);
-	
+	unsigned char store[5] = {0, 0, 0, 0, 0};
+
 	return;
 	
 	//write_string(store);

@@ -61,9 +61,5 @@ extern void write_string(unsigned char string[]);
 extern void new_line(void);
 extern void int_to_ascii(unsigned char decimal, unsigned char size);
 extern void write_int(unsigned char value);
-extern void reverse_array(unsigned char array[]);
-//extern void reverse_array(unsigned char array[]);
-//extern unsigned char array_size(unsigned char value);
-//extern void num_of_decimals(unsigned char decimals);
-//extern void 
+extern void reverse_array(unsigned char array[], char i); 
 #endif

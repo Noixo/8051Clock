@@ -5,46 +5,16 @@
 
 void main()
 {
-	//char *store;
-	//write_string(readDHT11());
-	
 	backlight = 0;
 	
 	init();
-	//write_int(0xFF);
-	write_int(0x01);
-	write_char(0x00);
-	write_int(0xF);
-	write_char(0x00);
-	write_int(0xFF);
-	write_char(0x00);
-	//write_char(0x8E | 0x30);
-	//write_string("\n");
-	//int_to_ascii(0x01);
-	//write_char(223);
-	//int_to_ascii(0xFA);
-	//write_string(0xF);
-	//int_to_ascii(0xF, array_size(0xF));
-	//write_string(0x0F);
 	
-	//write_string("\n");
-	//int_to_ascii(0xFA);
-	//write_int(0xFF);
-	//write_string(255);
 	//write_string("Hello, World!\n");
-	//write_char(0xCC + '0');
-	//write_char(0xFC);
+	
+	write_int(0xFF);
 	//readDHT11();
 	while(1)
 	{
-		//write_string("a\n");
-		//write_string("Hello, World!\n");
-		//DHT11[] = readDHT11();
-		//write_string(DHT11());
-		//store = readDHT11();
-		//char *store = readDHT11();
-		//write_string(readDHT11(store));
-		//ms_delay(1);
 	}
 }
 

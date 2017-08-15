@@ -1,4 +1,4 @@
-C51 COMPILER V9.56.0.0   DHT11                                                             08/14/2017 01:46:20 PAGE 1   
+C51 COMPILER V9.56.0.0   DHT11                                                             08/16/2017 09:49:02 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE DHT11
@@ -16,105 +16,94 @@ line level    source
    6          {
    7   1        unsigned char i, MAXTIMING;
    8   1        unsigned char count;
-   9   1        unsigned char store[5] = {0x2, 0xFF, 2, 3, 4};
-  10   1        
-  11   1        
-  12   1        //int_to_ascii(store[0]);
-  13   1        //int_to_ascii(store[1]);
-  14   1        //int_to_ascii(0x);
-  15   1        //write_char(store[0]);
+   9   1        unsigned char store[5] = {0, 0, 0, 0, 0};
+  10   1      
+  11   1        return;
+  12   1        
+  13   1        //write_string(store);
+  14   1        //store = {'50','25'};
+  15   1        //return; //store;
   16   1        
-  17   1        //store[1] = int_to_ascii(store[1]);
-  18   1        //write_char(store[1]);
-  19   1          //write_char('\n');
-  20   1        //write_char(store[2]);
-  21   1        
-  22   1        return;
-  23   1        
-  24   1        //write_string(store);
-  25   1        //store = {'50','25'};
-  26   1        //return; //store;
-  27   1        
-  28   1        ms_delay(500);  //1 second delay for device to re-test.
-  29   1        
-  30   1        DHT11 = 0;
-  31   1        ms_delay(18); //delay 18ms
-  32   1        DHT11 = 1;
-  33   1        
-  34   1        us_delay(20); //Let DHT11 know that pin was pulled high before setting to input.
-  35   1        
-  36   1        DHT11 = 0;
-  37   1        
-  38   1        for(i = 0; i < 2; i++)  //Check for when DHT11 is LOW, confirmation signal.
-  39   1        {
-  40   2          while(DHT11 == 0)
-  41   2          {
-  42   3            MAXTIMING++;
-  43   3            if(MAXTIMING > 128)
-  44   3              break;
-  45   3            us_delay(30);
-  46   3          }
-  47   2          us_delay(90);
-  48   2        }
-  49   1        MAXTIMING = 0;
-  50   1        
-  51   1        for(i = 0; i < 40; i++)
-  52   1        {
-  53   2          while(DHT11 == 0) //Loop to skip when pin is pulled low.
-  54   2          {
-C51 COMPILER V9.56.0.0   DHT11                                                             08/14/2017 01:46:20 PAGE 2   
+  17   1        ms_delay(500);  //1 second delay for device to re-test.
+  18   1        
+  19   1        DHT11 = 0;
+  20   1        ms_delay(18); //delay 18ms
+  21   1        DHT11 = 1;
+  22   1        
+  23   1        us_delay(20); //Let DHT11 know that pin was pulled high before setting to input.
+  24   1        
+  25   1        DHT11 = 0;
+  26   1        
+  27   1        for(i = 0; i < 2; i++)  //Check for when DHT11 is LOW, confirmation signal.
+  28   1        {
+  29   2          while(DHT11 == 0)
+  30   2          {
+  31   3            MAXTIMING++;
+  32   3            if(MAXTIMING > 128)
+  33   3              break;
+  34   3            us_delay(30);
+  35   3          }
+  36   2          us_delay(90);
+  37   2        }
+  38   1        MAXTIMING = 0;
+  39   1        
+  40   1        for(i = 0; i < 40; i++)
+  41   1        {
+  42   2          while(DHT11 == 0) //Loop to skip when pin is pulled low.
+  43   2          {
+  44   3            MAXTIMING++;
+  45   3            if(MAXTIMING > 128)
+  46   3              break;
+  47   3            us_delay(1);
+  48   3          }
+  49   2          
+  50   2          MAXTIMING = 0;
+  51   2          
+  52   2          while(DHT11 == 1) //Count number of microseconds pin is high. If 70 microseconds
+  53   2          {                 //bit is 1, lower is 0.
+  54   3            count++;
+C51 COMPILER V9.56.0.0   DHT11                                                             08/16/2017 09:49:02 PAGE 2   
 
-  55   3            MAXTIMING++;
-  56   3            if(MAXTIMING > 128)
-  57   3              break;
-  58   3            us_delay(1);
-  59   3          }
-  60   2          
-  61   2          MAXTIMING = 0;
+  55   3            
+  56   3            MAXTIMING++;
+  57   3            if(MAXTIMING > 128)
+  58   3              break;
+  59   3            us_delay(1);
+  60   3          }
+  61   2          
   62   2          
-  63   2          while(DHT11 == 1) //Count number of microseconds pin is high. If 70 microseconds
-  64   2          {                 //bit is 1, lower is 0.
-  65   3            count++;
-  66   3            
-  67   3            MAXTIMING++;
-  68   3            if(MAXTIMING > 128)
-  69   3              break;
-  70   3            us_delay(1);
-  71   3          }
-  72   2          
-  73   2          
-  74   2          if(count > 40)
-  75   2          {
-  76   3            store[i/8] <<= 1; //Since integer division rounds down. Can split 40 data into 5 8-bit segments.
-  77   3          }
-  78   2          else
-  79   2          {
-  80   3            store[i/8] |= 1;
-  81   3          }
-  82   2          count = 0;
-  83   2        }
-  84   1        
-  85   1        if(validate(store) == 1)
-  86   1        {
-  87   2          //store[0] = int_to_ascii(store[0]);
-  88   2          //write_char(store[0]);
-  89   2          //write_char('\n');
-  90   2          //write_char(store[2]);
-  91   2        }
-  92   1        else
-  93   1        {
-  94   2          //idk, redo?-*
-  95   2        }
-  96   1      }
-  97          
-  98          char validate(unsigned char store[])
-  99          {
- 100   1        if((store[0] + store[2]) != store[4])
- 101   1          return -1;
- 102   1        else
- 103   1          return 1;
- 104   1      }
-*** WARNING C294 IN LINE 28 OF DHT11.c: unreachable code
+  63   2          if(count > 40)
+  64   2          {
+  65   3            store[i/8] <<= 1; //Since integer division rounds down. Can split 40 data into 5 8-bit segments.
+  66   3          }
+  67   2          else
+  68   2          {
+  69   3            store[i/8] |= 1;
+  70   3          }
+  71   2          count = 0;
+  72   2        }
+  73   1        
+  74   1        if(validate(store) == 1)
+  75   1        {
+  76   2          //store[0] = int_to_ascii(store[0]);
+  77   2          //write_char(store[0]);
+  78   2          //write_char('\n');
+  79   2          //write_char(store[2]);
+  80   2        }
+  81   1        else
+  82   1        {
+  83   2          //idk, redo?-*
+  84   2        }
+  85   1      }
+  86          
+  87          char validate(unsigned char store[])
+  88          {
+  89   1        if((store[0] + store[2]) != store[4])
+  90   1          return -1;
+  91   1        else
+  92   1          return 1;
+  93   1      }
+*** WARNING C294 IN LINE 17 OF DHT11.c: unreachable code
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
@@ -126,8 +115,6 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
-
-C51 COMPILER V9.56.0.0   DHT11                                                             08/14/2017 01:46:20 PAGE 3   
 
 
 C51 COMPILATION COMPLETE.  1 WARNING(S),  0 ERROR(S)
