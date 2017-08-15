@@ -22,24 +22,15 @@ E:\Programming\ATMEL\Clock\Clock.uvproj
 Project File Date:  08/11/2017
 
 <h2>Output:</h2>
-Rebuild target 'Target 1'
-assembling STARTUP.A51...
-compiling main.c...
+Build target 'Target 1'
 compiling LCD.c...
-LCD.c(83): warning C291: not every exit path returns a value
-compiling DHT11.c...
-DHT11.c(26): warning C294: unreachable code
-compiling external.c...
-external.c(10): warning C275: expression with possibly no effect
-external.c(14): warning C275: expression with possibly no effect
-external.c(22): warning C275: expression with possibly no effect
-external.c(24): warning C275: expression with possibly no effect
-compiling timing.c...
 linking...
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?BACKLIGHT_TOGGLE?LCD
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
-    SEGMENT: ?PR?_WRITE_STRING?LCD
+    SEGMENT: ?PR?_REVERSE_ARRAY?LCD
+*** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
+    SEGMENT: ?PR?READDHT11?DHT11
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
     SEGMENT: ?PR?_VALIDATE?DHT11
 *** WARNING L16: UNCALLED SEGMENT, IGNORED FOR OVERLAY PROCESS
@@ -54,15 +45,15 @@ linking...
 *** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
     SYMBOL:  CURRENT_LINE
     MODULE:  .\Objects\LCD.obj (LCD)
-    ADDRESS: 0AD5H
+    ADDRESS: 0BB6H
 *** WARNING L2: REFERENCE MADE TO UNRESOLVED EXTERNAL
     SYMBOL:  CURRENT_LINE
     MODULE:  .\Objects\LCD.obj (LCD)
-    ADDRESS: 0AE2H
-Program Size: data=38.0 xdata=0 code=824
+    ADDRESS: 0BC3H
+Program Size: data=59.0 xdata=0 code=1031
 creating hex file from ".\Objects\Clock"...
-".\Objects\Clock" - 0 Error(s), 15 Warning(s).
-Build Time Elapsed:  00:00:02
+".\Objects\Clock" - 0 Error(s), 10 Warning(s).
+Build Time Elapsed:  00:00:01
 </pre>
 </body>
 </html>

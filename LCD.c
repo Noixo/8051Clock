@@ -1,3 +1,4 @@
+//#include <stdio.h>
 #include "LCD.h"
 #include "timing.h"
 
@@ -15,20 +16,26 @@ void init()
 
 	cmd(0x0F);	//display (Display on, cursor blinking)
 
-	cmd(CLEAR);
+	cmd(LCD_CLEAR);	//CLEAR
 }
 
-void cmd(char cmd)
+void cmd(unsigned char cmd)
 {
 	RS = 0;
 	write_byte = cmd;
 	E = 0;
-	us_delay(100);
+	us_delay(150);
 	E = 1;
 }
 
-void write_char(char letter)
+void write_char(unsigned char letter)
 {
+	/* if(letter > 0x7F)	//127
+		cmd(0x39);	//8 bit, 2 line, 5x10
+	else
+		cmd(0x38);	*/
+	//letter += '0';	//Convert all chars to ASCII.
+	
 	RS = 1; //word;
 	write_byte = letter;
 	E = 0;
@@ -41,9 +48,14 @@ void backlight_toggle()
 	backlight = ~backlight;
 }	
 
-void write_string(char *string)//[])
+void write_string(unsigned char *string)//[])
 {
-	char i = 0;
+	//unsigned char string[8];
+	unsigned char i = 0;
+	
+	//if(array == (int) array)
+	//iota(array, string, 10);
+	//sprintf(string, "%u", array);	//Convert everything to string
 	
 	//RS = 1;	//ensure we are writing string
 	for(i = 0; string[i] != '\0'; i++)
@@ -59,30 +71,72 @@ void write_string(char *string)//[])
 	}
 }
 
+void write_int(unsigned char value)
+{
+	char i, j;
+	unsigned char temp = value;
+	unsigned char array[3];
+	
+	/*
+	for(i = 0; i < 3; i++)
+	{
+		if(temp / 10 == 0 && i > 0)
+			array[i+1] = '\0';
+		temp /= 10;
+	}	*/
+	
+	for(i = 2; i >= 0; i--)
+	{
+		array[i] = value % 10 + '0';
+		if(value / 10 == 0 && i > 0)
+		{
+			array[i-1] = '\0';
+			break;
+		}
+		value /= 10;
+	}
+	
+	//reverse_array(array);
+	
+	for(i = 0; i < 3; i++)
+	{
+		for(j = 0; j < 3-i; j++)
+		{
+			if(array[i] == '\0' && array[i+1] > 0)
+			{
+				temp = array[i];
+				array[i] = array[i+1];
+				array[i+1] = temp;
+			}
+		}
+	}
+	//push contents of array 
+	
+	write_string(array);
+}
+
+void reverse_array(unsigned char *array)
+{
+	unsigned char start = 0, end = 2, temp = 0;
+	while(start < end)
+	{
+		temp = array[start];
+		array[start] = array[end];
+		array[end] = temp;
+		start++;
+		end--;
+	}
+}
 
 void new_line()
 {
 	if(!current_line)
 	{
-		cmd(0xC0);//^ 0xC0);
-		//cmd(0xC0);
+		cmd(LCD_LINE_2);//^ 0xC0);
 	}
 	else
 	{
-		cmd(0x80);
+		cmd(LCD_LINE_1);
 	}
 	current_line = ~current_line;
-}
-
-char int_to_ascii(unsigned char integer)
-{
-	char array[8];
-	unsigned char i;
-	for (i = 0; i < 8; i++)
-	{
-		if(integer >> i == )
-		array[i] >>= 1;
-	}
-	
-	return integer + '0';
 }

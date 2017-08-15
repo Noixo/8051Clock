@@ -1,10 +1,10 @@
-C51 COMPILER V9.56.0.0   MAIN                                                              08/12/2017 01:24:57 PAGE 1   
+C51 COMPILER V9.56.0.0   MAIN                                                              08/14/2017 01:46:19 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE MAIN
 OBJECT MODULE PLACED IN .\Objects\main.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c ROM(SMALL) OPTIMIZE(9,SIZE) BROWSE DEBUG OBJECTEXTEND CODE TABS(2
-                    -) OBJECT(.\Objects\main.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c ROM(SMALL) OPTIMIZE(9,SIZE) BROWSE DEBUG OBJECTEXTEND TABS(2) OBJ
+                    -ECT(.\Objects\main.obj)
 
 line level    source
 
@@ -21,66 +21,69 @@ line level    source
   11   1        backlight = 0;
   12   1        
   13   1        init();
-  14   1        
-  15   1        //write_string("Hello, World!\n");
-  16   1        readDHT11();
-  17   1        while(1)
-  18   1        {
-  19   2          //write_string("a\n");
-  20   2          //write_string("Hello, World!\n");
-  21   2          //DHT11[] = readDHT11();
-  22   2          //write_string(DHT11());
-  23   2          //store = readDHT11();
-  24   2          //char *store = readDHT11();
-  25   2          //write_string(readDHT11(store));
-  26   2          //ms_delay(1);
-  27   2        }
-  28   1      }
-  29          
-  30          /*
-  31            --------------TODO---------------
-  32            * Add timer*
-  33            * Add interupt
-  34            * send screen clear command, start of init()
-  35            * Setup function to setup lcd e.g. 16x2, 40x4...
-  36            * i2c bit banging
-  37              - pressure sensor
-  38              - DS3231
-  39          */
-  40          
-  41          /*
-  42            -----------------------------
-  43           * String prints on second line after first printing on first line
-  44          */
-C51 COMPILER V9.56.0.0   MAIN                                                              08/12/2017 01:24:57 PAGE 2   
+  14   1        //write_int(0xFF);
+  15   1        write_int(0x01);
+  16   1        write_char(0x00);
+  17   1        write_int(0xF);
+  18   1        write_char(0x00);
+  19   1        write_int(0xFF);
+  20   1        write_char(0x00);
+  21   1        //write_char(0x8E | 0x30);
+  22   1        //write_string("\n");
+  23   1        //int_to_ascii(0x01);
+  24   1        //write_char(223);
+  25   1        //int_to_ascii(0xFA);
+  26   1        //write_string(0xF);
+  27   1        //int_to_ascii(0xF, array_size(0xF));
+  28   1        //write_string(0x0F);
+  29   1        
+  30   1        //write_string("\n");
+  31   1        //int_to_ascii(0xFA);
+  32   1        //write_int(0xFF);
+  33   1        //write_string(255);
+  34   1        //write_string("Hello, World!\n");
+  35   1        //write_char(0xCC + '0');
+  36   1        //write_char(0xFC);
+  37   1        //readDHT11();
+  38   1        while(1)
+  39   1        {
+  40   2          //write_string("a\n");
+  41   2          //write_string("Hello, World!\n");
+  42   2          //DHT11[] = readDHT11();
+  43   2          //write_string(DHT11());
+  44   2          //store = readDHT11();
+  45   2          //char *store = readDHT11();
+  46   2          //write_string(readDHT11(store));
+  47   2          //ms_delay(1);
+  48   2        }
+  49   1      }
+  50          
+  51          /*
+  52            --------------TODO---------------
+  53            * Add timer*
+  54            * Add interupt
+C51 COMPILER V9.56.0.0   MAIN                                                              08/14/2017 01:46:19 PAGE 2   
 
-ASSEMBLY LISTING OF GENERATED OBJECT CODE
-
-
-             ; FUNCTION main (BEGIN)
-                                           ; SOURCE LINE # 6
-                                           ; SOURCE LINE # 7
-                                           ; SOURCE LINE # 11
-0000 C290              CLR     backlight
-                                           ; SOURCE LINE # 13
-0002 1100        E     ACALL   init
-                                           ; SOURCE LINE # 16
-0004 1100        E     ACALL   readDHT11
-0006         ?C0001:
-                                           ; SOURCE LINE # 17
-                                           ; SOURCE LINE # 18
-                                           ; SOURCE LINE # 27
-0006 80FE              SJMP    ?C0001
-             ; FUNCTION main (END)
-
+  55            * send screen clear command, start of init()
+  56            * Setup function to setup lcd e.g. 16x2, 40x4...
+  57            * i2c bit banging
+  58              - pressure sensor
+  59              - DS3231
+  60          */
+  61          
+  62          /*
+  63            ---------------Small issues--------------
+  64            * int_to_ascii: i underflows
+  65           * String prints on second line after first printing on first line
+  66          */  
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =      8    ----
+   CODE SIZE        =     30    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
-   DATA SIZE        =      4    ----
+   DATA SIZE        =      8    ----
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.

@@ -21,12 +21,20 @@ sbit lcd_button = 0x91;
 //sbit a = 0xB7;
 
 //---------------
+static unsigned char LCD_DEGREE = 0xDF;
+static unsigned char LCD_NEG_ONE = 0xE9;
+static unsigned char LCD_ARROW_RIGHT = 0x7E;
+static unsigned char LCD_ARROW_LEFT = 0x7F;
 
-static char CLEAR = 0x01;
-static char HOME = 0x02;
+static char LCD_CLEAR = 0x01;
+static char LCD_HOME = 0x02;
 
-static char LINE_1 = 0x80;
-static char LINE_2 = 0xC0;
+static char LCD_LINE_1 = 0x80;
+static char LCD_LINE_2 = 0xC0;
+
+//const char array;
+
+//static char array[];
 
 /*
 const char HOME = 0x02;
@@ -45,13 +53,17 @@ extern bit current_line;
 //---------------
 
 extern void init();
-extern void write_char(char hex);
-extern void cmd(char cmd);
+extern void write_char(unsigned char hex);
+extern void cmd(unsigned char cmd);
 extern void backlight_toggle(void);
 extern void backlight_light(void);
-extern void write_string(char string[]);
-extern void write_string(char string[]);
+extern void write_string(unsigned char string[]);
 extern void new_line(void);
-extern char int_to_ascii(char integer);
+extern void int_to_ascii(unsigned char decimal, unsigned char size);
+extern void write_int(unsigned char value);
+extern void reverse_array(unsigned char array[]);
+//extern void reverse_array(unsigned char array[]);
+//extern unsigned char array_size(unsigned char value);
+//extern void num_of_decimals(unsigned char decimals);
 //extern void 
 #endif

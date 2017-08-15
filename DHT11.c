@@ -9,13 +9,15 @@ void readDHT11()
 	unsigned char store[5] = {0x2, 0xFF, 2, 3, 4};
 	
 	
-	store[0] = int_to_ascii(store[0]);
-	write_char(store[0]);
+	//int_to_ascii(store[0]);
+	//int_to_ascii(store[1]);
+	//int_to_ascii(0x);
+	//write_char(store[0]);
 	
-	store[1] = int_to_ascii(store[1]);
-	write_char(store[1]);
+	//store[1] = int_to_ascii(store[1]);
+	//write_char(store[1]);
 		//write_char('\n');
-	write_char(store[2]);
+	//write_char(store[2]);
 	
 	return;
 	
@@ -82,10 +84,10 @@ void readDHT11()
 	
 	if(validate(store) == 1)
 	{
-		store[0] = int_to_ascii(store[0]);
-		write_char(store[0]);
+		//store[0] = int_to_ascii(store[0]);
+		//write_char(store[0]);
 		//write_char('\n');
-		write_char(store[2]);
+		//write_char(store[2]);
 	}
 	else
 	{
@@ -93,7 +95,7 @@ void readDHT11()
 	}
 }
 
-char validate(char store[])
+char validate(unsigned char store[])
 {
 	if((store[0] + store[2]) != store[4])
 		return -1;

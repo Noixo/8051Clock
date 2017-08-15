@@ -4,9 +4,9 @@
 
 #include "timing.h"
 
-void ms_delay(unsigned int ms_delay)
+void ms_delay(unsigned char ms_delay)
 {
-	unsigned int i;
+	unsigned char i;
 	TMOD = 0x01;	//TMOD becomes mode: 1 (16 bit timer)
 	
 	// Time is 1/(crystal(mhz)/12(prescaler)) = x uS
@@ -24,9 +24,9 @@ void ms_delay(unsigned int ms_delay)
 	}
 }
 
-void us_delay(unsigned int us_delay)
+void us_delay(unsigned char us_delay)
 {
-	unsigned int i;
+	unsigned char i;
 	TMOD = 0x01;	//TMOD becomes mode: 1 (16 bit timer)
 	
 	TH0 = 0XFF;	//1us hopefully

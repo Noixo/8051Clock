@@ -11,9 +11,30 @@ void main()
 	backlight = 0;
 	
 	init();
+	//write_int(0xFF);
+	write_int(0x01);
+	write_char(0x00);
+	write_int(0xF);
+	write_char(0x00);
+	write_int(0xFF);
+	write_char(0x00);
+	//write_char(0x8E | 0x30);
+	//write_string("\n");
+	//int_to_ascii(0x01);
+	//write_char(223);
+	//int_to_ascii(0xFA);
+	//write_string(0xF);
+	//int_to_ascii(0xF, array_size(0xF));
+	//write_string(0x0F);
 	
+	//write_string("\n");
+	//int_to_ascii(0xFA);
+	//write_int(0xFF);
+	//write_string(255);
 	//write_string("Hello, World!\n");
-	readDHT11();
+	//write_char(0xCC + '0');
+	//write_char(0xFC);
+	//readDHT11();
 	while(1)
 	{
 		//write_string("a\n");
@@ -39,6 +60,7 @@ void main()
 */
 
 /*
-	-----------------------------
+	---------------Small issues--------------
+	* int_to_ascii: i underflows
  * String prints on second line after first printing on first line
-*/
+*/	

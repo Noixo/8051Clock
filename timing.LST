@@ -1,10 +1,10 @@
-C51 COMPILER V9.56.0.0   TIMING                                                            08/12/2017 01:24:58 PAGE 1   
+C51 COMPILER V9.56.0.0   TIMING                                                            08/14/2017 01:46:20 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE TIMING
 OBJECT MODULE PLACED IN .\Objects\timing.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE timing.c ROM(SMALL) OPTIMIZE(9,SIZE) BROWSE DEBUG OBJECTEXTEND CODE TABS
-                    -(2) OBJECT(.\Objects\timing.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE timing.c ROM(SMALL) OPTIMIZE(9,SIZE) BROWSE DEBUG OBJECTEXTEND TABS(2) O
+                    -BJECT(.\Objects\timing.obj)
 
 line level    source
 
@@ -14,9 +14,9 @@ line level    source
    4          
    5          #include "timing.h"
    6          
-   7          void ms_delay(unsigned int ms_delay)
+   7          void ms_delay(unsigned char ms_delay)
    8          {
-   9   1        unsigned int i;
+   9   1        unsigned char i;
   10   1        TMOD = 0x01;  //TMOD becomes mode: 1 (16 bit timer)
   11   1        
   12   1        // Time is 1/(crystal(mhz)/12(prescaler)) = x uS
@@ -34,9 +34,9 @@ line level    source
   24   2        }
   25   1      }
   26          
-  27          void us_delay(unsigned int us_delay)
+  27          void us_delay(unsigned char us_delay)
   28          {
-  29   1        unsigned int i;
+  29   1        unsigned char i;
   30   1        TMOD = 0x01;  //TMOD becomes mode: 1 (16 bit timer)
   31   1        
   32   1        TH0 = 0XFF; //1us hopefully
@@ -50,106 +50,10 @@ line level    source
   40   2          TF0 = 0;    //Clears overflow tag
   41   2        }
   42   1      }
-C51 COMPILER V9.56.0.0   TIMING                                                            08/12/2017 01:24:58 PAGE 2   
-
-ASSEMBLY LISTING OF GENERATED OBJECT CODE
-
-
-             ; FUNCTION Com000F (BEGIN)
-0000         L?0016:
-0000 D289              SETB    TMOD
-0002 D28C              SETB    TH0
-0004 D28A              SETB    TL0
-0006 E4                CLR     A
-0007 FD                MOV     R5,A
-0008 FC                MOV     R4,A
-0009 22                RET     
-             ; FUNCTION Com000F (END)
-
-             ; FUNCTION _ms_delay (BEGIN)
-                                           ; SOURCE LINE # 7
-;---- Variable 'ms_delay' assigned to Register 'R6/R7' ----
-                                           ; SOURCE LINE # 8
-                                           ; SOURCE LINE # 10
-                                           ; SOURCE LINE # 16
-                                           ; SOURCE LINE # 17
-                                           ; SOURCE LINE # 18
-;---- Variable 'i' assigned to Register 'R4/R5' ----
-0000 1100        R     ACALL   L?0016
-0002         ?C0001:
-0002 C3                CLR     C
-0003 ED                MOV     A,R5
-0004 9F                SUBB    A,R7
-0005 EC                MOV     A,R4
-0006 9E                SUBB    A,R6
-0007 5010              JNC     ?C0006
-                                           ; SOURCE LINE # 19
-                                           ; SOURCE LINE # 20
-0009 D28C              SETB    TR0
-000B         ?C0004:
-                                           ; SOURCE LINE # 21
-000B 308DFD            JNB     TF0,?C0004
-000E         ?C0005:
-                                           ; SOURCE LINE # 22
-000E C28C              CLR     TR0
-                                           ; SOURCE LINE # 23
-0010 C28D              CLR     TF0
-                                           ; SOURCE LINE # 24
-0012 0D                INC     R5
-0013 BD0001            CJNE    R5,#00H,?C0013
-0016 0C                INC     R4
-0017         ?C0013:
-0017 80E9              SJMP    ?C0001
-                                           ; SOURCE LINE # 25
-0019         ?C0006:
-0019 22                RET     
-             ; FUNCTION _ms_delay (END)
-
-             ; FUNCTION _us_delay (BEGIN)
-                                           ; SOURCE LINE # 27
-;---- Variable 'us_delay' assigned to Register 'R6/R7' ----
-                                           ; SOURCE LINE # 28
-                                           ; SOURCE LINE # 30
-                                           ; SOURCE LINE # 32
-                                           ; SOURCE LINE # 33
-                                           ; SOURCE LINE # 35
-;---- Variable 'i' assigned to Register 'R4/R5' ----
-C51 COMPILER V9.56.0.0   TIMING                                                            08/12/2017 01:24:58 PAGE 3   
-
-0000 1100        R     ACALL   L?0016
-0002         ?C0007:
-0002 C3                CLR     C
-0003 ED                MOV     A,R5
-0004 9F                SUBB    A,R7
-0005 EC                MOV     A,R4
-0006 9E                SUBB    A,R6
-0007 5010              JNC     ?C0012
-                                           ; SOURCE LINE # 36
-                                           ; SOURCE LINE # 37
-0009 D28C              SETB    TR0
-000B         ?C0010:
-                                           ; SOURCE LINE # 38
-000B 308CFD            JNB     TR0,?C0010
-000E         ?C0011:
-                                           ; SOURCE LINE # 39
-000E C28C              CLR     TR0
-                                           ; SOURCE LINE # 40
-0010 C28D              CLR     TF0
-                                           ; SOURCE LINE # 41
-0012 0D                INC     R5
-0013 BD0001            CJNE    R5,#00H,?C0014
-0016 0C                INC     R4
-0017         ?C0014:
-0017 80E9              SJMP    ?C0007
-                                           ; SOURCE LINE # 42
-0019         ?C0012:
-0019 22                RET     
-             ; FUNCTION _us_delay (END)
-
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     62    ----
+   CODE SIZE        =     52    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----

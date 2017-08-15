@@ -7,6 +7,6 @@ extern char DHTArray[5];
 //----------------
 
 extern void readDHT11();
-extern char validate(char store[]);
+extern char validate(unsigned char store[]);
 
 #endif
