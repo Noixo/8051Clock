@@ -7,12 +7,6 @@ void readDHT11()
 	unsigned char i, MAXTIMING;
 	unsigned char count;
 	unsigned char store[5] = {0, 0, 0, 0, 0};
-
-	return;
-	
-	//write_string(store);
-	//store = {'50','25'};
-	//return; //store;
 	
 	ms_delay(500);	//1 second delay for device to re-test.
 	
@@ -73,21 +67,23 @@ void readDHT11()
 	
 	if(validate(store) == 1)
 	{
-		//store[0] = int_to_ascii(store[0]);
-		//write_char(store[0]);
-		//write_char('\n');
-		//write_char(store[2]);
+		for(i = 0; i < 5; i++)
+			write_int(store[i]);
 	}
 	else
 	{
-		//idk, redo?-*
+			ms_delay(500);
+			readDHT11();
 	}
 }
 
 char validate(unsigned char store[])
 {
 	if((store[0] + store[2]) != store[4])
+	{
+		write_string("CHECKSUM, ERROR!\n");
 		return -1;
+	}
 	else
 		return 1;
 }

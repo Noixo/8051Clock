@@ -21,17 +21,21 @@ void main()
 
 /*
 	--------------TODO---------------
-	* Add timer*
 	* Add interupt
-	* send screen clear command, start of init()
   * Setup function to setup lcd e.g. 16x2, 40x4...
 	* i2c bit banging
-		-	pressure sensor
+		-	BMP280
 		- DS3231
 */
 
 /*
 	---------------Small issues--------------
-	* int_to_ascii: i underflows
- * String prints on second line after first printing on first line
-*/	
+	* timer not accurate
+*/
+
+/* Boot idea
+	image appearing in middle of lcd
+	made out of bitmaps.
+	Load 8 bitmaps into lcd.
+	Run them and then reload next 8.
+*/
