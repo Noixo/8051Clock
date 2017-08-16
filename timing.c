@@ -15,13 +15,14 @@ void ms_delay(unsigned char ms_delay)
 	// = 1ms
 	TH0 = 0XFC;
 	TL0 = 0X18;
+	
+	TR0 = 1;           	//Starts the timer
 	for(i = 0; i < ms_delay; i++)
 	{
-		TR0 = 1;           	//Starts the timer
 		while(TF0 == 0);		//loops till timer overflow bit = 1
-		TR0 = 0;						//Turns off the timer
 		TF0 = 0;           	//clear the timer Over flow flag
 	}
+	TR0 = 0;						//Turns off the timer
 }
 
 void us_delay(unsigned char us_delay)
@@ -32,11 +33,11 @@ void us_delay(unsigned char us_delay)
 	TH0 = 0XFF;	//1us hopefully
 	TL0 = 0XFE;
 	
+	TR0 = 1;		//Starts the timer
 	for(i = 0; i < us_delay; i++)
 	{
-		TR0 = 1;		//Starts the timer
 		while(TR0 == 0);
-		TR0 = 0;		//Turns off timer
 		TF0 = 0;		//Clears overflow tag
 	}
+	TR0 = 0;		//Turns off timer
 }

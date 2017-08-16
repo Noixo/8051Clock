@@ -5,16 +5,17 @@
 
 void main()
 {
+	unsigned int i = 0;
 	backlight = 0;
 	
 	init();
-	
 	//write_string("Hello, World!\n");
 	
-	write_int(0xFF);
 	//readDHT11();
+	
 	while(1)
 	{
+		//write_char('1');
 	}
 }
 

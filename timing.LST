@@ -1,10 +1,10 @@
-C51 COMPILER V9.56.0.0   TIMING                                                            08/16/2017 09:49:02 PAGE 1   
+C51 COMPILER V9.56.0.0   TIMING                                                            08/16/2017 10:48:30 PAGE 1   
 
 
 C51 COMPILER V9.56.0.0, COMPILATION OF MODULE TIMING
 OBJECT MODULE PLACED IN .\Objects\timing.obj
-COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE timing.c ROM(SMALL) OPTIMIZE(9,SIZE) BROWSE DEBUG OBJECTEXTEND TABS(2) O
-                    -BJECT(.\Objects\timing.obj)
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE timing.c ROM(SMALL) OPTIMIZE(9,SPEED) BROWSE DEBUG OBJECTEXTEND TABS(2) 
+                    -OBJECT(.\Objects\timing.obj)
 
 line level    source
 
@@ -25,35 +25,36 @@ line level    source
   15   1        // = 1ms
   16   1        TH0 = 0XFC;
   17   1        TL0 = 0X18;
-  18   1        for(i = 0; i < ms_delay; i++)
-  19   1        {
-  20   2          TR0 = 1;            //Starts the timer
-  21   2          while(TF0 == 0);    //loops till timer overflow bit = 1
-  22   2          TR0 = 0;            //Turns off the timer
+  18   1        
+  19   1        TR0 = 1;            //Starts the timer
+  20   1        for(i = 0; i < ms_delay; i++)
+  21   1        {
+  22   2          while(TF0 == 0);    //loops till timer overflow bit = 1
   23   2          TF0 = 0;            //clear the timer Over flow flag
   24   2        }
-  25   1      }
-  26          
-  27          void us_delay(unsigned char us_delay)
-  28          {
-  29   1        unsigned char i;
-  30   1        TMOD = 0x01;  //TMOD becomes mode: 1 (16 bit timer)
-  31   1        
-  32   1        TH0 = 0XFF; //1us hopefully
-  33   1        TL0 = 0XFE;
-  34   1        
-  35   1        for(i = 0; i < us_delay; i++)
-  36   1        {
-  37   2          TR0 = 1;    //Starts the timer
-  38   2          while(TR0 == 0);
-  39   2          TR0 = 0;    //Turns off timer
+  25   1        TR0 = 0;            //Turns off the timer
+  26   1      }
+  27          
+  28          void us_delay(unsigned char us_delay)
+  29          {
+  30   1        unsigned char i;
+  31   1        TMOD = 0x01;  //TMOD becomes mode: 1 (16 bit timer)
+  32   1        
+  33   1        TH0 = 0XFF; //1us hopefully
+  34   1        TL0 = 0XFE;
+  35   1        
+  36   1        TR0 = 1;    //Starts the timer
+  37   1        for(i = 0; i < us_delay; i++)
+  38   1        {
+  39   2          while(TR0 == 0);
   40   2          TF0 = 0;    //Clears overflow tag
   41   2        }
-  42   1      }
+  42   1        TR0 = 0;    //Turns off timer
+  43   1      }
 
 
 MODULE INFORMATION:   STATIC OVERLAYABLE
-   CODE SIZE        =     52    ----
+   CODE SIZE        =     47    ----
    CONSTANT SIZE    =   ----    ----
    XDATA SIZE       =   ----    ----
    PDATA SIZE       =   ----    ----
@@ -61,6 +62,8 @@ MODULE INFORMATION:   STATIC OVERLAYABLE
    IDATA SIZE       =   ----    ----
    BIT SIZE         =   ----    ----
 END OF MODULE INFORMATION.
+
+C51 COMPILER V9.56.0.0   TIMING                                                            08/16/2017 10:48:30 PAGE 2   
 
 
 C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
