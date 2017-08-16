@@ -9,12 +9,18 @@ void main()
 	backlight = 0;
 	
 	init();
-	//write_string("Hello, World!\n");
+	write_string("Hello, World!\n");
 	
-	//readDHT11();
 	
 	while(1)
 	{
+		a = 1;
+		ms_delay(1);
+		a = 0;
+		ms_delay(10);
+		
+		//readDHT11();
+		//write_string("\n");
 		//write_char('1');
 	}
 }

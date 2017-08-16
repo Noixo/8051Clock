@@ -8,6 +8,6 @@ sbit TMOD = 0x89;
 sbit TH0 = 0x8C;
 sbit TL0 = 0x8A;
 
-extern void ms_delay(unsigned char ms_delay);
-extern void us_delay(unsigned char us_delay);
+extern void ms_delay(unsigned char num);
+extern void us_delay();
 #endif

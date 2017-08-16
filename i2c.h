@@ -1,5 +1,5 @@
-#ifndef _I2C.H_
-#define _I2C.H_
+#ifndef _I2C_H_
+#define _I2C_H_
 
 
 extern void i2c_start();

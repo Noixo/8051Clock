@@ -14,6 +14,8 @@ sbit D6 = 0xA6;
 sbit D7 = 0xA7;
 */
 
+sbit a = 0xB7;
+
 sbit RS = 0x80;
 sbit E = 0x81;
 

@@ -20,7 +20,7 @@ void lcd_button_press()
 	if (lcd_button == 0 && comparator == 1)
 	{
 		backlight == 1;
-		ms_delay(500);
+		ms_delay();
 		backlight == 0;
 	}
 }

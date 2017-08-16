@@ -4,7 +4,7 @@
 
 #include "timing.h"
 
-void ms_delay(unsigned char ms_delay)
+void ms_delay(unsigned char num)	//8.2 miliseconds
 {
 	unsigned char i;
 	TMOD = 0x01;	//TMOD becomes mode: 1 (16 bit timer)
@@ -13,11 +13,11 @@ void ms_delay(unsigned char ms_delay)
 	//Time needed is 65536-x = value for TH & TL
 	
 	// = 1ms
-	TH0 = 0XFC;
-	TL0 = 0X18;
+	TH0 = 0xFC; //D8;
+	TL0 = 0x18; //0xF0;
 	
 	TR0 = 1;           	//Starts the timer
-	for(i = 0; i < ms_delay; i++)
+	for(i = 0; i < num; i++)
 	{
 		while(TF0 == 0);		//loops till timer overflow bit = 1
 		TF0 = 0;           	//clear the timer Over flow flag
@@ -25,19 +25,16 @@ void ms_delay(unsigned char ms_delay)
 	TR0 = 0;						//Turns off the timer
 }
 
-void us_delay(unsigned char us_delay)
+void us_delay()	//100 microsecond
 {
-	unsigned char i;
 	TMOD = 0x01;	//TMOD becomes mode: 1 (16 bit timer)
 	
-	TH0 = 0XFF;	//1us hopefully
-	TL0 = 0XFE;
+	TH0 = 0xFF;	//1us hopefully
+	TL0 = 0x9C;
 	
 	TR0 = 1;		//Starts the timer
-	for(i = 0; i < us_delay; i++)
-	{
-		while(TR0 == 0);
-		TF0 = 0;		//Clears overflow tag
-	}
+	while(TR0 == 0);
+	
+	TF0 = 0;		//Clears overflow tag
 	TR0 = 0;		//Turns off timer
 }
