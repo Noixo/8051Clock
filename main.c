@@ -37,6 +37,7 @@ void main()
 /*
 	---------------Small issues--------------
 	* timer not accurate
+	* i2c.c needs lcd.c to print variable. Not efficient
 */
 
 /* Boot idea
