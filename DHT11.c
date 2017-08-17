@@ -11,10 +11,10 @@ void readDHT11()
 	ms_delay();	//1 second delay for device to re-test.
 	
 	DHT11 = 0;
-	ms_delay();	//delay 18ms
+	ms_delay(2);	//delay 18ms
 	DHT11 = 1;
 	
-	us_delay();	//Let DHT11 know that pin was pulled high before setting to input.
+	us_delay(8);	//Let DHT11 know that pin was pulled high before setting to input.
 	
 	DHT11 = 0;
 	

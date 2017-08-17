@@ -10,7 +10,7 @@ void init()
 	ms_delay();
 	
 	cmd(0x38);	//Function set (8 bit, 2 line, 5x7)
-	ms_delay();
+	ms_delay(2);	//approx 15 ms
 
 	cmd(0x06);	//Entry mode (Left to right, inc)
 

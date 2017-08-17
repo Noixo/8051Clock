@@ -12,9 +12,8 @@ void ms_delay(unsigned char num)	//8.2 miliseconds
 	// Time is 1/(crystal(mhz)/12(prescaler)) = x uS
 	//Time needed is 65536-x = value for TH & TL
 	
-	// = 1ms
-	TH0 = 0xFC; //D8;
-	TL0 = 0x18; //0xF0;
+	TH0 = 0xFC;	//Upper 8 bits
+	TL0 = 0x18;	//Lower 8 bits
 	
 	TR0 = 1;           	//Starts the timer
 	for(i = 0; i < num; i++)
@@ -25,16 +24,19 @@ void ms_delay(unsigned char num)	//8.2 miliseconds
 	TR0 = 0;						//Turns off the timer
 }
 
-void us_delay()	//100 microsecond
+void us_delay(unsigned char num)	//100 microsecond
 {
-	TMOD = 0x01;	//TMOD becomes mode: 1 (16 bit timer)
+	unsigned char i;
+	TMOD = 0x00;	//TMOD becomes mode: 0 (8 bit timer)
 	
-	TH0 = 0xFF;	//1us hopefully
-	TL0 = 0x9C;
+	TH0 = 0xFF;	// Upper 8 bits
+	TL0 = 0x9C;	//Lower 8 bits
 	
 	TR0 = 1;		//Starts the timer
-	while(TR0 == 0);
-	
-	TF0 = 0;		//Clears overflow tag
+	for(i = 0; i < num; i++)
+	{
+		while(TF0 == 0);
+		TF0 = 0;		//Clears overflow tag
+	}
 	TR0 = 0;		//Turns off timer
 }

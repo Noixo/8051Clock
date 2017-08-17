@@ -14,13 +14,13 @@ sbit D6 = 0xA6;
 sbit D7 = 0xA7;
 */
 
-sbit a = 0xB7;
+sbit a = 0xB7;	//Port 3 bit 7
 
-sbit RS = 0x80;
-sbit E = 0x81;
+sbit RS = 0x80;	//Port 0, bit 0
+sbit E = 0x81;	//Port 0 bit 1
 
-sbit backlight = 0x90;
-sbit lcd_button = 0x91;		
+sbit backlight = 0x90;	//Port 1, bit 0
+sbit lcd_button = 0x91;	//Port 1, bit 1	
 
 //sbit a = 0xB7;
 

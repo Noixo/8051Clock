@@ -2,6 +2,7 @@
 #include "DHT11.h"
 //#include "external.h"
 #include "timing.h"
+#include "i2c.h"
 
 void main()
 {
@@ -10,7 +11,6 @@ void main()
 	
 	init();
 	write_string("Hello, World!\n");
-	
 	
 	while(1)
 	{
