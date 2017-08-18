@@ -8,10 +8,10 @@ void readDHT11()
 	unsigned char count;
 	unsigned char store[5] = {0, 0, 0, 0, 0};
 	
-	ms_delay();	//1 second delay for device to re-test.
+	ms_delay(1000);	//1 second delay for device to re-test.
 	
 	DHT11 = 0;
-	ms_delay(2);	//delay 18ms
+	ms_delay(18);	//delay 18ms
 	DHT11 = 1;
 	
 	us_delay(8);	//Let DHT11 know that pin was pulled high before setting to input.
@@ -25,9 +25,9 @@ void readDHT11()
 			MAXTIMING++;
 			if(MAXTIMING > 128)
 				break;
-			us_delay();
+			us_delay(1);
 		}
-		us_delay();
+		us_delay(8);
 	}
 	MAXTIMING = 0;
 	
@@ -38,7 +38,7 @@ void readDHT11()
 			MAXTIMING++;
 			if(MAXTIMING > 128)
 				break;
-			us_delay();
+			us_delay(1);
 		}
 		
 		MAXTIMING = 0;
@@ -50,7 +50,7 @@ void readDHT11()
 			MAXTIMING++;
 			if(MAXTIMING > 128)
 				break;
-			us_delay();
+			us_delay(1);
 		}
 		
 		
@@ -72,7 +72,7 @@ void readDHT11()
 	}
 	else
 	{
-			ms_delay();
+			//ms_delay();
 			readDHT11();
 	}
 }

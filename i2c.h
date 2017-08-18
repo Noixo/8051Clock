@@ -7,7 +7,7 @@ sbit SCL = 0xB5;	//Bank 3, pin 5
 									//Data line
 
 extern void i2c_start();
-extern void i2c_end();
+extern void i2c_stop();
 extern void i2c_read_id();
 extern void i2c_write(unsigned char word);
 extern unsigned char i2c_read();

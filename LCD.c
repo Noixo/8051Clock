@@ -7,10 +7,10 @@
 void init()
 {
 	//RS = 0;	//command
-	ms_delay();
+	ms_delay(100);	//100 milisecond. Start up delay
 	
 	cmd(0x38);	//Function set (8 bit, 2 line, 5x7)
-	ms_delay(2);	//approx 15 ms
+	ms_delay(15);	//approx 15 ms
 
 	cmd(0x06);	//Entry mode (Left to right, inc)
 
@@ -24,7 +24,7 @@ void cmd(unsigned char cmd)
 	RS = 0;
 	write_byte = cmd;
 	E = 0;
-	us_delay();
+	us_delay(1);	//100 microsecond
 	E = 1;
 }
 
@@ -39,7 +39,7 @@ void write_char(unsigned char letter)
 	RS = 1; //word;
 	write_byte = letter;
 	E = 0;
-	us_delay();
+	us_delay(1);	//100 micro
 	E = 1;
 }
 

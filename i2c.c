@@ -7,7 +7,7 @@ void i2c_start()
 	SDA = 0;
 }
 
-void i2c_end()
+void i2c_stop()
 {
 	SCL = 0;
 	SDA = 0;
@@ -18,7 +18,7 @@ void i2c_end()
 
 void i2c_read_id()
 {
-	unsigned char id, i;
+	unsigned char i;
 	
 	i2c_start();
 	
