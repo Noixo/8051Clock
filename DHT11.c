@@ -4,40 +4,67 @@
 
 void readDHT11()
 {
+	bit state = 0;
 	unsigned char i, MAXTIMING;
 	unsigned char count;
 	unsigned char store[5] = {0, 0, 0, 0, 0};
 	
-	ms_delay(1000);	//1 second delay for device to re-test.
-	
-	DHT11 = 0;
-	ms_delay(18);	//delay 18ms
-	DHT11 = 1;
-	
-	us_delay(8);	//Let DHT11 know that pin was pulled high before setting to input.
-	
-	DHT11 = 0;
-	
-	for(i = 0; i < 2; i++)	//Check for when DHT11 is LOW, confirmation signal.
+	//CHECK IF DEVICE ON
+	while(DHT11 == 0)
 	{
-		while(DHT11 == 0)
+		if(MAXTIMING > 20)
 		{
-			MAXTIMING++;
-			if(MAXTIMING > 128)
-				break;
-			us_delay(1);
+			write_string("DEVICE NOT CONNECTED/ON\n");
+			return;
 		}
-		us_delay(8);
+		MAXTIMING++;
+		us_delay(0);
 	}
+	
 	MAXTIMING = 0;
 	
+	for(i = 0; i < 4; i++)
+		ms_delay(250);	//1 second delay for device to re-test.
+	
+	//SEND INITAL SIGNAL
+	DHT11 = 0;
+	ms_delay(20);	//delay 20ms
+	DHT11 = 1;
+	
+	us_delay(1);	//Let DHT11 know that pin was pulled high before setting to input.
+	
+	DHT11 = 0;
+	
+	//CONFIRMATION SIGNAL CHECKING
+	for(i = 0; i < 2; i++)	//Check for when DHT11 is LOW, confirmation signal.
+	{
+		while(DHT11 == state)
+		{
+			MAXTIMING++;
+			if(MAXTIMING > 160)
+			{
+				write_string("ERROR CONFIRMATION SIGNAL\n");
+				return;
+			}
+			us_delay(1);
+		}
+		state = ~state;
+		//us_delay(8);
+	}
+	
+	MAXTIMING = 0;
+	
+	//READ DATA
 	for(i = 0; i < 40; i++)
 	{
 		while(DHT11 == 0)	//Loop to skip when pin is pulled low.
 		{
 			MAXTIMING++;
 			if(MAXTIMING > 128)
-				break;
+			{
+				write_string("READING DATA LOW\n");
+				return;
+			}
 			us_delay(1);
 		}
 		
@@ -49,7 +76,10 @@ void readDHT11()
 			
 			MAXTIMING++;
 			if(MAXTIMING > 128)
-				break;
+			{
+				write_string("READING DATA HIGH\n");
+				return;
+			}
 			us_delay(1);
 		}
 		

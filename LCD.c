@@ -7,10 +7,10 @@
 void init()
 {
 	//RS = 0;	//command
-	ms_delay(100);	//100 milisecond. Start up delay
+	ms_delay(50);	//100 milisecond. Start up delay
 	
 	cmd(0x38);	//Function set (8 bit, 2 line, 5x7)
-	ms_delay(15);	//approx 15 ms
+	ms_delay(5);
 
 	cmd(0x06);	//Entry mode (Left to right, inc)
 
@@ -24,22 +24,16 @@ void cmd(unsigned char cmd)
 	RS = 0;
 	write_byte = cmd;
 	E = 0;
-	us_delay(1);	//100 microsecond
+	us_delay(100);	//100 microsecond
 	E = 1;
 }
 
 void write_char(unsigned char letter)
 {
-	/* if(letter > 0x7F)	//127
-		cmd(0x39);	//8 bit, 2 line, 5x10
-	else
-		cmd(0x38);	*/
-	//letter += '0';	//Convert all chars to ASCII.
-	
-	RS = 1; //word;
+	RS = 1; //word
 	write_byte = letter;
 	E = 0;
-	us_delay(1);	//100 micro
+	us_delay(100);	//100 micro
 	E = 1;
 }
 
@@ -50,17 +44,11 @@ void backlight_toggle()
 
 void write_string(unsigned char *string)//[])
 {
-	//unsigned char string[8];
 	unsigned char i = 0;
-	
-	//if(array == (int) array)
-	//iota(array, string, 10);
-	//sprintf(string, "%u", array);	//Convert everything to string
-	
-	//RS = 1;	//ensure we are writing string
+
 	for(i = 0; string[i] != '\0'; i++)
 	{
-		if(string[i] == '\n')//0x5C 0x6E)	// 0x5c is '\', 0x6E is 'n'
+		if(string[i] == '\n')
 		{
 			new_line();
 		}

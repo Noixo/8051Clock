@@ -4,21 +4,22 @@
 #include "timing.h"
 #include "i2c.h"
 
+// us_delay(1) is 80us
+
 void main()
 {
 	unsigned int i = 0;
 	backlight = 0;
-	
+
 	init();
 	write_string("Hello, World!\n");
 	
 	while(1)
 	{
-		a = 1;
-		ms_delay(1);
-		a = 0;
-		ms_delay(10);
-		
+		//us_delay(0);
+		//a = 1;
+		//us_delay(0);
+		//a = 0;
 		//readDHT11();
 		//write_string("\n");
 		//write_char('1');

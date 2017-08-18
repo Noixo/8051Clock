@@ -17,10 +17,13 @@ void photo_resistor()
 
 void lcd_button_press()
 {
+	unsigned char i;
+	
 	if (lcd_button == 0 && comparator == 1)
 	{
 		backlight == 1;
-		ms_delay(5000);	//5 second delay
+		for(i = 0; i < 25; i++)
+			ms_delay(200);	//5 second delay
 		backlight == 0;
 	}
 }
