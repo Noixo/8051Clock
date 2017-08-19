@@ -4,7 +4,7 @@
 sbit comparator = 0x93;
 sbit next = 0x94;
 
-extern void photo_resistor(void);
+extern void photoresistor(void);
 extern void lcd_button_press(void);
 extern void next_screen(void);
 

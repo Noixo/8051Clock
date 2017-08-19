@@ -24,7 +24,7 @@ void cmd(unsigned char cmd)
 	RS = 0;
 	write_byte = cmd;
 	E = 0;
-	us_delay(100);	//100 microsecond
+	ms_delay(2);//us_delay(200);	//100 microsecond
 	E = 1;
 }
 
@@ -33,7 +33,7 @@ void write_char(unsigned char letter)
 	RS = 1; //word
 	write_byte = letter;
 	E = 0;
-	us_delay(100);	//100 micro
+	ms_delay(2);//us_delay(200);	//100 micro
 	E = 1;
 }
 

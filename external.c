@@ -3,7 +3,7 @@
 #include "timing.h"
 //photoresistor
 
-void photo_resistor()
+void photoresistor()
 {
 	if (comparator == 0)	//If night time
 	{

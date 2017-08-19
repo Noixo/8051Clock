@@ -1,3 +1,4 @@
+//#include <intrins.h>
 #include "timing.h"
 
 void ms_delay(unsigned char num)	//1 miliseconds
@@ -20,19 +21,22 @@ void ms_delay(unsigned char num)	//1 miliseconds
 	TR0 = 0;						//Turns off the timer
 }
 
-void us_delay(unsigned char num)	//10 microsecond
+void us_delay(unsigned char num)	//30 microsecond
 {
-	unsigned char i;
+	//unsigned char i;
+	
+	//for(i = 0; i < num; i++)
+		//_nop_();
 	TMOD = 0x01; //TMOD = 0x00;	//TMOD becomes mode: 0 (8 bit timer)
 	
-	for(i = 0; i < num; i++)
-	{
+	//for(i = 0; i < num; i++)
+	//{
 		TH0 = 0xFF;	// Upper 8 bits
-		TL0 = 0xCE;	//Lower 8 bits
+		TL0 = 0xDF;	//Lower 8 bits
 		TR0 = 1;		//Starts the timer
 
 		while(TF0 == 0);
-		TR0 = 0;		//Turns off timer
+	TR0 = 0;		//Turns off timer
 		TF0 = 0;		//Clears overflow tag
-	}
+	//}
 }

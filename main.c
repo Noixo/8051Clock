@@ -4,18 +4,34 @@
 #include "timing.h"
 #include "i2c.h"
 
-// us_delay(1) is 80us
+// us_delay(1) is 23us
+// us_delay(0) is ~17us
 
 void main()
 {
-	unsigned int i = 0;
+	//unsigned char i[5] = {0xFF,0x00,0x38,0x0F,0x02};
+	//char j = 7;
 	backlight = 0;
 
 	init();
-	write_string("Hello, World!\n");
+	//write_string("Hello, World!\n");
 	
 	while(1)
 	{
+		//write_string();
+		//i[1] = ( i[1]<<= 1) | (0x01);
+		//write_int(i[1]);
+		//write_int(30);
+		//i[1] <<= 1;
+		//i[1] <<= 1;
+		//bin_to_int(i);
+		//write_int(255);
+		//a[i/8] <<= 1;
+		//i++;
+		//a[i/8] |= 1;
+		
+		readDHT11();
+		
 		//us_delay(0);
 		//a = 1;
 		//us_delay(0);
@@ -33,6 +49,7 @@ void main()
 	* i2c bit banging
 		-	BMP280
 		- DS3231
+	* Add interupt to break DHT11 if stuck for too long
 */
 
 /*

@@ -19,7 +19,7 @@ sbit a = 0xB7;	//Port 3 bit 7
 sbit RS = 0x80;	//Port 0, bit 0
 sbit E = 0x81;	//Port 0 bit 1
 
-sbit backlight = 0x90;	//Port 1, bit 0
+sbit backlight = 0xB2;	//Port 3, bit 2
 sbit lcd_button = 0x91;	//Port 1, bit 1	
 
 //sbit a = 0xB7;
@@ -65,5 +65,5 @@ extern void write_string(unsigned char string[]);
 extern void new_line(void);
 extern void int_to_ascii(unsigned char decimal, unsigned char size);
 extern void write_int(unsigned char value);
-extern void reverse_array(unsigned char array[], char i); 
+extern void reverse_array(unsigned char array[], char i);
 #endif
