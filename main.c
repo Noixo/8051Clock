@@ -9,8 +9,6 @@
 
 void main()
 {
-	//unsigned char i[5] = {0xFF,0x00,0x38,0x0F,0x02};
-	//char j = 7;
 	backlight = 0;
 
 	init();
@@ -18,27 +16,7 @@ void main()
 	
 	while(1)
 	{
-		//write_string();
-		//i[1] = ( i[1]<<= 1) | (0x01);
-		//write_int(i[1]);
-		//write_int(30);
-		//i[1] <<= 1;
-		//i[1] <<= 1;
-		//bin_to_int(i);
-		//write_int(255);
-		//a[i/8] <<= 1;
-		//i++;
-		//a[i/8] |= 1;
-		
 		readDHT11();
-		
-		//us_delay(0);
-		//a = 1;
-		//us_delay(0);
-		//a = 0;
-		//readDHT11();
-		//write_string("\n");
-		//write_char('1');
 	}
 }
 

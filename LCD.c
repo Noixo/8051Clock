@@ -2,7 +2,7 @@
 #include "LCD.h"
 #include "timing.h"
 
-//current_line = 0;
+current_line = 0;
 
 void init()
 {
