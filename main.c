@@ -2,18 +2,25 @@
 #include "DHT11.h"
 //#include "external.h"
 #include "timing.h"
-#include "i2c.h"
+//#include "i2c.h"
 
 // us_delay(1) is 23us
 // us_delay(0) is ~17us
 
 void main()
 {
+	//TCON = 0x01;
+	
+	
 	backlight = 0;
 
 	init();
+	//i2c_setup();
+	
+	//i2c_start();
 	//write_string("Hello, World!\n");
 	
+	//i2c_read_id();
 	while(1)
 	{
 		readDHT11();

@@ -2,7 +2,7 @@
 #include "LCD.h"
 #include "timing.h"
 
-current_line = 0;
+//current_line = 0;
 
 void init()
 {
@@ -14,7 +14,7 @@ void init()
 
 	cmd(0x06);	//Entry mode (Left to right, inc)
 
-	cmd(0x0F);	//display (Display on, cursor blinking)
+	cmd(0x0E);	//display (Display on, cursor blinking)
 
 	cmd(LCD_CLEAR);	//CLEAR
 }
