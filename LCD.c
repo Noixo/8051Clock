@@ -36,11 +36,12 @@ void write_char(unsigned char letter)
 	ms_delay(2);//us_delay(200);	//100 micro
 	E = 1;
 }
-
+/*
 void backlight_toggle()
 {
 	backlight = ~backlight;
-}	
+}
+*/
 
 void write_string(unsigned char *string)//[])
 {

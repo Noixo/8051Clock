@@ -31,9 +31,9 @@ void us_delay(unsigned char num)	//30 microsecond
 	
 	//for(i = 0; i < num; i++)
 	//{
-		TH0 = 0xFF;	// Upper 8 bits
-		TL0 = 0xF1;	//Lower 8 bits
-		TR0 = 1;		//Starts the timer
+	TH0 = 0xFF;	// Upper 8 bits
+	TL0 = 0xF1;	//Lower 8 bits
+	TR0 = 1;		//Starts the timer
 
 	while(TF0 == 0);
 	TR0 = 0;		//Turns off timer

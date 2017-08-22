@@ -1,16 +1,17 @@
 #include "LCD.h"
 #include "DHT11.h"
-//#include "external.h"
+#include "external.h"
 #include "timing.h"
-//#include "i2c.h"
+#include "i2c.h"
 
 // us_delay(1) is 23us
 // us_delay(0) is ~17us
 
 void main()
 {
-	//TCON = 0x01;
-	
+	TCON = 0x01;
+	IP = 0x01;	//Highest priority
+	IE = 0x81;	//Turns on external interrupt 0
 	
 	backlight = 0;
 
@@ -24,12 +25,14 @@ void main()
 	while(1)
 	{
 		readDHT11();
+		check_night();
 	}
 }
 
 /*
 	--------------TODO---------------
 	* Add interupt
+		- Setup counter to go back to main during backlight lighting
   * Setup function to setup lcd e.g. 16x2, 40x4...
 	* i2c bit banging
 		-	BMP280
