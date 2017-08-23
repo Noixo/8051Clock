@@ -14,7 +14,7 @@ void init()
 
 	cmd(0x06);	//Entry mode (Left to right, inc)
 
-	cmd(0x0E);	//display (Display on, cursor blinking)
+	cmd(0x0E);	//display (Display on, cursor on)
 
 	cmd(LCD_CLEAR);	//CLEAR
 }

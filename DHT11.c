@@ -7,10 +7,10 @@ void readDHT11()
 	unsigned char i;
 	unsigned char store[5];
 	
-	//DHT11 = 1;	//Reset to high
-	
 	for(i = 0; i < 8; i++)
 		ms_delay(250);	//2 second delay for device to re-test.
+	
+	//START TIMER TO PROTECT AGAINST STUCK.
 	
 	//SEND INITAL SIGNAL
 	DHT11 = 0;

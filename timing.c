@@ -40,3 +40,8 @@ void us_delay(unsigned char num)	//30 microsecond
 	TF0 = 0;		//Clears overflow tag
 	//}
 }
+
+void timer2(void)
+{
+	//TMOD
+}

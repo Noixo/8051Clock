@@ -4,18 +4,24 @@
 #include "timing.h"
 #include "i2c.h"
 
-// us_delay(1) is 23us
-// us_delay(0) is ~17us
-
 void main()
 {
-	TCON = 0x01;
-	IP = 0x01;	//Highest priority
-	IE = 0x81;	//Turns on external interrupt 0
+	//SETUP
 	
-	backlight = 0;
+	//INTERRUPTS
+		//EXT0
+	IT0 = 1;
+	EX0 = 1;
+	EA = 1;
+	
+	
+	//--------------
+	
+	
+	//backlight = 0;
 
 	init();
+	
 	//i2c_setup();
 	
 	//i2c_start();
@@ -31,8 +37,6 @@ void main()
 
 /*
 	--------------TODO---------------
-	* Add interupt
-		- Setup counter to go back to main during backlight lighting
   * Setup function to setup lcd e.g. 16x2, 40x4...
 	* i2c bit banging
 		-	BMP280

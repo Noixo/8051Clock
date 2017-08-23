@@ -10,4 +10,5 @@ sbit TF0 = 0x8D;
 
 extern void ms_delay(unsigned char num);
 extern void us_delay(unsigned char num);
+extern void timer2(void);
 #endif
