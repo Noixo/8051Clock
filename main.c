@@ -9,29 +9,26 @@ void main()
 	//SETUP
 	
 	//INTERRUPTS
-		//EXT0
+		//EXT0 for backlight
 	IT0 = 1;
 	EX0 = 1;
 	EA = 1;
 	
-	
+	//EXT1 for next screen
+	IT1 = 1;
+	EX1 = 1;
 	//--------------
 	
-	
-	//backlight = 0;
+	backlight = 0;	//Turn on display
 
 	init();
 	
-	//i2c_setup();
-	
-	//i2c_start();
 	//write_string("Hello, World!\n");
 	
-	//i2c_read_id();
 	while(1)
 	{
-		readDHT11();
 		check_night();
+		readDHT11();
 	}
 }
 

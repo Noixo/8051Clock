@@ -1,4 +1,3 @@
-//#include <intrins.h>
 #include "timing.h"
 
 void ms_delay(unsigned char num)	//1 miliseconds
@@ -41,7 +40,7 @@ void us_delay(unsigned char num)	//30 microsecond
 	//}
 }
 
-void timer2(void)
+void timer2(void)	//For fixing DHT11 freezes
 {
 	//TMOD
 }

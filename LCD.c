@@ -1,4 +1,3 @@
-//#include <stdio.h>
 #include "LCD.h"
 #include "timing.h"
 
@@ -7,7 +6,7 @@
 void init()
 {
 	//RS = 0;	//command
-	ms_delay(50);	//100 milisecond. Start up delay
+	ms_delay(50);	//Start up delay
 	
 	cmd(0x38);	//Function set (8 bit, 2 line, 5x7)
 	ms_delay(5);
@@ -45,7 +44,7 @@ void backlight_toggle()
 
 void write_string(unsigned char *string)//[])
 {
-	unsigned char i = 0;
+	unsigned char i;
 
 	for(i = 0; string[i] != '\0'; i++)
 	{
@@ -63,7 +62,7 @@ void write_string(unsigned char *string)//[])
 void write_int(unsigned char value)	//Rewrite later
 {
 	char i;
-	unsigned char temp = value;
+	//unsigned char temp = value;
 	unsigned char array[3];
 	
 	for(i = 0; i < 3; i++)
@@ -99,7 +98,7 @@ void new_line()
 {
 	if(!current_line)
 	{
-		cmd(LCD_LINE_2);//^ 0xC0);
+		cmd(LCD_LINE_2);
 	}
 	else
 	{

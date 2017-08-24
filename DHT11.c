@@ -10,7 +10,8 @@ void readDHT11()
 	for(i = 0; i < 8; i++)
 		ms_delay(250);	//2 second delay for device to re-test.
 	
-	//START TIMER TO PROTECT AGAINST STUCK.
+	//START TIMER TO PROTECT AGAINST GETTING STUCK.
+	timer2();
 	
 	//SEND INITAL SIGNAL
 	DHT11 = 0;
@@ -34,11 +35,11 @@ void readDHT11()
 		if(DHT11 == 1)//DHT11 == 1)	//if 1
 		{
 			store[i/8] |= 1;	//Switch least sig bit to 1
-			while(DHT11 == 1);
+			while(DHT11 == 1);	//TO sync back to DHT11
 		}
 	}
 	
-	if(store[0] + store[2] == store[4])
+	if(store[0] + store[2] == store[4])	//Validate the recieved values checksum
 	{
 		//write_string("H: ");
 		write_int(store[0]);
@@ -55,5 +56,5 @@ void readDHT11()
 	{
 		write_string("BAD CHECK");
 	}
-	new_line();
+	//new_line();
 }
