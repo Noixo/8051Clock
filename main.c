@@ -20,15 +20,24 @@ void main()
 	//--------------
 	
 	backlight = 0;	//Turn on display
-
+	
+	//LCD init
 	init();
 	
+	//I2C init
+	i2c_setup();
 	//write_string("Hello, World!\n");
 	
 	while(1)
 	{
-		check_night();
-		readDHT11();
+		//check_night();
+		//readDHT11();
+		
+		i2c_start();
+		i2c_read_id();
+		i2c_stop();
+		
+		ms_delay(255);
 	}
 }
 
