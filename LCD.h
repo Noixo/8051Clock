@@ -16,8 +16,8 @@ sbit D7 = 0xA7;
 
 sbit a = 0xB7;	//Port 3 bit 7
 
-sbit RS = 0x80;	//Port 0, bit 0
-sbit E = 0x81;	//Port 0 bit 1
+sbit RS = 0x93;	//Port 0, bit 0
+sbit E = 0x94;	//Port 0 bit 1
 
 //sbit a = 0xB7;
 

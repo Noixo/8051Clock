@@ -6,6 +6,7 @@
 
 void main()
 {
+	//unsigned char a;
 	//SETUP
 	
 	//INTERRUPTS
@@ -26,18 +27,27 @@ void main()
 	
 	//I2C init
 	i2c_setup();
-	//write_string("Hello, World!\n");
+	write_string("Hello, World!\n");
 	
+	
+	//rw low for write and high for read
 	while(1)
 	{
 		//check_night();
 		//readDHT11();
-		
-		i2c_start();
 		i2c_read_id();
+		/*
+		i2c_start();
+		i2c_device_id(0x68, 0);
+		//us_delay(1);
 		i2c_stop();
 		
 		ms_delay(255);
+		ms_delay(255);
+		ms_delay(255);
+		ms_delay(255);
+		cmd(LCD_CLEAR);
+		*/
 	}
 }
 
@@ -48,6 +58,7 @@ void main()
 		-	BMP280
 		- DS3231
 	* Add interupt to break DHT11 if stuck for too long
+	* fix i2c methods read and write
 */
 
 /*
