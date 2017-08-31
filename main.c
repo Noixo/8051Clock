@@ -3,10 +3,12 @@
 #include "external.h"
 #include "timing.h"
 #include "i2c.h"
+#include "ds3231.h"
 
 void main()
 {
-	//unsigned char a;
+	unsigned char a[7];
+	char ack, i;
 	//SETUP
 	
 	//INTERRUPTS
@@ -27,7 +29,7 @@ void main()
 	
 	//I2C init
 	i2c_setup();
-	write_string("Hello, World!\n");
+	//write_string("Hello, World!\n");
 	
 	
 	//rw low for write and high for read
@@ -35,19 +37,66 @@ void main()
 	{
 		//check_night();
 		//readDHT11();
-		i2c_read_id();
-		/*
+		//i2c_read_id();
+		
 		i2c_start();
-		i2c_device_id(0x68, 0);
-		//us_delay(1);
+		//write to 0x68
+		ack = i2c_device_id(0x68, 0x00);
+		i2c_write(0);
+		
+		i2c_start();
+		
+		ack = i2c_device_id(0x68, 0x01);
+		
+		//i2c_write(3);
+		a[0] = i2c_read();
+		
+		//NEW---------------------------
+		i2c_start();
+		//write to 0x68
+		ack = i2c_device_id(0x68, 0x00);
+		i2c_write(1);
+		
+		i2c_start();
+		
+		ack = i2c_device_id(0x68, 0x01);
+		
+		a[1] = i2c_read();
+		
+		
+		//NEW---------------------------
+		i2c_start();
+		//write to 0x68
+		ack = i2c_device_id(0x68, 0x00);
+		i2c_write(2);
+		
+		i2c_start();
+		
+		ack = i2c_device_id(0x68, 0x01);
+		
+		a[2] = i2c_read();
+		
 		i2c_stop();
+
+		a[0] = (a[0] & 0x0F) + (((a[0] & 0x70) >> 4) * 10);
+		a[1] = (a[1] & 0x0F) + (((a[1] & 0x70) >> 4) * 10);
+		a[2] = (a[2] & 0x01) + (((a[2] & 0x10) >> 4) * 10);
+		a[2] += (a[2] & 0x02) + (((a[2] & 0x20) >> 4) * 20);
+		
+		write_int(a[2]);
+		write_char(':');
+		write_int(a[1]);
+		write_char(':');
+		write_int(a[0]);
 		
 		ms_delay(255);
 		ms_delay(255);
 		ms_delay(255);
 		ms_delay(255);
+		ms_delay(255);
+		ms_delay(255);
+		ms_delay(255);
 		cmd(LCD_CLEAR);
-		*/
 	}
 }
 
@@ -58,7 +107,7 @@ void main()
 		-	BMP280
 		- DS3231
 	* Add interupt to break DHT11 if stuck for too long
-	* fix i2c methods read and write
+	* 
 */
 
 /*

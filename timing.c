@@ -22,22 +22,22 @@ void ms_delay(unsigned char num)	//1 miliseconds
 
 void us_delay(unsigned char num)	//30 microsecond
 {
-	//unsigned char i;
+	unsigned char i;
 	
 	//for(i = 0; i < num; i++)
 		//_nop_();
 	TMOD = 0x01; //TMOD = 0x00;	//TMOD becomes mode: 0 (8 bit timer)
 	
-	//for(i = 0; i < num; i++)
-	//{
-	TH0 = 0xFF;	// Upper 8 bits
-	TL0 = 0xF1;	//Lower 8 bits
-	TR0 = 1;		//Starts the timer
+	for(i = 0; i < num; i++)
+	{
+		TH0 = 0xFF;	// Upper 8 bits
+		TL0 = 0xFF;	//Lower 8 bits
+		TR0 = 1;		//Starts the timer
 
-	while(TF0 == 0);
-	TR0 = 0;		//Turns off timer
-	TF0 = 0;		//Clears overflow tag
-	//}
+		while(TF0 == 0);
+		TR0 = 0;		//Turns off timer
+		TF0 = 0;		//Clears overflow tag
+	}
 }
 
 void timer2(void)	//For fixing DHT11 freezes

@@ -370,6 +370,31 @@
               <FilePath>.\STARTUP.A51</FilePath>
             </File>
             <File>
+              <FileName>Documentation.txt</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\Documentation.txt</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>header</GroupName>
+          <Files>
+            <File>
+              <FileName>DHT11.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\DHT11.h</FilePath>
+            </File>
+            <File>
+              <FileName>ds3231.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\ds3231.h</FilePath>
+            </File>
+          </Files>
+        </Group>
+        <Group>
+          <GroupName>source</GroupName>
+          <Files>
+            <File>
               <FileName>main.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\main.c</FilePath>
@@ -385,11 +410,6 @@
               <FilePath>.\DHT11.c</FilePath>
             </File>
             <File>
-              <FileName>DHT11.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\DHT11.h</FilePath>
-            </File>
-            <File>
               <FileName>external.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\external.c</FilePath>
@@ -400,14 +420,14 @@
               <FilePath>.\timing.c</FilePath>
             </File>
             <File>
-              <FileName>Documentation.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Documentation.txt</FilePath>
-            </File>
-            <File>
               <FileName>i2c.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\i2c.c</FilePath>
+            </File>
+            <File>
+              <FileName>ds3231.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ds3231.c</FilePath>
             </File>
           </Files>
         </Group>
