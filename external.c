@@ -2,6 +2,20 @@
 #include "timing.h"
 #include "LCD.h"
 
+void external_setup()
+{
+	//EXT0 for backlight
+	IT0 = 1;
+	EX0 = 1;
+	EA = 1;
+	
+	//EXT1 for next screen
+	IT1 = 1;
+	EX1 = 1;
+	
+	backlight = 0;	//Turn on display
+}
+
 void check_night()
 {
 	if (comparator == 0)	//If night time

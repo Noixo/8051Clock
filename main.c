@@ -7,77 +7,34 @@
 
 void main()
 {
-	unsigned char a[7];
-	char ack, i;
+	//struct time getTime;
 	//SETUP
 	
 	//INTERRUPTS
-		//EXT0 for backlight
-	IT0 = 1;
-	EX0 = 1;
-	EA = 1;
-	
-	//EXT1 for next screen
-	IT1 = 1;
-	EX1 = 1;
-	//--------------
-	
-	backlight = 0;	//Turn on display
+	external_setup();
 	
 	//LCD init
 	init();
 	
 	//I2C init
 	i2c_setup();
+
+//	struct time getTime;
 	//write_string("Hello, World!\n");
 	
 	
 	//rw low for write and high for read
 	while(1)
 	{
+		test();
+		write_int(setTime.seconds);
+		//write_int(getTime.minutes);
+		//write_int(getTime.hours);
+		
 		//check_night();
 		//readDHT11();
 		//i2c_read_id();
-		
-		i2c_start();
-		//write to 0x68
-		ack = i2c_device_id(0x68, 0x00);
-		i2c_write(0);
-		
-		i2c_start();
-		
-		ack = i2c_device_id(0x68, 0x01);
-		
-		//i2c_write(3);
-		a[0] = i2c_read();
-		
-		//NEW---------------------------
-		i2c_start();
-		//write to 0x68
-		ack = i2c_device_id(0x68, 0x00);
-		i2c_write(1);
-		
-		i2c_start();
-		
-		ack = i2c_device_id(0x68, 0x01);
-		
-		a[1] = i2c_read();
-		
-		
-		//NEW---------------------------
-		i2c_start();
-		//write to 0x68
-		ack = i2c_device_id(0x68, 0x00);
-		i2c_write(2);
-		
-		i2c_start();
-		
-		ack = i2c_device_id(0x68, 0x01);
-		
-		a[2] = i2c_read();
-		
-		i2c_stop();
-
+		/*
 		a[0] = (a[0] & 0x0F) + (((a[0] & 0x70) >> 4) * 10);
 		a[1] = (a[1] & 0x0F) + (((a[1] & 0x70) >> 4) * 10);
 		a[2] = (a[2] & 0x01) + (((a[2] & 0x10) >> 4) * 10);
@@ -88,7 +45,7 @@ void main()
 		write_int(a[1]);
 		write_char(':');
 		write_int(a[0]);
-		
+		*/
 		ms_delay(255);
 		ms_delay(255);
 		ms_delay(255);
@@ -96,7 +53,7 @@ void main()
 		ms_delay(255);
 		ms_delay(255);
 		ms_delay(255);
-		cmd(LCD_CLEAR);
+		cmd(LCD_HOME);
 	}
 }
 
