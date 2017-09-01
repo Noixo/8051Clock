@@ -7,6 +7,9 @@
 
 void main()
 {
+	//char ack;
+	//unsigned char arr[3];
+	//struct time getTime();
 	//struct time getTime;
 	//SETUP
 	
@@ -22,12 +25,48 @@ void main()
 //	struct time getTime;
 	//write_string("Hello, World!\n");
 	
-	
 	//rw low for write and high for read
 	while(1)
 	{
-		test();
-		write_int(setTime.seconds);
+		//getTime = &rtc_get_time();
+		
+		write_int(getTime->hours);
+		write_char(':');
+		write_int(getTime->minutes);
+		write_char(':');
+		write_int(getTime->seconds);
+		/*
+		i2c_start();
+		
+		ack = i2c_device_id(0x68, 0);
+		
+		//i2c_start();
+		
+		i2c_write(0);
+		
+		i2c_stop();
+		
+		i2c_start();
+		ack = i2c_device_id(0x68, 1);
+		
+		arr[0] = i2c_read(0);
+		arr[1] = i2c_read(0);
+		arr[2] = i2c_read(1);
+	
+		i2c_stop();
+		
+		arr[0] = (arr[0] & 0x0F) + (((arr[0] & 0x70) >> 4) * 10);
+		arr[1] = (arr[1] & 0x0F) + (((arr[1] & 0x70) >> 4) * 10);
+		//arr[2] = ((arr[2] / (arr[2] >> 4)) + (arr[2] % a[2] >> 4));
+		
+		write_int(arr[2]);
+		write_char(':');
+		write_int(arr[1]);
+		write_char(':');
+		write_int(arr[0]);
+		*/
+		//test();
+		//write_int(setTime.seconds);
 		//write_int(getTime.minutes);
 		//write_int(getTime.hours);
 		

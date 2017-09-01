@@ -4,7 +4,7 @@
 
 void test()
 {
-	getTime.seconds = 10;
+	//getTime.seconds = 10;
 	
 	//write_int(&getTime.seconds);
 }
@@ -17,42 +17,45 @@ unsigned char rtcDecToBcd(unsigned char convert)
 	return 0;
 }
 
-unsigned char rtcbcdToDec(unsigned char convert)
+unsigned char rtcBcdToDec(unsigned char convert)
 {
-	return 0;
+	return 0;//(convert / (convert >> 4)) + (convert % (convert >> 4));
 }
 
-void rtc_get_time()
+struct time rtc_get_time()
 {
+	//getTime;
+	//char ack;
 	struct time getTime;
 	
+	//getTime.seconds = i2c_read(0);
 	i2c_start();
 	
 	i2c_device_id(0x68, 0);
 	i2c_write(0);
 	i2c_start();
 	i2c_device_id(0x68, 1);
-	(&getTime) -> seconds = 10;//i2c_read();
-	//getTime.seconds = i2c_read();
+	//getTime.seconds = i2c_read(0);
 	
 	i2c_start();
 	i2c_device_id(0x68, 0);
 	i2c_write(1);
 	i2c_start();
 	i2c_device_id(0x68, 1);
-	getTime.minutes = i2c_read();
+	//getTime.minutes = i2c_read(0);
 	
 	i2c_start();
 	i2c_device_id(0x68, 0);
 	i2c_write(2);
 	i2c_start();
 	i2c_device_id(0x68, 1);
-	getTime.hours = rtcBcdToDec(i2c_read());
+	//getTime.hours = rtcBcdToDec(i2c_read(0));
 	
 	i2c_stop();
-	
 	//multibyte request for data
 	//between 0 and 7
+	
+	return getTime;
 }
 
 void rtc_set_time()

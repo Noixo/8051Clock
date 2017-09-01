@@ -3,7 +3,7 @@
 
 sfr write_byte = 0xA0;
 
-
+/*
 sbit D0 = 0xA0;
 sbit D1 = 0xA1;
 sbit D2 = 0xA2;
@@ -12,6 +12,7 @@ sbit D4 = 0xA4;
 sbit D5 = 0xA5;
 sbit D6 = 0xA6;
 sbit D7 = 0xA7;
+*/
 
 
 sbit a = 0xB7;	//Port 3 bit 7
@@ -22,10 +23,13 @@ sbit E = 0x94;	//Port 0 bit 1
 //sbit a = 0xB7;
 
 //---------------
+
 static unsigned char LCD_DEGREE = 0xDF;
 static unsigned char LCD_NEG_ONE = 0xE9;
+/*
 static unsigned char LCD_ARROW_RIGHT = 0x7E;
 static unsigned char LCD_ARROW_LEFT = 0x7F;
+*/
 
 static char LCD_CLEAR = 0x01;
 static char LCD_HOME = 0x02;

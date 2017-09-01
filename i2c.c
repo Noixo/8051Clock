@@ -76,7 +76,7 @@ char i2c_device_id(char id, char rw)
 	return ACK;
 }
 
-unsigned char i2c_read()
+unsigned char i2c_read(char last_byte)
 {
 	char i, byte = 0;
 	
@@ -113,9 +113,9 @@ unsigned char i2c_read()
 	SCL = 1;
 	
 	//acknowledge data transfer/indicate last byte
-	//if(last_byte == 1)
-		//SDA = 1;
-	//else
+	if(last_byte == 1)
+		SDA = 1;
+	else
 		SDA = 0;
 	
 	us_delay(1);
