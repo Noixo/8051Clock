@@ -57,6 +57,7 @@ char i2c_device_id(char id, char rw)
 	}
 	
 	//pulses the read/write bit
+	//rw low for write and high for read
 	SDA = rw;
 	//pulse the clock
 	i2c_clock();
@@ -80,8 +81,6 @@ unsigned char i2c_read(char last_byte)
 {
 	char i, byte = 0;
 	
-//	SDA = 1;
-
 	//7 bits because read/write bit not included
 	for(i = 0; i < 8; ++i)
 	{	
@@ -93,10 +92,9 @@ unsigned char i2c_read(char last_byte)
 		
 		us_delay(1);
 		
-		byte |= SDA;
 		//OR byte bit with SDA
+		byte |= SDA;
 		//i2c_clock();
-		
 		SCL = 0;
 	
 		//us_delay(1);

@@ -1,9 +1,7 @@
 #include "LCD.h"
 #include "timing.h"
 
-//current_line = 0;
-
-void init()
+void lcd_init()
 {
 	//RS = 0;	//command
 	ms_delay(50);	//Start up delay
@@ -42,7 +40,7 @@ void backlight_toggle()
 }
 */
 
-void write_string(unsigned char *string)//[])
+void write_string(unsigned char* string)//[])
 {
 	unsigned char i;
 
@@ -62,11 +60,11 @@ void write_string(unsigned char *string)//[])
 void write_int(unsigned char value)	//Rewrite later
 {
 	char i;
-	//unsigned char temp = value;
 	unsigned char array[3];
 	
 	for(i = 0; i < 3; i++)
 	{
+		//puts value to array after being split by 1 character and converted to ascii.
 		array[i] = value % 10 + '0';
 		if(value / 10 == 0 && i < 3)
 		{

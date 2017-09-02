@@ -1,17 +1,17 @@
 #include "DHT11.h"
 #include "timing.h"
-#include "LCD.h"
+//#include "LCD.h"
 
-void readDHT11()
+char* readDHT11()
 {
 	unsigned char i;
-	unsigned char store[5];
+	unsigned char store[5], arr[2];
 	
 	for(i = 0; i < 8; i++)
 		ms_delay(250);	//2 second delay for device to re-test.
 	
 	//START TIMER TO PROTECT AGAINST GETTING STUCK.
-	timer2();
+	//timer2();
 	
 	//SEND INITAL SIGNAL
 	DHT11 = 0;
@@ -32,7 +32,7 @@ void readDHT11()
 		
 		store[i/8] <<= 1;	//Push value to the right by 1 bit
 		
-		if(DHT11 == 1)//DHT11 == 1)	//if 1
+		if(DHT11 == 1)
 		{
 			store[i/8] |= 1;	//Switch least sig bit to 1
 			while(DHT11 == 1);	//TO sync back to DHT11
@@ -41,20 +41,23 @@ void readDHT11()
 	
 	if(store[0] + store[2] == store[4])	//Validate the recieved values checksum
 	{
-		//write_string("H: ");
+		arr[0] = store[0];
+		arr[1] = store[2];
+		/*
 		write_int(store[0]);
 		write_char('%');
 		
 		write_char(' ');
 	 	
-		//write_string("C: ");
 		write_int(store[2]);
 		write_char(LCD_DEGREE);
 		write_char('C');
+		*/
+		return arr;
 	}
 	else
 	{
-		write_string("BAD CHECK");
+		//FIX
+		return -1;
 	}
-	//new_line();
 }

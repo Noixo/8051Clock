@@ -1,6 +1,5 @@
 #include "ds3231.h"
 #include "i2c.h"
-#include "LCD.h"
 
 void test()
 {
@@ -11,51 +10,59 @@ void test()
 
 unsigned char rtcDecToBcd(unsigned char convert)
 {
-	//convert seconds, minutes, hours
-	//date, month, years
-	
-	return 0;
+	return ((convert / 10 * 16) + (convert % 10));
 }
 
 unsigned char rtcBcdToDec(unsigned char convert)
 {
-	return 0;//(convert / (convert >> 4)) + (convert % (convert >> 4));
+	return ((convert / 16 * 10) + (convert % 16));
 }
 
-struct time rtc_get_time()
+/*
+unsigned char* rtc_temp()	//rewrite
 {
-	//getTime;
-	//char ack;
-	struct time getTime;
-	
-	//getTime.seconds = i2c_read(0);
-	i2c_start();
-	
-	i2c_device_id(0x68, 0);
-	i2c_write(0);
-	i2c_start();
-	i2c_device_id(0x68, 1);
-	//getTime.seconds = i2c_read(0);
+	unsigned char temp[1];
 	
 	i2c_start();
 	i2c_device_id(0x68, 0);
-	i2c_write(1);
-	i2c_start();
-	i2c_device_id(0x68, 1);
-	//getTime.minutes = i2c_read(0);
-	
-	i2c_start();
-	i2c_device_id(0x68, 0);
-	i2c_write(2);
-	i2c_start();
-	i2c_device_id(0x68, 1);
-	//getTime.hours = rtcBcdToDec(i2c_read(0));
-	
+	i2c_write(0x11);
 	i2c_stop();
-	//multibyte request for data
-	//between 0 and 7
 	
-	return getTime;
+	i2c_start();
+	i2c_device_id(0x68, 1);
+	temp[0] = i2c_read(0);
+	
+	i2c_start();
+	
+	i2c_device_id(0x68, 0);
+	i2c_write(0x12);
+	i2c_stop();
+	
+	i2c_start();
+	i2c_device_id(0x68, 1);
+	temp[1] = i2c_read(0) >> 6;
+	
+	return temp;
+}
+*/
+unsigned char* rtc_get_time()	//rewrite
+{
+	static unsigned char time[6];
+	char i;
+	
+	//make multi-btye access work
+	for(i = 0; i < 7; i++)
+	{
+		i2c_start();
+		i2c_device_id(0x68, 0);
+		i2c_write(i);
+		i2c_stop();
+		i2c_start();
+		i2c_device_id(0x68, 1);
+		time[i] = rtcBcdToDec(i2c_read(0));
+		i2c_stop();
+	}
+	return time;
 }
 
 void rtc_set_time()
@@ -70,10 +77,5 @@ void rtc_set_time()
 	i2c_start();
 	
 	i2c_write(0);
-	
-}
-
-void rtc_temp()
-{
 	
 }

@@ -3,9 +3,10 @@
 
 sbit DHT11 = 0x87;
 extern char DHTArray[5];
+extern char dht11[2];
 
 //----------------
 
-extern void readDHT11();
+extern char* readDHT11();
 
 #endif

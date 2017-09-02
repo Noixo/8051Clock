@@ -1,12 +1,15 @@
 #include "timing.h"
 
+void init_timing()
+{
+	TMOD |= 0x01;	//Turns on mode 1 16 bit timer for timer 0
+}
+
+// Time is 1/(crystal(mhz)/12(prescaler)) = x uS
+//Time needed is 65536-x = value for TH & TL
 void ms_delay(unsigned char num)	//1 miliseconds
 {
 	unsigned char i;
-	TMOD = 0x01;	//TMOD becomes mode: 1 (16 bit timer)
-	
-	// Time is 1/(crystal(mhz)/12(prescaler)) = x uS
-	//Time needed is 65536-x = value for TH & TL
 
 	for(i = 0; i < num; i++)
 	{
@@ -24,10 +27,6 @@ void us_delay(unsigned char num)	//30 microsecond
 {
 	unsigned char i;
 	
-	//for(i = 0; i < num; i++)
-		//_nop_();
-	TMOD = 0x01; //TMOD = 0x00;	//TMOD becomes mode: 0 (8 bit timer)
-	
 	for(i = 0; i < num; i++)
 	{
 		TH0 = 0xFF;	// Upper 8 bits
@@ -40,7 +39,7 @@ void us_delay(unsigned char num)	//30 microsecond
 	}
 }
 
-void timer2(void)	//For fixing DHT11 freezes
+void timeout()	//For fixing DHT11 freezes
 {
 	//TMOD
 }

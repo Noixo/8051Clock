@@ -1,0 +1,5 @@
+v:0.5
+	- DHT11 returns its array
+	 - no longer relies on LCD.h to print data
+	- ds3231 now sends and returns a pointer to its location (mostly working)
+	- added uart serial

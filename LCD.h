@@ -57,7 +57,7 @@ extern bit current_line;
 //const DISPLAY.ON = 
 //---------------
 
-extern void init();
+extern void lcd_init();
 extern void write_char(unsigned char hex);
 extern void cmd(unsigned char cmd);
 extern void backlight_toggle(void);

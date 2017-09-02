@@ -4,95 +4,96 @@
 #include "timing.h"
 #include "i2c.h"
 #include "ds3231.h"
+#include "serial.h"
 
 void main()
 {
-	//char ack;
-	//unsigned char arr[3];
-	//struct time getTime();
-	//struct time getTime;
+	unsigned char *p_time;
+	char *dht11;
+	
+	init_serial();
+	//init_serial();
+	init_timing();
 	//SETUP
 	
 	//INTERRUPTS
 	external_setup();
 	
 	//LCD init
-	init();
+	lcd_init();
+	backlight = 0;
 	
 	//I2C init
 	i2c_setup();
 
-//	struct time getTime;
-	//write_string("Hello, World!\n");
-	
-	//rw low for write and high for read
 	while(1)
 	{
-		//getTime = &rtc_get_time();
+		dht11 = readDHT11();
 		
-		write_int(getTime->hours);
-		write_char(':');
-		write_int(getTime->minutes);
-		write_char(':');
-		write_int(getTime->seconds);
+		write_int(*(dht11));
+		write_char(' ');
+		write_int(*(dht11+1));
+		write_char(' ');
+
+		cmd(LCD_HOME);
+		serial_send_array("H: ");
+		serial_convert(*(dht11));
+		serial_send_array("T: ");
+		serial_convert(*(dht11+1));
+		serial_send('\r');
+		
+		//new_line();
 		/*
-		i2c_start();
+		p_time = rtc_get_time();
 		
-		ack = i2c_device_id(0x68, 0);
+		//hours
+		serial_convert(*(p_time+2) & 0x3F);
+		serial_send(':');
+		//minutes
+		serial_convert(*(p_time+1));
+		serial_send(':');
+		//seconds
+		serial_convert(*(p_time) & 0x7F);
+		serial_send(' ');
 		
-		//i2c_start();
+		//day
+		serial_convert(*(p_time+4));
+		serial_send('/');
+		//month
+		serial_convert(*(p_time+5));
+		serial_send('/');
+		//year
+		serial_convert(*(p_time+6));
+		serial_send('\r');
 		
-		i2c_write(0);
-		
-		i2c_stop();
-		
-		i2c_start();
-		ack = i2c_device_id(0x68, 1);
-		
-		arr[0] = i2c_read(0);
-		arr[1] = i2c_read(0);
-		arr[2] = i2c_read(1);
-	
-		i2c_stop();
-		
-		arr[0] = (arr[0] & 0x0F) + (((arr[0] & 0x70) >> 4) * 10);
-		arr[1] = (arr[1] & 0x0F) + (((arr[1] & 0x70) >> 4) * 10);
-		//arr[2] = ((arr[2] / (arr[2] >> 4)) + (arr[2] % a[2] >> 4));
-		
-		write_int(arr[2]);
+		//time
+		//hours
+		write_int(*(p_time+2));
 		write_char(':');
-		write_int(arr[1]);
+		//minutes
+		write_int(*(p_time+1));
 		write_char(':');
-		write_int(arr[0]);
+		//seconds
+		write_int(*(p_time) & 0x7F);
+		write_char(' ');
+
+		//date
+		//day
+		write_int(*(p_time+4));
+		write_char('/');
+		//month
+		write_int(*(p_time+5));
+		write_char('/');
+		//year
+		write_int(*(p_time+6));
+		write_char(' ');
+		
+		cmd(LCD_HOME);
 		*/
-		//test();
-		//write_int(setTime.seconds);
-		//write_int(getTime.minutes);
-		//write_int(getTime.hours);
-		
 		//check_night();
 		//readDHT11();
-		//i2c_read_id();
-		/*
-		a[0] = (a[0] & 0x0F) + (((a[0] & 0x70) >> 4) * 10);
-		a[1] = (a[1] & 0x0F) + (((a[1] & 0x70) >> 4) * 10);
-		a[2] = (a[2] & 0x01) + (((a[2] & 0x10) >> 4) * 10);
-		a[2] += (a[2] & 0x02) + (((a[2] & 0x20) >> 4) * 20);
-		
-		write_int(a[2]);
-		write_char(':');
-		write_int(a[1]);
-		write_char(':');
-		write_int(a[0]);
-		*/
-		ms_delay(255);
-		ms_delay(255);
-		ms_delay(255);
-		ms_delay(255);
-		ms_delay(255);
-		ms_delay(255);
-		ms_delay(255);
-		cmd(LCD_HOME);
+		//a[0] = (a[0] & 0x0F) + (((a[0] & 0x70) >> 4) * 10);
+
 	}
 }
 
@@ -108,7 +109,8 @@ void main()
 
 /*
 	---------------Small issues--------------
-	* timer not accurate
+	* ds3231 not printing data correctly
+	* poor ds3231 code quality and size
 	* i2c.c needs lcd.c to print variable. Not efficient
 */
 
