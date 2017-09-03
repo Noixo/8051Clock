@@ -39,6 +39,11 @@ void us_delay(unsigned char num)	//30 microsecond
 	}
 }
 
+void us()	//4 peek-to-peek - 6us rise to fall @ 
+{
+	;
+}
+
 void timeout()	//For fixing DHT11 freezes
 {
 	//TMOD

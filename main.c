@@ -28,6 +28,7 @@ void main()
 
 	while(1)
 	{
+		/*
 		dht11 = readDHT11();
 		
 		write_int(*(dht11));
@@ -41,9 +42,9 @@ void main()
 		serial_send_array("T: ");
 		serial_convert(*(dht11+1));
 		serial_send('\r');
-		
+		*/
 		//new_line();
-		/*
+		
 		p_time = rtc_get_time();
 		
 		//hours
@@ -89,7 +90,7 @@ void main()
 		write_char(' ');
 		
 		cmd(LCD_HOME);
-		*/
+		
 		//check_night();
 		//readDHT11();
 		//a[0] = (a[0] & 0x0F) + (((a[0] & 0x70) >> 4) * 10);
@@ -104,7 +105,8 @@ void main()
 		-	BMP280
 		- DS3231
 	* Add interupt to break DHT11 if stuck for too long
-	* 
+	* make a check in main to see if timer is up. if so run dht11 method
+	* then reset timer
 */
 
 /*
