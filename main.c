@@ -5,8 +5,6 @@
 #include "i2c.h"
 #include "ds3231.h"
 #include "serial.h"
-#include "math.h"
-
 /*
 ATTACH SERIAL TO TIMER 0
 TIMER 1 CHECKS DHT11

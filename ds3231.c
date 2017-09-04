@@ -1,6 +1,5 @@
 #include "ds3231.h"
 #include "i2c.h"
-#include "math.h"
 
 unsigned char decToBcd(unsigned char convert)
 {
