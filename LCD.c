@@ -4,15 +4,17 @@
 void lcd_init()
 {
 	//RS = 0;	//command
-	ms_delay(50);	//Start up delay
+	ms_delay(15);	//Start up delay
 	
 	cmd(0x38);	//Function set (8 bit, 2 line, 5x7)
 	ms_delay(5);
 
 	cmd(0x06);	//Entry mode (Left to right, inc)
-
+	//us_delay(1);
+	
 	cmd(0x0E);	//display (Display on, cursor on)
-
+	//us_delay(1);
+	
 	cmd(LCD_CLEAR);	//CLEAR
 }
 
@@ -21,7 +23,7 @@ void cmd(unsigned char cmd)
 	RS = 0;
 	write_byte = cmd;
 	E = 0;
-	ms_delay(2);//us_delay(200);	//100 microsecond
+	us_delay(1);//us_delay(200);	//100 microsecond
 	E = 1;
 }
 
@@ -30,7 +32,7 @@ void write_char(unsigned char letter)
 	RS = 1; //word
 	write_byte = letter;
 	E = 0;
-	ms_delay(2);//us_delay(200);	//100 micro
+	us_delay(1);//us_delay(1);//us_delay(200);	//100 micro
 	E = 1;
 }
 /*

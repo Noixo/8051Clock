@@ -1,67 +1,63 @@
 #include "ds3231.h"
 #include "i2c.h"
+#include "math.h"
 
-void test()
-{
-	//getTime.seconds = 10;
-	
-	//write_int(&getTime.seconds);
-}
-
-unsigned char rtcDecToBcd(unsigned char convert)
+unsigned char decToBcd(unsigned char convert)
 {
 	return ((convert / 10 * 16) + (convert % 10));
 }
 
-unsigned char rtcBcdToDec(unsigned char convert)
+unsigned char bcdToDec(unsigned char convert)
 {
 	return ((convert / 16 * 10) + (convert % 16));
 }
 
-/*
-unsigned char* rtc_temp()	//rewrite
+unsigned char* rtc_get_temp()
 {
-	unsigned char temp[1];
+	unsigned char i;
+	//static unsigned char temp[1];
 	
 	i2c_start();
-	i2c_device_id(0x68, 0);
-	i2c_write(0x11);
+	(void) i2c_device_id(0x68, 0);
+	i2c_write(0x11);	//point 1st temp register
+	i2c_stop();
+	i2c_start();
+	
+	(void) i2c_device_id(0x68, 1);
+	
+	i = i2c_read(0) << 8;
+	i |= i2c_read(1);
+	//get data, convert to two's compliment and then store in array
+	//temp[0] = i2c_read(0);//toTwosComplement(i2c_read(0));
+	//temp[1] = i2c_read(1);//toTwosComplement(i2c_read(1));	//last piece of data to grab
 	i2c_stop();
 	
-	i2c_start();
-	i2c_device_id(0x68, 1);
-	temp[0] = i2c_read(0);
-	
-	i2c_start();
-	
-	i2c_device_id(0x68, 0);
-	i2c_write(0x12);
-	i2c_stop();
-	
-	i2c_start();
-	i2c_device_id(0x68, 1);
-	temp[1] = i2c_read(0) >> 6;
-	
-	return temp;
+	return i;
 }
-*/
-unsigned char* rtc_get_time()	//rewrite
+
+unsigned char* rtc_get_time()
 {
 	static unsigned char time[6];
 	char i;
 	
-	//make multi-btye access work
+	i2c_start();
+	(void) i2c_device_id(0x68,0);	//send address + write bit
+	
+	i2c_write(0);	//point to location i of DS3231
+	
+	i2c_stop();
+	i2c_start();
+	
+	(void) i2c_device_id(0x68, 1);	//send address + read bit
+	
 	for(i = 0; i < 7; i++)
 	{
-		i2c_start();
-		i2c_device_id(0x68, 0);
-		i2c_write(i);
-		i2c_stop();
-		i2c_start();
-		i2c_device_id(0x68, 1);
-		time[i] = rtcBcdToDec(i2c_read(0));
-		i2c_stop();
+		if(i == 6)
+			time[i] = bcdToDec(i2c_read(1));	//set to not ack when 6th loop
+		else
+			time[i] = bcdToDec(i2c_read(0));
 	}
+	i2c_stop();
 	return time;
 }
 

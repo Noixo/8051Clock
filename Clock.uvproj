@@ -404,6 +404,11 @@
               <FileType>5</FileType>
               <FilePath>.\bmp280.h</FilePath>
             </File>
+            <File>
+              <FileName>math.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\math.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -453,6 +458,11 @@
               <FileName>bmp280.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\bmp280.c</FilePath>
+            </File>
+            <File>
+              <FileName>math.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\math.c</FilePath>
             </File>
           </Files>
         </Group>

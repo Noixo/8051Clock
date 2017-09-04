@@ -7,7 +7,7 @@ sbit SCL = 0x83;	//Bank 0, pin 2
 									//Clock line
 
 extern void i2c_setup();
-extern void i2c_clock();
+//extern void i2c_clock();
 extern void i2c_start();
 extern void i2c_stop();
 extern void i2c_write(unsigned char byte);

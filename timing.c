@@ -25,18 +25,18 @@ void ms_delay(unsigned char num)	//1 miliseconds
 
 void us_delay(unsigned char num)	//30 microsecond
 {
-	unsigned char i;
+	//unsigned char i;
 	
-	for(i = 0; i < num; i++)
-	{
+	//for(i = 0; i < num; i++)
+	//{
 		TH0 = 0xFF;	// Upper 8 bits
-		TL0 = 0xFF;	//Lower 8 bits
+		TL0 = 0xFA;	//Lower 8 bits
 		TR0 = 1;		//Starts the timer
 
 		while(TF0 == 0);
 		TR0 = 0;		//Turns off timer
 		TF0 = 0;		//Clears overflow tag
-	}
+	//}
 }
 
 void us()	//4 peek-to-peek - 6us rise to fall @ 

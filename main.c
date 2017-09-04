@@ -5,10 +5,16 @@
 #include "i2c.h"
 #include "ds3231.h"
 #include "serial.h"
+#include "math.h"
 
+/*
+ATTACH SERIAL TO TIMER 0
+TIMER 1 CHECKS DHT11
+
+*/
 void main()
 {
-	unsigned char *p_time;
+	unsigned char *p_time, *p_temp;
 	char *dht11;
 	
 	init_serial();
@@ -29,6 +35,13 @@ void main()
 	while(1)
 	{
 		/*
+		p_temp = rtc_get_temp();
+		write_int(*p_temp);
+		write_char(' ');
+		write_int(*(p_temp)+1);
+		new_line();
+		*/
+		/*
 		dht11 = readDHT11();
 		
 		write_int(*(dht11));
@@ -46,7 +59,7 @@ void main()
 		//new_line();
 		
 		p_time = rtc_get_time();
-		
+		/*
 		//hours
 		serial_convert(*(p_time+2) & 0x3F);
 		serial_send(':');
@@ -66,7 +79,8 @@ void main()
 		//year
 		serial_convert(*(p_time+6));
 		serial_send('\r');
-		
+		*/
+		//cmd(LCD_CLEAR);
 		//time
 		//hours
 		write_int(*(p_time+2));
@@ -75,7 +89,7 @@ void main()
 		write_int(*(p_time+1));
 		write_char(':');
 		//seconds
-		write_int(*(p_time) & 0x7F);
+		write_int(*(p_time));
 		write_char(' ');
 
 		//date
@@ -90,6 +104,11 @@ void main()
 		write_char(' ');
 		
 		cmd(LCD_HOME);
+		
+		ms_delay(255);
+		ms_delay(255);
+		ms_delay(255);
+		ms_delay(255);
 		
 		//check_night();
 		//readDHT11();
