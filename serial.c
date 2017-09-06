@@ -1,7 +1,7 @@
 #include "serial.h"
 #include "timing.h"
 
-#include "lcd.h"
+//#include "lcd.h"
 
 //9600 baurd
 void init_serial()
@@ -11,7 +11,7 @@ void init_serial()
 	TH1 = 0xFD;
 	TR1 = 1;
 }
-
+/*
 void serial_convert(unsigned char value)	//Rewrite later
 {
 	char i;
@@ -33,7 +33,7 @@ void serial_convert(unsigned char value)	//Rewrite later
 	
 	serial_send_array(array);
 }
-
+*/
 void serial_send_array(unsigned char* array)
 {
 	unsigned char i;

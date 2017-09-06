@@ -4,18 +4,77 @@
 #include "timing.h"
 #include "i2c.h"
 #include "ds3231.h"
-#include "serial.h"
+//#include "serial.h"
 /*
 ATTACH SERIAL TO TIMER 0
 TIMER 1 CHECKS DHT11
 
 */
+void print_pressure()
+{
+	write_string(" PPPPhPa");
+}
+
+void print_temp()
+{
+	unsigned char *p_temp;
+	
+	//cmd(LCD_LINE_1);
+	
+	//cmd(LCD_CURSOR_RIGHT);
+	//get temp and humidty
+	p_temp = readDHT11();
+	
+	//print temp
+	write_int(*(p_temp)+2);
+	write_char(0);
+	write_char(' ');
+	
+	//print humidity
+	write_int(*(p_temp));
+	write_char('%');
+}
+
+void print_screen()
+{
+	unsigned char *p_time;
+	
+	cmd(LCD_LINE_1);
+	//get the time
+	p_time = rtc_get_time();
+	
+	//print the time.
+	
+	//hours
+	write_int(*(p_time+2));
+	write_char(':');
+	//minutes
+	write_int(*(p_time+1));	
+	write_char(':');
+	//seconds
+	write_int(*(p_time));
+	write_char(' ');
+	
+	//readDHT11();
+	print_temp();
+	
+	cmd(LCD_LINE_2);
+	
+	//day
+	write_int(*(p_time+4));	
+	write_char('/');
+	//month
+	write_int(*(p_time+5));
+	write_char('/');
+	//year
+	write_int(*(p_time+6));
+	//write_char(' ');
+	
+	print_pressure();
+}
+
 void main()
 {
-	unsigned char *p_time, *p_temp;
-	char *dht11;
-	
-	init_serial();
 	//init_serial();
 	init_timing();
 	//SETUP
@@ -30,88 +89,23 @@ void main()
 	//I2C init
 	i2c_setup();
 
+	//assign ccgram pos 0 as degrees C symbol
+	customChar(degreesC, 0);
 	while(1)
 	{
-		/*
-		p_temp = rtc_get_temp();
-		write_int(*p_temp);
-		write_char(' ');
-		write_int(*(p_temp)+1);
-		new_line();
-		*/
-		/*
-		dht11 = readDHT11();
-		
-		write_int(*(dht11));
-		write_char(' ');
-		write_int(*(dht11+1));
-		write_char(' ');
-
-		cmd(LCD_HOME);
-		serial_send_array("H: ");
-		serial_convert(*(dht11));
-		serial_send_array("T: ");
-		serial_convert(*(dht11+1));
-		serial_send('\r');
-		*/
-		//new_line();
-		
-		p_time = rtc_get_time();
-		/*
-		//hours
-		serial_convert(*(p_time+2) & 0x3F);
-		serial_send(':');
-		//minutes
-		serial_convert(*(p_time+1));
-		serial_send(':');
-		//seconds
-		serial_convert(*(p_time) & 0x7F);
-		serial_send(' ');
-		
-		//day
-		serial_convert(*(p_time+4));
-		serial_send('/');
-		//month
-		serial_convert(*(p_time+5));
-		serial_send('/');
-		//year
-		serial_convert(*(p_time+6));
-		serial_send('\r');
-		*/
-		//cmd(LCD_CLEAR);
-		//time
-		//hours
-		write_int(*(p_time+2));
-		write_char(':');
-		//minutes
-		write_int(*(p_time+1));
-		write_char(':');
-		//seconds
-		write_int(*(p_time));
-		write_char(' ');
-
-		//date
-		//day
-		write_int(*(p_time+4));
-		write_char('/');
-		//month
-		write_int(*(p_time+5));
-		write_char('/');
-		//year
-		write_int(*(p_time+6));
-		write_char(' ');
-		
-		cmd(LCD_HOME);
-		
-		ms_delay(255);
-		ms_delay(255);
-		ms_delay(255);
-		ms_delay(255);
-		
-		//check_night();
+		cmd(LCD_CLEAR);
+		print_screen();
 		//readDHT11();
-		//a[0] = (a[0] & 0x0F) + (((a[0] & 0x70) >> 4) * 10);
 
+		ms_delay(255);
+		ms_delay(255);
+		ms_delay(255);
+		ms_delay(255);
+		ms_delay(255);
+		ms_delay(255);
+		ms_delay(255);
+		//ms_delay(255);
+		//check_night();
 	}
 }
 
