@@ -1,5 +1,11 @@
 v:0.5
 	- DHT11 returns its array
-	 - no longer relies on LCD.h to print data
+	- no longer relies on LCD.h to print data
 	- ds3231 now sends and returns a pointer to its location (mostly working)
 	- added uart serial
+V:0.55 (6/9/2017)	
+	- stored static variables in CODE rather than RAM
+	- Implemented custom characters in LCD
+	- Adjusted LCD timing
+	- Slowed I2C speed to enable a more 50/50 duty cycle
+	- fixed bug in i2c master ACK send

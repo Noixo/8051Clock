@@ -7,33 +7,61 @@ void lcd_init()
 	ms_delay(15);	//Start up delay
 	
 	cmd(0x38);	//Function set (8 bit, 2 line, 5x7)
-	ms_delay(5);
+	us_delay(1);
+	us_delay(1);
 
-	cmd(0x06);	//Entry mode (Left to right, inc)
-	//us_delay(1);
-	
 	cmd(0x0E);	//display (Display on, cursor on)
+	us_delay(1);
+	us_delay(1);
+	
+	cmd(0x06);	//Entry mode (Left to right, inc)
+	us_delay(1);
+	us_delay(1);
+
 	//us_delay(1);
+	//cmd(0x80);
 	
 	cmd(LCD_CLEAR);	//CLEAR
+	ms_delay(2);
+}
+
+void customChar(unsigned char* array, char location)
+{
+	char i;
+	cmd(0x40+(location*8));
+	//cmd(0x40 + (location*8));
+	
+	for(i = 0; i < 8; i++)//array[i] != '\0'; i++)
+	{
+		write_char(array[i]);
+	}
+	cmd(0x80);
 }
 
 void cmd(unsigned char cmd)
 {
-	RS = 0;
 	write_byte = cmd;
-	E = 0;
-	us_delay(1);//us_delay(200);	//100 microsecond
+	RS = 0;
 	E = 1;
+	if(cmd == LCD_CLEAR || cmd == LCD_HOME)
+		ms_delay(2);
+	else
+	{
+		us_delay(1);//us_delay(200);	//100 microsecond
+		us_delay(1);
+	}
+	E = 0;
 }
 
 void write_char(unsigned char letter)
 {
-	RS = 1; //word
 	write_byte = letter;
-	E = 0;
-	us_delay(1);//us_delay(1);//us_delay(200);	//100 micro
+	RS = 1;	//word
+	
 	E = 1;
+	us_delay(1);// approx 25 micro
+	us_delay(1);
+	E = 0;
 }
 /*
 void backlight_toggle()
@@ -59,11 +87,11 @@ void write_string(unsigned char* string)//[])
 	}
 }
 
-void write_int(unsigned char value)	//Rewrite later
+void write_int(unsigned char value)	//Rewrite later 	
 {
 	char i;
 	unsigned char array[3];
-	
+
 	for(i = 0; i < 3; i++)
 	{
 		//puts value to array after being split by 1 character and converted to ascii.
@@ -92,6 +120,7 @@ void reverse_array(unsigned char *array, unsigned char end)
 		start++;
 		end--;
 	}
+	
 }
 
 void new_line()

@@ -24,18 +24,24 @@ sbit E = 0x94;	//Port 0 bit 1
 
 //---------------
 
-static unsigned char LCD_DEGREE = 0xDF;
-static unsigned char LCD_NEG_ONE = 0xE9;
+static code unsigned char degreesC[] = {
+  0x8,0x14,0x8,0x7,0x4,0x4,0x7,0x00
+};
+
+static code unsigned char LCD_DEGREE = 0xDF;
+static code unsigned char LCD_NEG_ONE = 0xE9;
+static code unsigned char LCD_CURSOR_LEFT = 0x04;
+static code unsigned char LCD_CURSOR_RIGHT = 0x06;
 /*
 static unsigned char LCD_ARROW_RIGHT = 0x7E;
 static unsigned char LCD_ARROW_LEFT = 0x7F;
 */
 
-static char LCD_CLEAR = 0x01;
-static char LCD_HOME = 0x02;
+static code char LCD_CLEAR = 0x01;
+static code char LCD_HOME = 0x02;
 
-static char LCD_LINE_1 = 0x80;
-static char LCD_LINE_2 = 0xC0;
+static code char LCD_LINE_1 = 0x80;
+static code char LCD_LINE_2 = 0xC0;
 
 //const char array;
 
@@ -58,6 +64,7 @@ extern bit current_line;
 //---------------
 
 extern void lcd_init();
+extern void customChar(unsigned char* array, char location);
 extern void write_char(unsigned char hex);
 extern void cmd(unsigned char cmd);
 extern void backlight_toggle(void);

@@ -60,17 +60,18 @@ unsigned char* rtc_get_time()
 	return time;
 }
 
-void rtc_set_time()
+void rtc_set_time(unsigned char* setTime)
 {
-	char ack;
+	char i;
 	//multi-byte set time
 	
 	i2c_start();
-	ack = i2c_device_id(0x68, 1);
+	(void) i2c_device_id(0x68, 1);
 	i2c_write(0);	//point to seconds
 	
-	i2c_start();
-	
-	i2c_write(0);
-	
+	for(i = 0; setTime != '\0'; i++)
+	{
+		i2c_write(setTime[i]);
+	}
+	i2c_stop();
 }
