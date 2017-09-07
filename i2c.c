@@ -11,9 +11,9 @@ void i2c_setup()
 void i2c_clock()
 {
 	SCL = 1;
-	us_delay(1);
+	us_delay();
 	SCL = 0;
-	us_delay(1);
+	us_delay();
 }
 */
 
@@ -23,11 +23,11 @@ void i2c_start()
 	SDA = 1;
 	SCL = 1;
 
-	us_delay(1);
+	us_delay();
 	SDA = 0;
-	us_delay(1);
+	us_delay();
 	SCL = 0;
-	//us_delay(1);
+	//us_delay();
 }
 
 void i2c_stop()
@@ -35,12 +35,12 @@ void i2c_stop()
 	//clock goes low before data
 	SCL = 0;
 	SDA = 0;
-	us_delay(1);
+	us_delay();
 	
 	SCL = 1;
-	us_delay(1);
+	us_delay();
 	SDA = 1;
-	//us_delay(1);
+	//us_delay();
 }
 
 char i2c_device_id(char id, char rw)
@@ -54,9 +54,9 @@ char i2c_device_id(char id, char rw)
 		SDA = id & 0x80;	//Sends a 1 or 0 to SDA
 		
 		//Pulses the clock
-		us_delay(1);
+		us_delay();
 		SCL = 1;
-		us_delay(1);
+		us_delay();
 		SCL = 0;
 	}
 	//8th bit
@@ -64,22 +64,22 @@ char i2c_device_id(char id, char rw)
 	//rw low for write and high for read
 	SDA = rw;
 	//pulse the clock
-	us_delay(1);
+	us_delay();
 	SCL = 1;
-	us_delay(1);
+	us_delay();
 	SCL = 0;
-	//us_delay(1);
+	//us_delay();
 	
 	//9th bit
 	//Pull sda high to ack bit
 	SDA = 1;
 	
-	us_delay(1);
+	us_delay();
 	SCL = 1;
 	//Get ack bit
 	ACK = SDA;
 	
-	us_delay(1);
+	us_delay();
 	SCL = 0;
 	
 	return ACK;
@@ -96,9 +96,9 @@ unsigned char i2c_read(char last_byte)
 		//bitshift byte by 1
 		byte <<= 1;
 		
-		us_delay(1);
+		us_delay();
 		SCL = 1;
-		us_delay(1);
+		us_delay();
 		
 		//OR byte bit with SDA
 		byte |= SDA;
@@ -111,9 +111,9 @@ unsigned char i2c_read(char last_byte)
 	else
 		SDA = 0;	
 	
-	us_delay(1);
+	us_delay();
 	SCL = 1;
-	us_delay(1);
+	us_delay();
 	SCL = 0;
 	
 	//SDA = 1;
@@ -130,21 +130,21 @@ void i2c_write(unsigned char byte)
 		SDA = byte & 0x80;	//Sends a 1 or 0 to SDA
 		
 		//pulse the clock
-		us_delay(1);
+		us_delay();
 		SCL = 1;
-		us_delay(1);
+		us_delay();
 		SCL = 0;
 	}
 	
 	//For ack bit
 	SDA = 1;
 	
-	us_delay(1);
+	us_delay();
 	SCL = 1;
 	//Get ack bit
 	ACK = SDA;
 	
-	us_delay(1);
+	us_delay();
 	SCL = 0;
 }
 

@@ -11,6 +11,7 @@ TIMER 1 CHECKS DHT11
 
 */
 void print_pressure()
+<<<<<<< HEAD
 {
 	write_string(" PPPPhPa");
 }
@@ -37,6 +38,34 @@ void print_temp()
 
 void print_screen()
 {
+=======
+{
+	write_string(" PPPPhPa");
+}
+
+void print_temp()
+{
+	unsigned char *p_temp;
+	
+	//cmd(LCD_LINE_1);
+	
+	//cmd(LCD_CURSOR_RIGHT);
+	//get temp and humidty
+	p_temp = readDHT11();
+	
+	//print temp
+	write_int(*(p_temp)+2);
+	write_char(0);
+	write_char(' ');
+	
+	//print humidity
+	write_int(*(p_temp));
+	write_char('%');
+}
+
+void print_screen()
+{
+>>>>>>> ds3231
 	unsigned char *p_time;
 	
 	cmd(LCD_LINE_1);
@@ -54,6 +83,7 @@ void print_screen()
 	//seconds
 	write_int(*(p_time));
 	write_char(' ');
+<<<<<<< HEAD
 	
 	//readDHT11();
 	print_temp();
@@ -70,6 +100,24 @@ void print_screen()
 	write_int(*(p_time+6));
 	//write_char(' ');
 	
+=======
+	
+	//readDHT11();
+	print_temp();
+	
+	cmd(LCD_LINE_2);
+	
+	//day
+	write_int(*(p_time+4));	
+	write_char('/');
+	//month
+	write_int(*(p_time+5));
+	write_char('/');
+	//year
+	write_int(*(p_time+6));
+	//write_char(' ');
+	
+>>>>>>> ds3231
 	print_pressure();
 }
 
@@ -93,6 +141,14 @@ void main()
 	customChar(degreesC, 0);
 	while(1)
 	{
+<<<<<<< HEAD
+=======
+		SCL = 0;
+		us_delay();
+		SCL = 1;
+		us_delay();
+		/*
+>>>>>>> ds3231
 		cmd(LCD_CLEAR);
 		print_screen();
 		//readDHT11();
@@ -106,6 +162,10 @@ void main()
 		ms_delay(255);
 		//ms_delay(255);
 		//check_night();
+<<<<<<< HEAD
+=======
+		*/
+>>>>>>> ds3231
 	}
 }
 

@@ -7,6 +7,7 @@ void lcd_init()
 	ms_delay(15);	//Start up delay
 	
 	cmd(0x38);	//Function set (8 bit, 2 line, 5x7)
+<<<<<<< HEAD
 	us_delay(1);
 	us_delay(1);
 
@@ -19,6 +20,20 @@ void lcd_init()
 	us_delay(1);
 
 	//us_delay(1);
+=======
+	us_delay();
+	//us_delay();
+
+	cmd(0x0E);	//display (Display on, cursor on)
+	us_delay();
+	//us_delay();
+	
+	cmd(0x06);	//Entry mode (Left to right, inc)
+	us_delay();
+	//us_delay();
+
+	//us_delay();
+>>>>>>> ds3231
 	//cmd(0x80);
 	
 	cmd(LCD_CLEAR);	//CLEAR
@@ -43,14 +58,24 @@ void cmd(unsigned char cmd)
 	write_byte = cmd;
 	RS = 0;
 	E = 1;
+<<<<<<< HEAD
+=======
+	E = 0;
+>>>>>>> ds3231
 	if(cmd == LCD_CLEAR || cmd == LCD_HOME)
 		ms_delay(2);
 	else
 	{
+<<<<<<< HEAD
 		us_delay(1);//us_delay(200);	//100 microsecond
 		us_delay(1);
 	}
 	E = 0;
+=======
+		us_delay();//us_delay(200);	//100 microsecond
+		//us_delay();
+	}
+>>>>>>> ds3231
 }
 
 void write_char(unsigned char letter)
@@ -59,9 +84,15 @@ void write_char(unsigned char letter)
 	RS = 1;	//word
 	
 	E = 1;
+<<<<<<< HEAD
 	us_delay(1);// approx 25 micro
 	us_delay(1);
 	E = 0;
+=======
+	E = 0;
+	us_delay();// approx 25 micro
+	//us_delay();
+>>>>>>> ds3231
 }
 /*
 void backlight_toggle()
