@@ -93,6 +93,11 @@ void main()
 	customChar(degreesC, 0);
 	while(1)
 	{
+		SCL = 0;
+		us_delay();
+		SCL = 1;
+		us_delay();
+		/*
 		cmd(LCD_CLEAR);
 		print_screen();
 		//readDHT11();
@@ -106,6 +111,7 @@ void main()
 		ms_delay(255);
 		//ms_delay(255);
 		//check_night();
+		*/
 	}
 }
 

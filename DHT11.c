@@ -29,7 +29,7 @@ char* readDHT11()
 		store[i/8] <<= 1;	//Push value to the right by 1 bit
 		while(DHT11 == 0);	//Loop to skip when pin is pulled low.
 	
-		us_delay(1);	//30us delay maybe 
+		us_delay();	//30us delay maybe 
 		
 		if(DHT11 == 1)
 		{
