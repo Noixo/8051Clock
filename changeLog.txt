@@ -9,3 +9,6 @@ V:0.55 (6/9/2017)
 	- Adjusted LCD timing
 	- Slowed I2C speed to enable a more 50/50 duty cycle
 	- fixed bug in i2c master ACK send
+V:0.56 (11/09/2017)
+	- eeprom kind of works
+	- I forgot whatever else I changed

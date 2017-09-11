@@ -395,14 +395,19 @@
               <FilePath>.\ds3231.h</FilePath>
             </File>
             <File>
-              <FileName>serial.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\serial.h</FilePath>
-            </File>
-            <File>
               <FileName>bmp280.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\bmp280.h</FilePath>
+            </File>
+            <File>
+              <FileName>eeprom.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\eeprom.h</FilePath>
+            </File>
+            <File>
+              <FileName>serial.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\serial.h</FilePath>
             </File>
           </Files>
         </Group>
@@ -445,14 +450,19 @@
               <FilePath>.\ds3231.c</FilePath>
             </File>
             <File>
-              <FileName>serial.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\serial.c</FilePath>
-            </File>
-            <File>
               <FileName>bmp280.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\bmp280.c</FilePath>
+            </File>
+            <File>
+              <FileName>eeprom.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\eeprom.c</FilePath>
+            </File>
+            <File>
+              <FileName>serial.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\serial.c</FilePath>
             </File>
           </Files>
         </Group>

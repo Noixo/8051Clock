@@ -3,7 +3,7 @@
 
 sfr write_byte = 0xA0;
 
-/*
+
 sbit D0 = 0xA0;
 sbit D1 = 0xA1;
 sbit D2 = 0xA2;
@@ -12,11 +12,12 @@ sbit D4 = 0xA4;
 sbit D5 = 0xA5;
 sbit D6 = 0xA6;
 sbit D7 = 0xA7;
-*/
+
 
 
 sbit a = 0xB7;	//Port 3 bit 7
 
+//sbit RW = 0x90;
 sbit RS = 0x93;	//Port 0, bit 0
 sbit E = 0x94;	//Port 0 bit 1
 
@@ -64,6 +65,7 @@ extern bit current_line;
 //---------------
 
 extern void lcd_init();
+extern void lcd_busy();
 extern void customChar(unsigned char* array, char location);
 extern void write_char(unsigned char hex);
 extern void cmd(unsigned char cmd);

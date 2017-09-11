@@ -25,20 +25,6 @@ void ms_delay(unsigned char num)	//1 miliseconds
 
 void us_delay()	//37 microsecond timer
 {
-<<<<<<< HEAD
-	//unsigned char i;
-	
-	//for(i = 0; i < num; i++)
-	//{
-		TH0 = 0xFF;	// Upper 8 bits
-		TL0 = 0xF8;	//Lower 8 bits
-		TR0 = 1;		//Starts the timer
-
-		while(TF0 == 0);
-		TR0 = 0;		//Turns off timer
-		TF0 = 0;		//Clears overflow tag
-	//}
-=======
 	TH0 = 0xFF;	// Upper 8 bits
 	TL0 = 0xEE;//0xF8;	//Lower 8 bits
 	TR0 = 1;		//Starts the timer
@@ -46,14 +32,25 @@ void us_delay()	//37 microsecond timer
 	while(TF0 == 0);
 	TR0 = 0;		//Turns off timer
 	TF0 = 0;		//Clears overflow tag
->>>>>>> ds3231
 }
 
+void dhtTimer()
+{
+	TH0 = 0xFF;
+	TL0 = 0xF1;
+	TR0 = 1;
+	
+	while(TF0 == 0);
+	TR0 = 0;
+	TF0 = 0;
+}
+
+/*
 void us()	//4 peek-to-peek - 6us rise to fall @ 
 {
 	;
 }
-
+*/
 void timeout()	//For fixing DHT11 freezes
 {
 	//TMOD

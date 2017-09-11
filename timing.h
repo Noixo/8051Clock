@@ -18,6 +18,7 @@ sbit TF1 = 0x8F;
 extern void init_timing();
 extern void ms_delay(unsigned char num);
 extern void us_delay();
+extern void dhtTimer();
 extern void us();
 extern void timout();
 #endif

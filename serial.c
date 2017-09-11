@@ -1,17 +1,19 @@
 #include "serial.h"
 #include "timing.h"
 
-//#include "lcd.h"
+#include "lcd.h"
 
 //9600 baurd
 void init_serial()
 {
 	TMOD |= 0x20;	//mode 2: 8 bit auto reload
 	SCON = 0x50;
-	TH1 = 0xFD;
+	TH1 = 0xFF;
+	//TH1 = 0xFD;
 	TR1 = 1;
 }
-/*
+
+
 void serial_convert(unsigned char value)	//Rewrite later
 {
 	char i;
@@ -33,7 +35,7 @@ void serial_convert(unsigned char value)	//Rewrite later
 	
 	serial_send_array(array);
 }
-*/
+
 void serial_send_array(unsigned char* array)
 {
 	unsigned char i;
