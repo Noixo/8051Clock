@@ -7,12 +7,13 @@
 #include "bmp280.h"
 #include "eeprom.h"
 #include "serial.h"
+#include "MAX7219.h"
 /*
 ATTACH SERIAL TO TIMER 0
 TIMER 1 CHECKS DHT11
 
 */
-/*
+
 void print_pressure()
 {
 	write_string(" PPPPhPa");
@@ -78,7 +79,7 @@ void print_screen()
 	
 	print_pressure();
 }
-*/
+
 void main()
 {
 	unsigned char i, j;
@@ -110,32 +111,44 @@ void main()
 	//eepromWriteByte(0,0, 0x7F);
 	
 	//delay so eeprom can process data
-	ms_delay(30);
+	//ms_delay(30);
 	//eepromWriteByte(0,1, 0x05);
-	ms_delay(30);
+	//ms_delay(30);
+	//eepromWriteByte(1,1,0x05);
+	//ms_delay(10);
 	while(1)
 	{
-		for(i = 0; i < 0x7F; i++)
-		{
-			serial_convert(i);
-			serial_send_array(" | ");
-			//eepromWriteByte(0,i,i);
-			//ms_delay(20);
-		}
-		
-		//serial_send_array(" END\n");
+		//serial_convert(eepromRandomRead(0,1));
+		/*
 		for(i = 0; i < 0xF; i++)
 		{
 			for(j = 0; j < 0xFF; j++)
 			{
-				serial_convert(i);
-				serial_send_array(" | ");
-				serial_convert(eepromReadByte(i,j));
-				//serial_send(' ');
+				eepromWriteByte(i,j,j);
+				ms_delay(15);
 			}
-			serial_send('\n');
+			serial_convert(i);
+		}
+		
+		//(void) wearCheck();
+		serial_send_array(" BEGIN\n");
+		serial_send('\r');
+		
+		for(i = 0; i < 0xF; i++)
+		{
+			for(j = 0; j < 0xFF; j++)
+			{
+				//serial_convert(i);
+				//serial_send_array(" | ");
+				serial_convert(eepromRandomRead(i,j));
+				//serial_convert(readByte());
+				serial_send(' ');
+			}
+			serial_send('\r');
 			serial_send('\n');
 		}
+		while(1);
+		*/
 		/*
 		for(i = 0; i < 0xFF; i++)
 		{
@@ -143,7 +156,7 @@ void main()
 			serial_send(' ');
 		}
 		*/
-		while(1);
+		//while(1);
 		
 		/*
 		write_int(*p_bmp280);
@@ -156,7 +169,7 @@ void main()
 		*/
 		
 		//cmd(LCD_HOME);//CLEAR);
-		//print_screen();
+		print_screen();
 		//readDHT11();
 		
 		ms_delay(255);
@@ -165,8 +178,8 @@ void main()
 		ms_delay(255);
 		ms_delay(255);
 		ms_delay(255);
-		//ms_delay(255);
-		//ms_delay(255);
+		ms_delay(255);
+		ms_delay(255);
 		//check_night();
 	}
 }
@@ -178,6 +191,7 @@ void main()
 	* Add interupt to break DHT11 if stuck for too long
 	* make a check in main to see if timer is up. if so run dht11 method
 	* then reset timer
+	* use 8x8 matrix and make a binary clock
 */
 
 /*

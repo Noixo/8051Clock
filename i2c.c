@@ -90,22 +90,22 @@ unsigned char i2c_read(char last_byte)
 	char i, byte = 0;
 	SDA = 1;
 	
-	//7 bits because read/write bit not included
-	for(i = 0; i < 8; ++i)
+	for(i = 0; i < 8; i++)
 	{	
 		//bitshift byte by 1
 		byte <<= 1;
 		
 		us_delay();
 		SCL = 1;
-		us_delay();
 		
 		//OR byte bit with SDA
 		byte |= SDA;
+		us_delay();
+		
 		SCL = 0;
 	}
+	
 	//9th bit master acknowledges data transfer or indicates last byte
-
 	if(last_byte == 1)
 		SDA = 1;
 	else
@@ -122,10 +122,9 @@ unsigned char i2c_read(char last_byte)
 
 void i2c_write(unsigned char byte)
 {
-	char i, ACK;
+	char i;//, ACK;
 	for(i = 0; i < 8; i++)
 	{
-		byte <<= 1;
 		//bit shifts data by i and ANDs it to convert it to boolean
 		SDA = byte & 0x80;	//Sends a 1 or 0 to SDA
 		
@@ -134,6 +133,8 @@ void i2c_write(unsigned char byte)
 		SCL = 1;
 		us_delay();
 		SCL = 0;
+		
+		byte <<= 1;
 	}
 	
 	//For ack bit
@@ -142,7 +143,7 @@ void i2c_write(unsigned char byte)
 	us_delay();
 	SCL = 1;
 	//Get ack bit
-	ACK = SDA;
+	//ACK = SDA;
 	
 	us_delay();
 	SCL = 0;
