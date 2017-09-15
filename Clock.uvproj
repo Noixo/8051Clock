@@ -343,7 +343,7 @@
             <UserClasses></UserClasses>
             <CSection></CSection>
             <UserSection></UserSection>
-            <CodeBaseAddress>0X0000-0X0FFF</CodeBaseAddress>
+            <CodeBaseAddress></CodeBaseAddress>
             <XDataBaseAddress></XDataBaseAddress>
             <PDataBaseAddress></PDataBaseAddress>
             <BitBaseAddress></BitBaseAddress>
@@ -457,6 +457,16 @@
               <FileName>eeprom.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\eeprom.c</FilePath>
+            </File>
+            <File>
+              <FileName>MAX7219.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\MAX7219.c</FilePath>
+            </File>
+            <File>
+              <FileName>ds3231.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\ds3231.c</FilePath>
             </File>
           </Files>
         </Group>

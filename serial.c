@@ -4,6 +4,8 @@
 #include "lcd.h"
 
 //9600 baurd
+
+//0xFF = 	28,800 baurd
 void init_serial()
 {
 	TMOD |= 0x20;	//mode 2: 8 bit auto reload
@@ -56,7 +58,7 @@ void serial_send(unsigned char byte)
 
 unsigned char serial_receive()
 {
-	while(RI == 0)
+	while(RI == 0);
 	RI = 0;
 	return SBUF;
 }

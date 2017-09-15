@@ -118,6 +118,10 @@ void main()
 	//ms_delay(10);
 	while(1)
 	{
+		if(serial_receive() == 'd')
+		{
+			dumpRom();
+		}
 		//serial_convert(eepromRandomRead(0,1));
 		/*
 		for(i = 0; i < 0xF; i++)
@@ -134,19 +138,7 @@ void main()
 		serial_send_array(" BEGIN\n");
 		serial_send('\r');
 		
-		for(i = 0; i < 0xF; i++)
-		{
-			for(j = 0; j < 0xFF; j++)
-			{
-				//serial_convert(i);
-				//serial_send_array(" | ");
-				serial_convert(eepromRandomRead(i,j));
-				//serial_convert(readByte());
-				serial_send(' ');
-			}
-			serial_send('\r');
-			serial_send('\n');
-		}
+	
 		while(1);
 		*/
 		/*
@@ -169,7 +161,7 @@ void main()
 		*/
 		
 		//cmd(LCD_HOME);//CLEAR);
-		print_screen();
+		//print_screen();
 		//readDHT11();
 		
 		ms_delay(255);
