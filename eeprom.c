@@ -65,7 +65,7 @@ void dumpRom()
 {
 	unsigned char i, j;
 	
-	for(i = 0; i < 0x0F; i++)
+	for(i = 0; i <= 0xF; i++)
 		{
 			for(j = 0; j < 0xFF; j++)
 			{

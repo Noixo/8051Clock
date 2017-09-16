@@ -16,3 +16,6 @@ V:0.57 (16/09/2017)
 	- fixed bug in i2c
 	- added additional functions to eeprom.c
 	- plan to add a binary clock with MAX7219
+V:0.58 (16/09/2017)
+	- started 8x8 matrix programming
+	- started BMP280 programming

@@ -1,4 +1,5 @@
 #include "timing.h"
+#include <intrins.h>
 
 void init_timing()
 {
@@ -22,18 +23,27 @@ void ms_delay(unsigned char num)	//1 miliseconds
 	}
 	TR0 = 0;						//Turns off the timer
 }
-
+#pragma SAVE
+#pragma OPTIMIZE(8)
 void us_delay()	//37 microsecond timer
 {
+	_nop_();
+	_nop_();
+	_nop_();
+	_nop_();
+	//_nop_();
+	//_nop_();
+	/*
 	TH0 = 0xFF;	// Upper 8 bits
-	TL0 = 0xEE;//0xF8;	//Lower 8 bits
+	TL0 = 0xFF;//EE;//0xF8;	//Lower 8 bits
 	TR0 = 1;		//Starts the timer
 
 	while(TF0 == 0);
 	TR0 = 0;		//Turns off timer
 	TF0 = 0;		//Clears overflow tag
+	*/
 }
-
+#pragma RESTORE
 void dhtTimer()
 {
 	TH0 = 0xFF;

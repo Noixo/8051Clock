@@ -116,12 +116,28 @@ void main()
 	//ms_delay(30);
 	//eepromWriteByte(1,1,0x05);
 	//ms_delay(10);
+	
+	//ms_delay(100);
+	//bmpReset();
 	while(1)
 	{
+		//change intensity 0-F 0 weakest, F brightest
+		maxTest(0x0A, 0x00);
+		
+		//maxTest(0x0F, 0x00);
+		//take out of shutdown mode
+		maxTest(0x0C, 0x01);
+		//write data
+		maxTest(0x09, 0x0FF);
+		maxTest(0x01, 0x05);
+		while(1);
+		/*
 		if(serial_receive() == 'd')
 		{
+			serial_send_array("DUMP:\r\n");
 			dumpRom();
 		}
+		*/
 		//serial_convert(eepromRandomRead(0,1));
 		/*
 		for(i = 0; i < 0xF; i++)
@@ -149,7 +165,7 @@ void main()
 		}
 		*/
 		//while(1);
-		
+		//p_bmp280 = bmp280GetData();
 		/*
 		write_int(*p_bmp280);
 		write_char(' ');
@@ -201,5 +217,4 @@ void main()
 /*	BUGS
 	* DHT11 prints correct data when printing in dht11 method but
 			priting pointer reference does not
-	* eeprom saved data in multiples of 2
 */
