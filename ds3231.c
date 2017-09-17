@@ -10,7 +10,7 @@ unsigned char bcdToDec(unsigned char convert)
 {
 	return ((convert / 16 * 10) + (convert % 16));
 }
-
+/*
 unsigned char* rtc_get_temp()
 {
 	unsigned char i;
@@ -33,7 +33,7 @@ unsigned char* rtc_get_temp()
 	
 	return i;
 }
-
+*/
 unsigned char* rtc_get_time()
 {
 	static unsigned char time[6];
@@ -51,11 +51,10 @@ unsigned char* rtc_get_time()
 	
 	for(i = 0; i < 7; i++)
 	{
-		if(i == 6)
-			time[i] = bcdToDec(i2c_read(1));	//set to not ack when 6th loop
-		else
 			time[i] = bcdToDec(i2c_read(0));
 	}
+	time[i] = bcdToDec(i2c_read(1));	//set to not ack when 6th loop
+	
 	i2c_stop();
 	return time;
 }

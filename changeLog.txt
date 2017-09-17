@@ -17,5 +17,10 @@ V:0.57 (16/09/2017)
 	- added additional functions to eeprom.c
 	- plan to add a binary clock with MAX7219
 V:0.58 (16/09/2017)
+	- changed i2c speed to be about 100kHz up, 50kHz down
 	- started 8x8 matrix programming
 	- started BMP280 programming
+V:0.59 (18/09/2017)
+	- 8x8 matrix clock "working"
+	- removed redundant function from ds3231.c
+	- i2c multi-byte read optimisations in ds3231 & BMP280

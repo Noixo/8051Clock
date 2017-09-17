@@ -48,13 +48,13 @@ void print_screen()
 	//print the time.
 	
 	//hours
-	a = 0;
 	write_int(*(p_time+2));
-	a= 1;
 	write_char(':');
+	
 	//minutes
 	write_int(*(p_time+1));	
 	write_char(':');
+	
 	//seconds
 	write_int(*(p_time));
 	write_char(' ');
@@ -74,7 +74,31 @@ void print_screen()
 	write_int(*(p_time+6));
 	//write_char(' ');
 
+	/*
+	matrixSend(0x01, bcdToDec(*(p_time)));
 	
+	matrixSend(0x02, bcdToDec(*(p_time+1)));
+	matrixSend(0x03, bcdToDec(*(p_time+2)));
+	*/
+	
+	//seconds
+	matrixSend(0x01, (*(p_time) & 0x0F));
+	matrixSend(0x02, (*(p_time)/10 & 0x0F));
+	
+	//minutes
+	matrixSend(0x03, (*(p_time+1) & 0x0F));
+	matrixSend(0x04, (*(p_time+1)/10 & 0x0F));
+	
+	//hours
+	matrixSend(0x05, (*(p_time+2) & 0x0F));
+	matrixSend(0x06, (*(p_time+2)/10 & 0x0F));
+
+		/*
+		maxTest(0x04, (*(p_time)+4));
+		maxTest(0x05, (*(p_time)+5));
+		maxTest(0x06, (*(p_time)+6));
+		maxTest(0x07, (*(p_time)+3));
+	*/
 	//cmd(LCD_LINE_2);
 	
 	print_pressure();
@@ -84,6 +108,7 @@ void main()
 {
 	unsigned char i, j;
 	unsigned char *p_bmp280;
+//	unsigned char *p_time;
 	
 	//init_serial();
 	init_timing();
@@ -119,18 +144,17 @@ void main()
 	
 	//ms_delay(100);
 	//bmpReset();
+	
+	matrixInit();
+	
 	while(1)
 	{
-		//change intensity 0-F 0 weakest, F brightest
-		maxTest(0x0A, 0x00);
+		//get the time
+		//p_time = rtc_get_time();
 		
-		//maxTest(0x0F, 0x00);
-		//take out of shutdown mode
-		maxTest(0x0C, 0x01);
-		//write data
-		maxTest(0x09, 0x0FF);
-		maxTest(0x01, 0x05);
-		while(1);
+		//decToBcd(*(p_time)+1);
+		//maxTest(0x07, i);
+		//maxTest(0x08, i);
 		/*
 		if(serial_receive() == 'd')
 		{
@@ -177,15 +201,16 @@ void main()
 		*/
 		
 		//cmd(LCD_HOME);//CLEAR);
-		//print_screen();
+		print_screen();
 		//readDHT11();
-		
+		/*
 		ms_delay(255);
 		ms_delay(255);
 		ms_delay(255);
 		ms_delay(255);
 		ms_delay(255);
 		ms_delay(255);
+		*/
 		ms_delay(255);
 		ms_delay(255);
 		//check_night();
@@ -200,6 +225,7 @@ void main()
 	* make a check in main to see if timer is up. if so run dht11 method
 	* then reset timer
 	* use 8x8 matrix and make a binary clock
+	* make ds3231 getData get temperature as well
 */
 
 /*

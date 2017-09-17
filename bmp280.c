@@ -32,15 +32,9 @@ unsigned char* bmp280GetData()
 	//7 registers 3 bytes sent per resister
 	for(i = 0; i < 22; i++)
 	{
-		if(i == 21)
-		{
-			bmp280Data[i] = i2c_read(1);
-		}
-		else
-		{
-			bmp280Data[i] = i2c_read(0);
-		}
+		bmp280Data[i] = i2c_read(0);
 	}
+	bmp280Data[i] = i2c_read(1);
 	i2c_stop();
 	//debug
 	for(i = 0; i < 22; i++)
