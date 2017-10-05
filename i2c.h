@@ -1,9 +1,9 @@
 #ifndef _I2C_H_
 #define _I2C_H_
 
-sbit SDA = 0x82;	//Bank 0, pin 3
+sbit SDA = 0x80;	//Bank 0, pin 3
 									//Data line
-sbit SCL = 0x83;	//Bank 0, pin 2
+sbit SCL = 0x81;	//Bank 0, pin 2
 									//Clock line
 
 extern void i2c_setup();

@@ -60,7 +60,7 @@ void print_screen()
 	write_char(' ');
 
 	//readDHT11();
-	//print_temp();
+	print_temp();
 	
 	cmd(LCD_LINE_2);
 	
@@ -83,16 +83,31 @@ void print_screen()
 	
 	//seconds
 	matrixSend(0x01, (*(p_time) & 0x0F));
+	serial_convert((*(p_time) & 0x0F));
+
 	matrixSend(0x02, (*(p_time)/10 & 0x0F));
+	serial_convert((*(p_time)/10 & 0x0F));
+	serial_send(' ');
 	
 	//minutes
 	matrixSend(0x03, (*(p_time+1) & 0x0F));
+	serial_convert((*(p_time+1) & 0x0F));
+	
 	matrixSend(0x04, (*(p_time+1)/10 & 0x0F));
+	serial_convert((*(p_time+1)/10 & 0x0F));
+	serial_send(' ');
 	
 	//hours
 	matrixSend(0x05, (*(p_time+2) & 0x0F));
+	serial_convert((*(p_time+2) & 0x0F));
+	
 	matrixSend(0x06, (*(p_time+2)/10 & 0x0F));
-
+	serial_convert((*(p_time+2)/10 & 0x0F));
+	serial_send(' ');
+	
+	serial_send('\r');
+	serial_send('\n');
+	
 		/*
 		maxTest(0x04, (*(p_time)+4));
 		maxTest(0x05, (*(p_time)+5));
@@ -106,8 +121,8 @@ void print_screen()
 
 void main()
 {
-	unsigned char i, j;
-	unsigned char *p_bmp280;
+	unsigned char i, j = 0;
+	//unsigned char *p_bmp280;
 //	unsigned char *p_time;
 	
 	//init_serial();
@@ -146,63 +161,22 @@ void main()
 	//bmpReset();
 	
 	matrixInit();
+	matrixClear();
+//	matrixSend(1, 0x255);
+	//ms_delay(255);
+	//x8 prssure oversample, x8 temperature oversample & forced mode
+	bmpSet(0x92);
 	
+	//first is column second is value for column
 	while(1)
 	{
-		//get the time
-		//p_time = rtc_get_time();
 		
-		//decToBcd(*(p_time)+1);
-		//maxTest(0x07, i);
-		//maxTest(0x08, i);
-		/*
-		if(serial_receive() == 'd')
-		{
-			serial_send_array("DUMP:\r\n");
-			dumpRom();
-		}
-		*/
-		//serial_convert(eepromRandomRead(0,1));
-		/*
-		for(i = 0; i < 0xF; i++)
-		{
-			for(j = 0; j < 0xFF; j++)
-			{
-				eepromWriteByte(i,j,j);
-				ms_delay(15);
-			}
-			serial_convert(i);
-		}
-		
-		//(void) wearCheck();
-		serial_send_array(" BEGIN\n");
-		serial_send('\r');
-		
-	
-		while(1);
-		*/
-		/*
-		for(i = 0; i < 0xFF; i++)
-		{
-			serial_convert(i);
-			serial_send(' ');
-		}
-		*/
-		//while(1);
-		//p_bmp280 = bmp280GetData();
-		/*
-		write_int(*p_bmp280);
-		write_char(' ');
-		//write_int(*(p_bmp280)+1);
-		write_char(' ');
-		//write_int(*(p_bmp280)+2);
-		write_char(' ');
-		//write_string(bmp280GetData());
-		*/
-		
+		(void) bmp280GetData();
 		//cmd(LCD_HOME);//CLEAR);
-		print_screen();
-		//readDHT11();
+		//print_screen();
+		//print_screen();
+		
+		//(void) readDHT11();
 		/*
 		ms_delay(255);
 		ms_delay(255);
@@ -213,6 +187,7 @@ void main()
 		*/
 		ms_delay(255);
 		ms_delay(255);
+		
 		//check_night();
 	}
 }

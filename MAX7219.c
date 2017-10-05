@@ -6,7 +6,7 @@ void matrixInit()
 	matrixClear();
 	
 	//Change intensity, 0 lowest - F brightest
-	matrixSend(0x0A, 0x00);
+	matrixSend(0x0A, 0x01);
 	//Take out of shutdown mode
 	matrixSend(0x0C, 0x01);
 	//Scan limit. 8 lines
@@ -17,7 +17,7 @@ void matrixClear()
 {
 	char i;
 	
-	for(i = 0; i < 8; i++)
+	for(i = 1; i < 9; i++)
 		matrixSend(i, 0x00);
 }
 

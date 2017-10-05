@@ -6,6 +6,7 @@ static code char bmp280 = 0x76;
 extern const unsigned char* bmp280Temp;
 
 extern unsigned char* bmp280GetData();
+extern void bmpSet(unsigned char oversample);
 
 //unsigned char*
 

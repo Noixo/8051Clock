@@ -15,6 +15,19 @@ void bmpReset()
 	i2c_stop();
 }
 
+void bmpSet(unsigned char oversample)
+{
+	i2c_start();
+	i2c_device_id(bmp280, 0);
+	i2c_write(0xF4);
+	
+	i2c_start();
+	
+	i2c_device_id(bmp280, 0);
+	i2c_write(oversample);
+	i2c_stop();
+}
+
 unsigned char* bmp280GetData()
 {
 	char i;
@@ -23,8 +36,8 @@ unsigned char* bmp280GetData()
 	//begin multi-byte data transfer
 	i2c_start();
 	(void) i2c_device_id(bmp280, 0);
-	//start at 0xF0-0xFC
-	i2c_write(0xF0);
+	//start at 0xF7-0xFC
+	i2c_write(0xF7);
 	
 	i2c_start();
 	(void) i2c_device_id(0x76, 1);
@@ -36,17 +49,20 @@ unsigned char* bmp280GetData()
 	}
 	bmp280Data[i] = i2c_read(1);
 	i2c_stop();
+	
 	//debug
 	for(i = 0; i < 22; i++)
 	{
-		serial_send(i);
+		serial_convert(i);
 		serial_send_array(": ");
 		serial_convert(bmp280Data[i]);
 		serial_send('\r');
 		serial_send('\n');
 	}
+	serial_send('\r');
+	serial_send('\n');
 	//serial_convert(bmp280Temp[0]);
-	write_int(bmp280Temp[0]);
+	//write_int(bmp280Temp[0]);
 	
 	return bmp280Data;
 }

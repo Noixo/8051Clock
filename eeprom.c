@@ -5,6 +5,7 @@
 
 //Code for the AT24C32 
 
+//must have 10ms delay minimum after writing a byte
 void eepromWriteByte(unsigned char addr1, unsigned char addr2, unsigned char value)
 {
 	i2c_start();

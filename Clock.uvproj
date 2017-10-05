@@ -384,11 +384,6 @@
           <GroupName>header</GroupName>
           <Files>
             <File>
-              <FileName>DHT11.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\DHT11.h</FilePath>
-            </File>
-            <File>
               <FileName>ds3231.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\ds3231.h</FilePath>
