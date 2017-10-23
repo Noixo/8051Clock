@@ -74,7 +74,7 @@ char i2c_device_id(char id, char rw)
 	//Pull sda high to ack bit
 	SDA = 1;
 	
-	//us_delay();
+	us_delay();
 	SCL = 1;
 	//Get ack bit
 	ACK = SDA;
@@ -106,10 +106,10 @@ unsigned char i2c_read(char last_byte)
 	}
 	
 	//9th bit master acknowledges data transfer or indicates last byte
-	if(last_byte == 1)
-		SDA = 1;
-	else
-		SDA = 0;	
+	//if(last_byte == 1)
+	SDA = last_byte;
+	//else
+		//SDA = 0;	
 	
 	//us_delay();
 	SCL = 1;

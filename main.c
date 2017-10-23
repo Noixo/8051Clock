@@ -160,31 +160,25 @@ void main()
 	//ms_delay(100);
 	//bmpReset();
 	
-	matrixInit();
-	matrixClear();
+	//matrixInit();
+	//matrixClear();
 //	matrixSend(1, 0x255);
 	//ms_delay(255);
-	//x8 prssure oversample, x8 temperature oversample & forced mode
-	bmpSet(0x92);
+	//FALSE//x8 prssure oversample, x8 temperature oversample & forced mode
+	//bmpSet(0x3F, 0xF4);	//92
+	bmpReset();
+	bmpSet(0xFF, 0xF4);
+	bmpSet(0x64, 0xF5);	
 	
 	//first is column second is value for column
+	
 	while(1)
 	{
-		
-		(void) bmp280GetData();
-		//cmd(LCD_HOME);//CLEAR);
-		//print_screen();
-		//print_screen();
-		
+		//bmpCalibration();
+		bmp280GetTemp();
 		//(void) readDHT11();
-		/*
 		ms_delay(255);
 		ms_delay(255);
-		ms_delay(255);
-		ms_delay(255);
-		ms_delay(255);
-		ms_delay(255);
-		*/
 		ms_delay(255);
 		ms_delay(255);
 		
