@@ -62,107 +62,42 @@ void bmpCalibration()
 }
 
 //must read temp before reading pressure
-//temp is stored as 3 bytes, (0xFA-0xFC)??
+//temp is stored as 3 bytes, (0xFA-0xFC)
 int bmp280GetTemp()
 {
-	//unsigned short dig_T1;
-	//short dig_T2;
-	//short dig_T3;
-	
-	
-	//unsigned char temp[3];
-	static long adc_T = 0, var1 = 0, var2 = 0, t_fine = 0;//, T;
-	unsigned long T = 0;
+	//Keil long = 4 bytes, int = 2
+	static long adc_T = 0, var1 = 0, var2 = 0, t_fine = 0, T;
 	
 	i2c_start();
 	i2c_device_id(bmp280, 0);
 
 	i2c_write(0xFA);
 
-	//i2c_stop();
 	i2c_start();
 	
 	i2c_device_id(bmp280, 1);
 	
+	//shove temperature data into a 4 byte variable
 	adc_T = i2c_read(0);
-	//temp[0] |= adc_T;
 	adc_T <<= 8;
 	adc_T |= i2c_read(0);
-	//temp[1] |= adc_T;
 	adc_T <<= 8;
 	adc_T |= i2c_read(1);
-	//temp[2] = adc_T;
 	i2c_stop();
-	/*
-	serial_convert((adc_T >> 24) & 0xFF);
-	serial_send(' ');
-	serial_convert((adc_T >> 16) & 0xFF);
-	serial_send(' ');
-	serial_convert((adc_T >> 8) & 0xFF);
-	serial_send(' ');
-	serial_convert(adc_T & 0xFF);
-	serial_send(' ');
-	*/
 	
-	/*
-	serial_send_array("RAW: ");
-	serial_convert(temp[0]);
-	serial_send(' ');
-	serial_convert(temp[1]);
-	serial_send(' ');
-	serial_convert(temp[2]);
-	serial_send('\r');
-	serial_send('\n');
-	*/
-	/*
-	//check status
-	i2c_start();
-	i2c_device_id(bmp280, 0);
-	i2c_write(0xF3);
-	i2c_stop();
-	i2c_start();
-	i2c_device_id(bmp280, 1);
-	serial_send('S');
-	serial_send(':');
-	serial_convert(i2c_read(1));
-	serial_send('\r');
-	serial_send('\n');
-	i2c_stop();
-	//-------------------------
-	*/
-	/*
-	serial_convert(adc_T << 8);
-	serial_send(' ');
-	serial_convert(adc_T >> 8);
-	serial_send(' ');
-	*/
-	//dig_T1 = 27504;
-	//dig_T2 = 26435;
-	//dig_T3 = -1000;
-	
-	//adc_T = 524288;//8388608;//415148;
-	//takes 20 bits
+	//conversion formula takes 20 bits
 	adc_T >>= 4;
 
-  //var1  = ((((adc_T>>3) - ((long)dig_T1 <<1))) *
-	  // ((long)dig_T2)) >> 11;
-
-  //var2  = (((((adc_T>>4) - ((long)dig_T1)) *
-	 //    ((adc_T>>4) - ((long)dig_T1))) >> 12) *
-	  // ((long)dig_T3)) >> 14;
-		
+	//32bit-fixed point formula from BMP280 documentation -pg45-46 (8.2)
 	var1 = ((((adc_T>>3) - ((long)dig_T1<<1))) * ((long)dig_T2)) >> 11;
   var2  = (((((adc_T>>4) - ((long)dig_T1)) * ((adc_T>>4) - ((long)dig_T1))) >> 12) * ((long)dig_T3)) >> 14;
 	
 	t_fine = var1+var2;
 	T = (t_fine*5+128) >> 8;
- // t_fine = (var1 + var2)/5120.0;
-	
-	
+
 	serial_convert(T/100);
 	serial_send('.');
 	serial_convert(T % 100);
-	
 	
 	serial_send('\r');
 	serial_send('\n');
