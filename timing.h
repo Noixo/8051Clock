@@ -15,10 +15,15 @@ sbit TF0 = 0x8D;
 sbit TR1 = 0x8E;
 sbit TF1 = 0x8F;
 
+sbit ET1 = 0xAB;
+//sbit EA = 0xAF;
+
 extern void init_timing();
 extern void ms_delay(unsigned char num);
 extern void us_delay();
 extern void dhtTimer();
 extern void us();
+extern void dhtInterrupt1();
+extern void dhtInterrupt();
 extern void timout();
 #endif

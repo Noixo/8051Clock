@@ -1,6 +1,7 @@
 #include "timing.h"
 #include <intrins.h>
-
+#include "external.h"
+//#include <reg51.h>
 void init_timing()
 {
 	TMOD |= 0x01;	//Turns on mode 1 16 bit timer for timer 0
@@ -53,6 +54,29 @@ void dhtTimer()
 	while(TF0 == 0);
 	TR0 = 0;
 	TF0 = 0;
+}
+
+void dhtInterrupt1()
+{
+	TMOD &= 0xF0;
+	TMOD |= 0x02;
+	
+	TH1 = 0x05;
+	TL1 = 0x05;
+	
+	ET1 = 1;
+	EA = 1;
+	
+	TR1 = 1;
+}
+
+void dhtInterrupt() interrupt 1
+{
+	//clear interrupt
+	TF1 = 0;
+	//stop timer
+	TR1 = 0;
+	//main();
 }
 
 /*

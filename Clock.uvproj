@@ -10,6 +10,7 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x0</ToolsetNumber>
       <ToolsetName>MCS-51</ToolsetName>
+      <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>AT89S51</Device>
@@ -403,6 +404,31 @@
               <FileType>5</FileType>
               <FilePath>.\serial.h</FilePath>
             </File>
+            <File>
+              <FileName>DHT11.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\DHT11.h</FilePath>
+            </File>
+            <File>
+              <FileName>external.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\external.h</FilePath>
+            </File>
+            <File>
+              <FileName>i2c.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\i2c.h</FilePath>
+            </File>
+            <File>
+              <FileName>LCD.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\LCD.h</FilePath>
+            </File>
+            <File>
+              <FileName>timing.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\timing.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -452,11 +478,6 @@
               <FileName>eeprom.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\eeprom.c</FilePath>
-            </File>
-            <File>
-              <FileName>MAX7219.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\MAX7219.c</FilePath>
             </File>
             <File>
               <FileName>ds3231.c</FileName>

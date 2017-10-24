@@ -27,7 +27,8 @@ void bmpSet(unsigned char settings, unsigned char reg)
 	i2c_write(settings);
 	i2c_stop();
 }
-
+/*
+//convert to char array/struct
 void bmpCalibration()
 {
 	char i;
@@ -45,28 +46,21 @@ void bmpCalibration()
 	for(i = 0; i < 12; i++)
 	{
 		serial_convert(i2c_read(0));
-		serial_send(' ');
 		serial_convert(i2c_read(0));
-		serial_send('\r');
-		serial_send('\n');
 	}
 	
-	serial_convert(i2c_read(1));
-	i2c_stop();
+	i2c_read(1);
 	
-	serial_send('\r');
-	serial_send('\n');
-	serial_send_array("END:");
-	serial_send('\r');
-	serial_send('\n');
+	i2c_stop();
 }
+*/
 
 //must read temp before reading pressure
 //temp is stored as 3 bytes, (0xFA-0xFC)
 int bmp280GetTemp()
 {
 	//Keil long = 4 bytes, int = 2
-	static long adc_T = 0, var1 = 0, var2 = 0, t_fine = 0, T;
+	static long adc_T = 0, var1 = 0, var2 = 0, T;
 	
 	i2c_start();
 	i2c_device_id(bmp280, 0);
@@ -84,11 +78,13 @@ int bmp280GetTemp()
 	adc_T <<= 8;
 	adc_T |= i2c_read(1);
 	i2c_stop();
-	
+
 	//conversion formula takes 20 bits
 	adc_T >>= 4;
-
+		
 	//32bit-fixed point formula from BMP280 documentation -pg45-46 (8.2)
+	
+	//try adc_T >> 3; then + 1 bit shift for adcT>>4
 	var1 = ((((adc_T>>3) - ((long)dig_T1<<1))) * ((long)dig_T2)) >> 11;
   var2  = (((((adc_T>>4) - ((long)dig_T1)) * ((adc_T>>4) - ((long)dig_T1))) >> 12) * ((long)dig_T3)) >> 14;
 	
@@ -105,56 +101,64 @@ int bmp280GetTemp()
   return (t_fine);
 }
 
-unsigned char* bmp280GetData()
+unsigned char* bmp280GetPressure()
 {
-	char i;
-	unsigned char bmp280Data[5];
+	long var1, var2;
+	unsigned long p;
+
+	long adc_P;
+	unsigned char bmp280Data[1];
 	
 	//begin multi-byte data transfer
 	i2c_start();
 	(void) i2c_device_id(bmp280, 0);
-	//start at 0xF7-0xFC
-	i2c_write(0xFA);
-	i2c_stop();
+	//start at 0xF7-0xF9
+	//point to pressure data location
+	i2c_write(0xF7);
 	
+	//repeated start
 	i2c_start();
 	(void) i2c_device_id(bmp280, 1);
 	
-	serial_convert(i2c_read(0));
-	serial_send('\r');
-	serial_send('\n');
-	serial_convert(i2c_read(0));
-	serial_send('\r');
-	serial_send('\n');
-	serial_convert(i2c_read(1));
-	serial_send('\r');
-	serial_send('\n');
+	adc_P = i2c_read(0);
+	adc_P <<= 8;
+	adc_P |= i2c_read(0);
+	adc_P <<= 8;
+	adc_P |= i2c_read(1);
 	
-	//7 registers 3 bytes sent per resister
-	/*
-	for(i = 0; i < 8; i++)	//22
-	{
-		bmp280Data[i] = i2c_read(0);
-	}
-	bmp280Data[i] = i2c_read(1);
-	*/
 	i2c_stop();
-	/*
-	//debug
-	for(i = 0; i < 8; i++)
-	{
-		serial_convert(i);
-		serial_send_array(": ");
-		serial_convert(bmp280Data[i]);
-		serial_send('\r');
-		serial_send('\n');
-	}
-	serial_send('\r');
-	serial_send('\n');
-	//serial_convert(bmp280Temp[0]);
-	//write_int(bmp280Temp[0]);
-	*/
+	
+	//adc_P = 519888;
+	
+	//only use 20 bits
+	adc_P >> 4;
+	
+	//pressure conversion formula from BMP280 documentation
+	//32bit-fixed point conversion -pg 46
+	
+	var1 = (((long)t_fine) >> 1) - (long)64000;
+	var2 = (((var1 >> 2) * (var1 >> 2)) >> 11) * ((long)dig_P6);
+
+	var2 = var2 + ((var1 * ((long)dig_P5)) << 1);
+	var2 = (var2 >> 2) + (((long)dig_P4) << 16);
+
+	var1 = (((dig_P3 * (((var1 >> 2) * (var1 >> 2)) >> 13)) >> 3) + ((((long)dig_P2) * var1) >> 1)) >> 18;
+	var1 = ((((32768 + var1)) * ((long) dig_P1)) >> 15);
+
+	if(var1 == 0)
+		return 0;
+	
+	p = (((unsigned long) (((long)1048576) - adc_P) - (var2 >> 12))) * 3125;
+
+	if(p < 0x80000000)
+		p = (p << 1) / ((unsigned long)var1);
+	else
+		p = (p / (unsigned long)var1) * 2;
+	
+	var1 = (((long) dig_P9) * ((long) (((p >> 3) * (p >> 3)) >> 13))) >> 12;
+	var2 = (((long)(p >> 2)) * ((long) dig_P8)) >> 13;
+
+	p = (unsigned long)((long)p + ((var1 + var2 + dig_P7) >> 4));
+	
 	return bmp280Data;
 }
-
-//void unsigned char*

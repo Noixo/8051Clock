@@ -16,7 +16,7 @@ TIMER 1 CHECKS DHT11
 
 void print_pressure()
 {
-	write_string(" PPPPhPa");
+	//write_string(" PPPPhPa");
 }
 
 void print_temp()
@@ -79,7 +79,7 @@ void print_screen()
 	
 	matrixSend(0x02, bcdToDec(*(p_time+1)));
 	matrixSend(0x03, bcdToDec(*(p_time+2)));
-	*/
+	
 	
 	//seconds
 	matrixSend(0x01, (*(p_time) & 0x0F));
@@ -113,9 +113,9 @@ void print_screen()
 		maxTest(0x05, (*(p_time)+5));
 		maxTest(0x06, (*(p_time)+6));
 		maxTest(0x07, (*(p_time)+3));
-	*/
-	//cmd(LCD_LINE_2);
 	
+	//cmd(LCD_LINE_2);
+	*/
 	print_pressure();
 }
 
@@ -174,8 +174,13 @@ void main()
 	
 	while(1)
 	{
+		
+		//FIX DHT11 + INTERRUPT
+		// REPLACE VARIABLES WITH reg52.h
+		readDHT11();
 		//bmpCalibration();
-		bmp280GetTemp();
+		//bmp280GetPressure();
+		//bmp280GetTemp();
 		//(void) readDHT11();
 		ms_delay(255);
 		ms_delay(255);
@@ -195,6 +200,7 @@ void main()
 	* then reset timer
 	* use 8x8 matrix and make a binary clock
 	* make ds3231 getData get temperature as well
+	* make a general void i2c write function 
 */
 
 /*
