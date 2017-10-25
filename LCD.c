@@ -1,5 +1,6 @@
 #include "LCD.h"
 #include "timing.h"
+#include "subroutine.h"
 
 void lcd_init()
 {
@@ -24,6 +25,7 @@ void lcd_init()
 	ms_delay(2);
 }
 
+//inserts the pre-defined bitmap into the user chosen location
 void customChar(unsigned char* array, char location)
 {
 	char i;
@@ -67,7 +69,7 @@ void backlight_toggle()
 }
 */
 
-void write_string(unsigned char* string)//[])
+void write_string(unsigned char* string)
 {
 	unsigned char i;
 
@@ -86,38 +88,9 @@ void write_string(unsigned char* string)//[])
 
 void write_int(unsigned char value)	//Rewrite later 	
 {
-	char i;
-	unsigned char array[3];
-
-	for(i = 0; i < 3; i++)
-	{
-		//puts value to array after being split by 1 character and converted to ascii.
-		array[i] = value % 10 + '0';
-		if(value / 10 == 0 && i < 3)
-		{
-			array[i+1] = '\0';
-			break;
-		}
-		value /= 10;
-	}
-	
-	reverse_array(array, i);
-	
-	write_string(array);
-}
-
-void reverse_array(unsigned char *array, unsigned char end)
-{
-	unsigned char start = 0, temp = 0;
-	while(start < end)
-	{
-		temp = array[start];
-		array[start] = array[end];
-		array[end] = temp;
-		start++;
-		end--;
-	}
-	
+	//converts the char number into ASCII
+	//sends the ASCII array to the LCD
+	write_string(convert(value));
 }
 
 void new_line()

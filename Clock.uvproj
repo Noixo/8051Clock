@@ -10,7 +10,6 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x0</ToolsetNumber>
       <ToolsetName>MCS-51</ToolsetName>
-      <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>AT89S51</Device>
@@ -304,7 +303,7 @@
             <Fuzzy>3</Fuzzy>
             <Optimize>9</Optimize>
             <WarningLevel>2</WarningLevel>
-            <SizeSpeed>1</SizeSpeed>
+            <SizeSpeed>0</SizeSpeed>
             <ObjectExtend>1</ObjectExtend>
             <ACallAJmp>0</ACallAJmp>
             <InterruptVectorAddress>0</InterruptVectorAddress>
@@ -483,6 +482,11 @@
               <FileName>ds3231.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\ds3231.c</FilePath>
+            </File>
+            <File>
+              <FileName>subroutine.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\subroutine.c</FilePath>
             </File>
           </Files>
         </Group>

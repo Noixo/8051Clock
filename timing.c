@@ -1,6 +1,6 @@
 #include "timing.h"
 #include <intrins.h>
-#include "external.h"
+//#include "external.h"
 //#include <reg51.h>
 void init_timing()
 {
@@ -58,6 +58,7 @@ void dhtTimer()
 
 void dhtInterrupt1()
 {
+	/*
 	TMOD &= 0xF0;
 	TMOD |= 0x02;
 	
@@ -68,8 +69,9 @@ void dhtInterrupt1()
 	EA = 1;
 	
 	TR1 = 1;
+	*/
 }
-
+/*
 void dhtInterrupt() interrupt 1
 {
 	//clear interrupt
@@ -78,7 +80,7 @@ void dhtInterrupt() interrupt 1
 	TR1 = 0;
 	//main();
 }
-
+*/
 /*
 void us()	//4 peek-to-peek - 6us rise to fall @ 
 {

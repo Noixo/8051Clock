@@ -12,7 +12,7 @@ char* readDHT11()
 		//ms_delay(250);	//2 second delay for device to re-test.
 	
 	//START TIMER TO PROTECT AGAINST GETTING STUCK.
-	dhtInterrupt1();
+	//dhtInterrupt1();
 	
 	//SEND INITAL SIGNAL
 	DHT11 = 0;

@@ -1,7 +1,9 @@
 #include "bmp280.h"
 #include "i2c.h"
-#include "lcd.h"
 #include "serial.h"
+
+//global variable to store value needed for pressure measurement
+long t_fine = 0;
 
 void bmpReset()
 {
@@ -57,11 +59,11 @@ void bmpCalibration()
 
 //must read temp before reading pressure
 //temp is stored as 3 bytes, (0xFA-0xFC)
-int bmp280GetTemp()
+long bmp280GetTemp()
 {
 	//Keil long = 4 bytes, int = 2
-	static long adc_T = 0, var1 = 0, var2 = 0, T;
-	
+	static long adc_T = 0, var1 = 0, var2 = 0, T = 0;
+
 	i2c_start();
 	i2c_device_id(bmp280, 0);
 
@@ -90,25 +92,17 @@ int bmp280GetTemp()
 	
 	t_fine = var1+var2;
 	T = (t_fine*5+128) >> 8;
-
-	serial_convert(T/100);
-	serial_send('.');
-	serial_convert(T % 100);
 	
-	serial_send('\r');
-	serial_send('\n');
-	
-  return (t_fine);
+  return (T);
 }
 
-unsigned char* bmp280GetPressure()
+unsigned long bmp280GetPressure()
 {
-	long var1, var2;
+	
+	long var1 = 0, var2 = 0, adc_P = 0;
 	unsigned long p;
 
-	long adc_P;
-	unsigned char bmp280Data[1];
-	
+	//t_fine = t_fine;
 	//begin multi-byte data transfer
 	i2c_start();
 	(void) i2c_device_id(bmp280, 0);
@@ -128,10 +122,8 @@ unsigned char* bmp280GetPressure()
 	
 	i2c_stop();
 	
-	//adc_P = 519888;
-	
 	//only use 20 bits
-	adc_P >> 4;
+	adc_P >>= 4;
 	
 	//pressure conversion formula from BMP280 documentation
 	//32bit-fixed point conversion -pg 46
@@ -141,24 +133,46 @@ unsigned char* bmp280GetPressure()
 
 	var2 = var2 + ((var1 * ((long)dig_P5)) << 1);
 	var2 = (var2 >> 2) + (((long)dig_P4) << 16);
-
+	
 	var1 = (((dig_P3 * (((var1 >> 2) * (var1 >> 2)) >> 13)) >> 3) + ((((long)dig_P2) * var1) >> 1)) >> 18;
 	var1 = ((((32768 + var1)) * ((long) dig_P1)) >> 15);
 
 	if(var1 == 0)
-		return 0;
-	
+	{
+		return '0';
+	}
 	p = (((unsigned long) (((long)1048576) - adc_P) - (var2 >> 12))) * 3125;
 
 	if(p < 0x80000000)
+	{
 		p = (p << 1) / ((unsigned long)var1);
+	}
 	else
+	{
 		p = (p / (unsigned long)var1) * 2;
+	}
 	
 	var1 = (((long) dig_P9) * ((long) (((p >> 3) * (p >> 3)) >> 13))) >> 12;
 	var2 = (((long)(p >> 2)) * ((long) dig_P8)) >> 13;
 
-	p = (unsigned long)((long)p + ((var1 + var2 + dig_P7) >> 4));
 	
-	return bmp280Data;
+	p = (unsigned long)((long)p + ((var1 + var2 + dig_P7) >> 4));
+	//p = t_fine;
+	
+	//convert Pa to hPa
+	//p /= 100;
+
+	//serial_convert(p);
+	/*
+	serial_send(' ');
+	serial_convert(p/1000);
+	serial_convert((p % 1000) / 100);
+	serial_send('.');
+	serial_convert(p % 100);
+	
+	serial_send('\r');
+	serial_send('\n');
+	*/
+	
+	return p;
 }

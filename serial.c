@@ -1,9 +1,8 @@
 #include "serial.h"
 #include "timing.h"
+#include "subroutine.h"
 
-#include "lcd.h"
-
-//9600 baurd
+//0xFD = 9600 baurd
 
 //0xFF = 	28,800 baurd
 void init_serial()
@@ -16,26 +15,11 @@ void init_serial()
 }
 
 
-void serial_convert(unsigned char value)	//Rewrite later
+void serial_convert(unsigned char value)
 {
-	char i;
-	unsigned char array[3];
-	
-	for(i = 0; i < 3; i++)
-	{
-		//puts value to array after being split by 1 character and converted to ascii.
-		array[i] = value % 10 + '0';
-		if(value / 10 == 0 && i < 3)
-		{
-			array[i+1] = '\0';
-			break;
-		}
-		value /= 10;
-	}
-	
-	reverse_array(array, i);
-	
-	serial_send_array(array);
+	//converts the char number into ASCII
+	//sends the ASCII array to UART
+	serial_send_array(convert(value));
 }
 
 void serial_send_array(unsigned char* array)

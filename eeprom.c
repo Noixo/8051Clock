@@ -18,14 +18,16 @@ void eepromWriteByte(unsigned char addr1, unsigned char addr2, unsigned char val
 	i2c_write(value);
 	i2c_stop();
 }
-
+/*
 void eepromWritePage(unsigned char* addr, unsigned char value)
 {
 	unsigned char i;
 	
 	//for(i = 0; i < )
 }
+*/
 
+/*
 char wearCheck()
 {
 	unsigned char i, j, wear = 0;
@@ -48,6 +50,7 @@ char wearCheck()
 	//check if value is not 1 or 0
 	return 0;
 }
+*/
 /*
 void eepromClear()
 {
@@ -61,7 +64,9 @@ void eepromClear()
 	}
 }
 */
+/*
 
+MOVE TO ANOTHER C FILE
 void dumpRom()
 {
 	unsigned char i, j;
@@ -77,6 +82,7 @@ void dumpRom()
 			serial_send('\n');
 		}
 }
+*/
 
 unsigned char readByte()
 {
@@ -90,6 +96,7 @@ unsigned char readByte()
 	
 	return value;
 }
+
 unsigned char eepromRandomRead(unsigned char addr1, unsigned char addr2)
 {
 	unsigned char value;

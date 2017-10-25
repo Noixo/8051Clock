@@ -148,7 +148,7 @@ void i2c_write(unsigned char byte)
 	us_delay();
 	SCL = 0;
 }
-
+/*
 //scans the bus to find all i2c devices
 void i2c_read_id()
 {
@@ -171,3 +171,4 @@ void i2c_read_id()
 		}
 	}
 }
+*/
