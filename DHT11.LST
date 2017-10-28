@@ -1,0 +1,87 @@
+C51 COMPILER V9.56.0.0   DHT11                                                             10/29/2017 01:41:23 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE DHT11
+OBJECT MODULE PLACED IN .\Objects\DHT11.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE DHT11.c OPTIMIZE(9,SIZE) BROWSE MODP2 DEBUG OBJECTEXTEND TABS(2) OBJECT(
+                    -.\Objects\DHT11.obj)
+
+line level    source
+
+   1          #include "DHT11.h"
+   2          #include "timing.h"
+   3          #include "i2c.h"
+   4          #include "lcd.h"
+   5          
+   6          char* readDHT11()
+   7          {
+   8   1        unsigned char i;
+   9   1        static unsigned char store[4];//, arr[2];
+  10   1        
+  11   1        //for(i = 0; i < 8; i++)
+  12   1          //ms_delay(250);  //2 second delay for device to re-test.
+  13   1        
+  14   1        //START TIMER TO PROTECT AGAINST GETTING STUCK.
+  15   1        //dhtInterrupt1();
+  16   1        
+  17   1        //SEND INITAL SIGNAL
+  18   1        DHT11 = 0;
+  19   1        ms_delay(20); //delay 20ms
+  20   1        DHT11 = 1;
+  21   1      
+  22   1        //Skip DHT11 confirmation transistion
+  23   1        while(DHT11 == 1);
+  24   1        while(DHT11 == 0);
+  25   1        while(DHT11 == 1);
+  26   1      
+  27   1        //READ DATA
+  28   1        for(i = 0; i < 40; i++)
+  29   1        {
+  30   2          store[i/8] <<= 1; //Push value to the right by 1 bit
+  31   2          while(DHT11 == 0);  //Loop to skip when pin is pulled low.
+  32   2          
+  33   2          dhtTimer(); //30us delay maybe 
+  34   2          
+  35   2          store[i/8] |= DHT11;  //Switch least sig bit to 1
+  36   2          while(DHT11 == 1);
+  37   2        }
+  38   1        
+  39   1        if(store[0] + store[2] == store[4]) //Validate the recieved values checksum
+  40   1        {
+  41   2          //arr[0] = store[0];
+  42   2          //arr[1] = store[2];
+  43   2          
+  44   2          write_int(store[0]);
+  45   2          write_char('%');
+  46   2          
+  47   2          write_char(' ');
+  48   2          
+  49   2          write_int(store[2]);
+  50   2          write_char(0);
+  51   2          
+  52   2          //write_char('C');
+  53   2          
+  54   2          return 0;
+C51 COMPILER V9.56.0.0   DHT11                                                             10/29/2017 01:41:23 PAGE 2   
+
+  55   2        }
+  56   1        else
+  57   1        {
+  58   2          //FIX
+  59   2          return -1;
+  60   2        }
+  61   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    130    ----
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      4       1
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

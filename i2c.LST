@@ -1,0 +1,204 @@
+C51 COMPILER V9.56.0.0   I2C                                                               10/29/2017 01:41:24 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE I2C
+OBJECT MODULE PLACED IN .\Objects\i2c.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE i2c.c OPTIMIZE(9,SIZE) BROWSE MODP2 DEBUG OBJECTEXTEND TABS(2) OBJECT(.\
+                    -Objects\i2c.obj)
+
+line level    source
+
+   1          #include "i2c.h"
+   2          #include "timing.h"
+   3          #include "lcd.h"
+   4          
+   5          void i2c_setup()
+   6          {
+   7   1        SDA = 1;
+   8   1        SCL = 1;
+   9   1      }
+  10          /*
+  11          void i2c_clock()
+  12          {
+  13            SCL = 1;
+  14            us_delay();
+  15            SCL = 0;
+  16            us_delay();
+  17          }
+  18          */
+  19          
+  20          void i2c_start()
+  21          {
+  22   1        //Clock stays high and SDA pulled low
+  23   1        SDA = 1;
+  24   1        SCL = 1;
+  25   1      
+  26   1        us_delay();
+  27   1        SDA = 0;
+  28   1        us_delay();
+  29   1        SCL = 0;
+  30   1        //us_delay();
+  31   1      }
+  32          
+  33          void i2c_stop()
+  34          {
+  35   1        //clock goes low before data
+  36   1        SCL = 0;
+  37   1        SDA = 0;
+  38   1        us_delay();
+  39   1        
+  40   1        SCL = 1;
+  41   1        us_delay();
+  42   1        SDA = 1;
+  43   1        //us_delay();
+  44   1      }
+  45          
+  46          char i2c_device_id(char id, char rw)
+  47          {
+  48   1        char i, ACK;
+  49   1        
+  50   1        //Starting at 1 to avoid 8th bit
+  51   1        for(i = 1; i < 8; i++)
+  52   1        {
+  53   2          id <<= 1;
+  54   2          SDA = id & 0x80;  //Sends a 1 or 0 to SDA
+C51 COMPILER V9.56.0.0   I2C                                                               10/29/2017 01:41:24 PAGE 2   
+
+  55   2          
+  56   2          //Pulses the clock
+  57   2          //us_delay();
+  58   2          SCL = 1;
+  59   2          us_delay();
+  60   2          SCL = 0;
+  61   2        }
+  62   1        //8th bit
+  63   1        //pulses the read/write bit
+  64   1        //rw low for write and high for read
+  65   1        SDA = rw;
+  66   1        //pulse the clock
+  67   1        //us_delay();
+  68   1        SCL = 1;
+  69   1        us_delay();
+  70   1        SCL = 0;
+  71   1        //us_delay();
+  72   1        
+  73   1        //9th bit
+  74   1        //Pull sda high to ack bit
+  75   1        SDA = 1;
+  76   1        
+  77   1        us_delay();
+  78   1        SCL = 1;
+  79   1        //Get ack bit
+  80   1        ACK = SDA;
+  81   1        
+  82   1        us_delay();
+  83   1        SCL = 0;
+  84   1        
+  85   1        return ACK;
+  86   1      }
+  87          
+  88          unsigned char i2c_read(char last_byte)
+  89          {
+  90   1        char i, byte = 0;
+  91   1        SDA = 1;
+  92   1        
+  93   1        for(i = 0; i < 8; i++)
+  94   1        { 
+  95   2          //bitshift byte by 1
+  96   2          byte <<= 1;
+  97   2          
+  98   2          //us_delay();
+  99   2          SCL = 1;
+ 100   2          
+ 101   2          //OR byte bit with SDA
+ 102   2          byte |= SDA;
+ 103   2          us_delay();
+ 104   2          
+ 105   2          SCL = 0;
+ 106   2        }
+ 107   1        
+ 108   1        //9th bit master acknowledges data transfer or indicates last byte
+ 109   1        //if(last_byte == 1)
+ 110   1        SDA = last_byte;
+ 111   1        //else
+ 112   1          //SDA = 0;  
+ 113   1        
+ 114   1        //us_delay();
+ 115   1        SCL = 1;
+ 116   1        us_delay();
+C51 COMPILER V9.56.0.0   I2C                                                               10/29/2017 01:41:24 PAGE 3   
+
+ 117   1        SCL = 0;
+ 118   1        
+ 119   1        //SDA = 1;
+ 120   1        return byte;
+ 121   1      }
+ 122          
+ 123          void i2c_write(unsigned char byte)
+ 124          {
+ 125   1        char i;//, ACK;
+ 126   1        for(i = 0; i < 8; i++)
+ 127   1        {
+ 128   2          //bit shifts data by i and ANDs it to convert it to boolean
+ 129   2          SDA = byte & 0x80;  //Sends a 1 or 0 to SDA
+ 130   2          
+ 131   2          //pulse the clock
+ 132   2          //us_delay();
+ 133   2          SCL = 1;
+ 134   2          us_delay();
+ 135   2          SCL = 0;
+ 136   2          
+ 137   2          byte <<= 1;
+ 138   2        }
+ 139   1        
+ 140   1        //For ack bit
+ 141   1        SDA = 1;
+ 142   1        
+ 143   1        //us_delay();
+ 144   1        SCL = 1;
+ 145   1        //Get ack bit
+ 146   1        //ACK = SDA;
+ 147   1        
+ 148   1        us_delay();
+ 149   1        SCL = 0;
+ 150   1      }
+ 151          /*
+ 152          //scans the bus to find all i2c devices
+ 153          void i2c_read_id()
+ 154          {
+ 155            char i, ACK;
+ 156            
+ 157            //search through all valid i2c addresses 
+ 158            for(i = 8; i < 120; i++)  //7 bit addressing
+ 159            {
+ 160              i2c_start();
+ 161              
+ 162              ACK = i2c_device_id(i, 0);  //gets the ACK bit after sending i2c device address
+ 163              
+ 164              i2c_stop();
+ 165              
+ 166              //if ACK = 0 then device was found
+ 167              if(ACK == 0)
+ 168              {
+ 169                write_int(i);
+ 170                write_char(' ');
+ 171              }
+ 172            }
+ 173          }
+ 174          */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    200    ----
+C51 COMPILER V9.56.0.0   I2C                                                               10/29/2017 01:41:24 PAGE 4   
+
+   CONSTANT SIZE    =     16    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =   ----       9
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

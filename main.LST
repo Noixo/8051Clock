@@ -1,0 +1,280 @@
+C51 COMPILER V9.56.0.0   MAIN                                                              10/29/2017 01:41:23 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE MAIN
+OBJECT MODULE PLACED IN .\Objects\main.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE main.c OPTIMIZE(9,SIZE) BROWSE MODP2 DEBUG OBJECTEXTEND TABS(2) OBJECT(.
+                    -\Objects\main.obj)
+
+line level    source
+
+   1          #include "LCD.h"
+   2          #include "DHT11.h"
+   3          #include "external.h"
+   4          #include "timing.h"
+   5          #include "i2c.h"
+   6          #include "ds3231.h"
+   7          #include "bmp280.h"
+   8          #include "eeprom.h"
+   9          #include "serial.h"
+  10          //#include "MAX7219.h"
+  11          /*
+  12          ATTACH SERIAL TO TIMER 0
+  13          TIMER 1 CHECKS DHT11
+  14          
+  15          */
+  16          
+  17          unsigned char *p_time;
+  18          long bmpTemp;
+  19          long bmpPressure;
+  20          
+  21          /*
+  22          void print_temp()
+  23          {
+  24            //unsigned char *p_temp;
+  25            
+  26            //get temp and humidty
+  27            //p_temp = readDHT11();
+  28            
+  29            //print temp
+  30            write_int(*(p_temp)+2);
+  31            write_char(0);
+  32            write_char(' ');
+  33            
+  34            //print humidity
+  35            write_int(*(p_temp));
+  36            write_char('%');
+  37          }
+  38          */
+  39          //prints the time and current sensor data
+  40          //main screen
+  41          void screen1()
+  42          {
+  43   1        //unsigned char *p_time;
+  44   1        
+  45   1        //reset to line 1 of LCD
+  46   1        cmd(LCD_LINE_1);
+  47   1        
+  48   1        //get the time
+  49   1        //p_time = rtc_get_time();
+  50   1        
+  51   1        //--------------print the time-------------
+  52   1        
+  53   1        //hours
+  54   1        write_int(*(p_time+2));
+C51 COMPILER V9.56.0.0   MAIN                                                              10/29/2017 01:41:23 PAGE 2   
+
+  55   1        write_char(':');
+  56   1        
+  57   1        //minutes
+  58   1        write_int(*(p_time+1)); 
+  59   1        write_char(':');
+  60   1        
+  61   1        //seconds
+  62   1        write_int(*(p_time));
+  63   1        write_char(' ');
+  64   1        
+  65   1        //readDHT11();
+  66   1        //print_temp();
+  67   1        
+  68   1        //print temp
+  69   1        write_int(bmpTemp/100);
+  70   1        write_char('.');
+  71   1        write_int(bmpTemp % 100);
+  72   1        //write temperature symbol *c
+  73   1        write_char(0);
+  74   1        write_char(' ');
+  75   1        
+  76   1        cmd(LCD_LINE_2);
+  77   1        
+  78   1        //day
+  79   1        write_int(*(p_time+4)); 
+  80   1        write_char('/');
+  81   1        //month
+  82   1        write_int(*(p_time+5));
+  83   1        write_char('/');
+  84   1        //year
+  85   1        write_int(*(p_time+6));
+  86   1        
+  87   1        
+  88   1        write_char(' ');
+  89   1      
+  90   1        write_int(bmpPressure/1000);
+  91   1        write_int((bmpPressure % 1000) / 100);
+  92   1        write_char('.');
+  93   1        write_int(bmpPressure % 100);
+  94   1      
+  95   1        /*
+  96   1        matrixSend(0x01, bcdToDec(*(p_time)));
+  97   1        
+  98   1        matrixSend(0x02, bcdToDec(*(p_time+1)));
+  99   1        matrixSend(0x03, bcdToDec(*(p_time+2)));
+ 100   1        
+ 101   1        
+ 102   1        //seconds
+ 103   1        matrixSend(0x01, (*(p_time) & 0x0F));
+ 104   1        serial_convert((*(p_time) & 0x0F));
+ 105   1      
+ 106   1        matrixSend(0x02, (*(p_time)/10 & 0x0F));
+ 107   1        serial_convert((*(p_time)/10 & 0x0F));
+ 108   1        serial_send(' ');
+ 109   1        
+ 110   1        //minutes
+ 111   1        matrixSend(0x03, (*(p_time+1) & 0x0F));
+ 112   1        serial_convert((*(p_time+1) & 0x0F));
+ 113   1        
+ 114   1        matrixSend(0x04, (*(p_time+1)/10 & 0x0F));
+ 115   1        serial_convert((*(p_time+1)/10 & 0x0F));
+ 116   1        serial_send(' ');
+C51 COMPILER V9.56.0.0   MAIN                                                              10/29/2017 01:41:23 PAGE 3   
+
+ 117   1        
+ 118   1        //hours
+ 119   1        matrixSend(0x05, (*(p_time+2) & 0x0F));
+ 120   1        serial_convert((*(p_time+2) & 0x0F));
+ 121   1        
+ 122   1        matrixSend(0x06, (*(p_time+2)/10 & 0x0F));
+ 123   1        serial_convert((*(p_time+2)/10 & 0x0F));
+ 124   1        serial_send(' ');
+ 125   1        
+ 126   1        serial_send('\r');
+ 127   1        serial_send('\n');
+ 128   1        
+ 129   1          /*
+ 130   1          maxTest(0x04, (*(p_time)+4));
+ 131   1          maxTest(0x05, (*(p_time)+5));
+ 132   1          maxTest(0x06, (*(p_time)+6));
+ 133   1          maxTest(0x07, (*(p_time)+3));
+ 134   1        
+ 135   1        //cmd(LCD_LINE_2);
+ 136   1        */
+ 137   1      //  print_pressure();
+ 138   1      }
+ 139          
+ 140          //Update the values
+ 141          void updateData()
+ 142          {
+ 143   1        p_time = rtc_get_time();
+ 144   1        bmpTemp = bmp280GetTemp();
+ 145   1        bmpPressure = bmp280GetPressure();
+ 146   1      }
+ 147          
+ 148          void main()
+ 149          {
+ 150   1        init_timing();
+ 151   1        
+ 152   1        //start up delay
+ 153   1        ms_delay(255);
+ 154   1        
+ 155   1        init_serial();
+ 156   1        
+ 157   1        //INTERRUPTS
+ 158   1        external_setup();
+ 159   1        
+ 160   1        //LCD init
+ 161   1        lcd_init();
+ 162   1        backlight = 0;
+ 163   1        
+ 164   1        //I2C init
+ 165   1        i2c_setup();
+ 166   1      
+ 167   1        //assign ccgram pos 0 as degrees C symbol
+ 168   1        customChar(degreesC, 0);
+ 169   1        
+ 170   1        //unsigned char arrs[2];// = {0,0};
+ 171   1        //eepromWriteByte(0,0, 0x7F);
+ 172   1        
+ 173   1        //delay so eeprom can process data
+ 174   1        //ms_delay(30);
+ 175   1        //eepromWriteByte(0,1, 0x05);
+ 176   1        //ms_delay(30);
+ 177   1        //eepromWriteByte(1,1,0x05);
+ 178   1        //ms_delay(10);
+C51 COMPILER V9.56.0.0   MAIN                                                              10/29/2017 01:41:23 PAGE 4   
+
+ 179   1        
+ 180   1        //matrixInit();
+ 181   1        //matrixClear();
+ 182   1      //  matrixSend(1, 0x255);
+ 183   1      
+ 184   1        bmpReset();
+ 185   1        bmpSet(0xFF, 0xF4);
+ 186   1        bmpSet(0x64, 0xF5); 
+ 187   1        
+ 188   1        //first is column second is value for column
+ 189   1        while(1)
+ 190   1        {
+ 191   2          updateData();
+ 192   2          screen1();
+ 193   2          
+ 194   2          //FIX DHT11 + INTERRUPT
+ 195   2          // REPLACE VARIABLES WITH reg52.h
+ 196   2          //readDHT11();
+ 197   2      
+ 198   2          //(void) readDHT11();
+ 199   2          
+ 200   2          ms_delay(255);
+ 201   2          ms_delay(255);
+ 202   2          ms_delay(255);
+ 203   2          ms_delay(255);
+ 204   2          
+ 205   2          //check_night();
+ 206   2        }
+ 207   1      }
+ 208          
+ 209          /*
+ 210            --------------TODO---------------
+ 211            * Add interupt to break DHT11 if stuck for too long
+ 212            * make a check in main to see if timer is up. if so run dht11 method
+ 213            * then reset timer
+ 214            * use 8x8 matrix and make a binary clock
+ 215            * make ds3231 getData get temperature as well
+ 216            
+ 217            * implement daylightsavings time 
+ 218            * time defaults to 00 rather than 0
+ 219          */
+ 220          
+ 221          /*
+ 222            ---------------Small issues--------------
+ 223            * i2c.c needs lcd.c to print variable. Not efficient
+ 224            * clean up code
+ 225          */
+ 226          
+ 227          /* Boot idea
+ 228            image appearing in middle of lcd
+ 229            made out of bitmaps.
+ 230            Load 8 bitmaps into lcd.
+ 231            Run them and then reload next 8.
+ 232          */
+ 233          
+ 234          /*  BUGS
+ 235            * DHT11 prints correct data when printing in dht11 method but
+ 236                priting pointer reference does not
+ 237            * BMP280 pressure, decimal values. if value is 1007.3, it often means 1007.03
+ 238            * *c symbol appears twice when seconds hand loops over e.g. 0:40:0
+ 239            * value 2 is being sent over uart
+ 240          */
+C51 COMPILER V9.56.0.0   MAIN                                                              10/29/2017 01:41:23 PAGE 5   
+
+ 241          
+ 242          /*  OPTIMISATION
+ 243              -i2c generic write function for bmp280,
+ 244              - remove redundant function from serial.c/move to sunroputine
+ 245              - replace hardware values with reg51.h
+ 246              - reduce size of bmp280 formula code
+ 247              - remove uneeded header files
+ 248          */
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    344    ----
+   CONSTANT SIZE    =     42    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =     11    ----
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)

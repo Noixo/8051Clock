@@ -1,0 +1,66 @@
+C51 COMPILER V9.56.0.0   SUBROUTINE                                                        10/29/2017 01:41:25 PAGE 1   
+
+
+C51 COMPILER V9.56.0.0, COMPILATION OF MODULE SUBROUTINE
+OBJECT MODULE PLACED IN .\Objects\subroutine.obj
+COMPILER INVOKED BY: C:\Keil_v5\C51\BIN\C51.EXE subroutine.c OPTIMIZE(9,SIZE) BROWSE MODP2 DEBUG OBJECTEXTEND TABS(2) OB
+                    -JECT(.\Objects\subroutine.obj)
+
+line level    source
+
+   1          #include "subroutine.h"
+   2          
+   3          //converts a char number value into separate ASCII
+   4          char* convert(unsigned char value)
+   5          {
+   6   1        char i;
+   7   1        static unsigned char array[3];
+   8   1        
+   9   1        for(i = 0; i < 3; i++)
+  10   1        {
+  11   2          //puts value in array after being split by 1 character and converted to ascii.
+  12   2          array[i] = value % 10 + '0';
+  13   2          
+  14   2          //checks if it's the last digit to process
+  15   2          if(value / 10 == 0 && i < 3)
+  16   2          {
+  17   3            //if the number of digits uses is less than 3 e.g. 24, 1
+  18   3            //set a terminator value in the next position
+  19   3            array[i+1] = '\0';
+  20   3            break;
+  21   3          }
+  22   2          value /= 10;
+  23   2        }
+  24   1        
+  25   1        //array is currently back to front, reverse to fix
+  26   1        reverse_array(array, i);
+  27   1        
+  28   1        return array;
+  29   1      }
+  30          
+  31          void reverse_array(unsigned char *array, unsigned char end)
+  32          {
+  33   1        unsigned char start = 0, temp = 0;
+  34   1        while(start < end)
+  35   1        {
+  36   2          temp = array[start];
+  37   2          array[start] = array[end];
+  38   2          array[end] = temp;
+  39   2          start++;
+  40   2          end--;
+  41   2        }
+  42   1      }
+
+
+MODULE INFORMATION:   STATIC OVERLAYABLE
+   CODE SIZE        =    122    ----
+   CONSTANT SIZE    =   ----    ----
+   XDATA SIZE       =   ----    ----
+   PDATA SIZE       =   ----    ----
+   DATA SIZE        =      3       3
+   IDATA SIZE       =   ----    ----
+   BIT SIZE         =   ----    ----
+END OF MODULE INFORMATION.
+
+
+C51 COMPILATION COMPLETE.  0 WARNING(S),  0 ERROR(S)
