@@ -18,8 +18,8 @@ sbit D7 = 0xA7;
 sbit a = 0xB7;	//Port 3 bit 7
 
 //sbit RW = 0x90;
-sbit RS = 0x93;	//Port 0, bit 0
-sbit E = 0x94;	//Port 0 bit 1
+sbit RS = 0x93;	//Port 1, bit 3
+sbit E = 0x94;	//Port 1 bit 4
 
 //sbit a = 0xB7;
 
@@ -73,7 +73,7 @@ extern void backlight_toggle(void);
 extern void backlight_light(void);
 extern void write_string(unsigned char string[]);
 extern void new_line(void);
-extern void int_to_ascii(unsigned char decimal, unsigned char size);
+//extern void int_to_ascii(unsigned char decimal, unsigned char size);
 extern void write_int(unsigned char value);
 extern void reverse_array(unsigned char array[], char i);
 #endif

@@ -1,6 +1,8 @@
 #include "timing.h"
 #include <intrins.h>
-//#include "external.h"
+#include "external.h"
+#include "lcd.h"
+#include "i2c.h"
 //#include <reg51.h>
 void init_timing()
 {
@@ -23,6 +25,43 @@ void ms_delay(unsigned char num)	//1 miliseconds
 		TF0 = 0;           	//clear the timer Over flow flag
 	}
 	TR0 = 0;						//Turns off the timer
+}
+
+void msDelayCheck()	//1 miliseconds
+{
+	unsigned char i;
+	SDA = 0;
+	SDA = 1;
+	for(i = 0; i < 255; i++)
+	{
+		TH1 = 0;	//Upper 8 bits
+		TL1 = 0;	//Lower 8 bits
+		TR1 = 1;           	//Starts the timer
+
+		while(TF1 == 0)		//loops till timer overflow bit = 1
+		{
+			//if button pushed
+			/*
+			if(lcd_button == 1)
+			{
+				lcdBacklight();
+				break;
+			}
+			*/
+			
+			if(next_screenVar == 1)
+			{
+				cmd(LCD_CLEAR);			//Wipe screen
+				screenNum++;
+				next_screen();
+				TF1 = 0;
+			}
+			
+		}
+		TF1 = 0;           	//clear the timer Over flow flag
+	}
+	TR1 = 0;						//Turns off the timer
+	SDA = 1;
 }
 #pragma SAVE
 #pragma OPTIMIZE(8)

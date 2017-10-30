@@ -1,0 +1,6 @@
+i2c_device_id():
+DESCRIPTION:
+RETURN TYPE:
+	0: ACK bit acknowldge
+	1: NACK bit acknowledge
+	2: invalid I2C address

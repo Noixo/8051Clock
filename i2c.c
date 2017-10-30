@@ -47,6 +47,10 @@ char i2c_device_id(char id, char rw)
 {
 	char i, ACK;
 	
+	//check if valid i2c address
+	if(i < 8 && i > 120)
+		return 2;
+	
 	//Starting at 1 to avoid 8th bit
 	for(i = 1; i < 8; i++)
 	{

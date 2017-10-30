@@ -33,3 +33,9 @@ V:0.61 (25/10/2017)
 	- removed BMP280 developer, serial outputs
 	- started planning screen formatting in main.c
 	- Unused functions commented out to conserve space
+V:0.62 (30/10/2017)
+	- added i2c check to i2c_device_id
+	- incresed time delay for LCD commands
+	- optimised EEPROM random read
+	- extended delay checking to include line change & custom values
+	- added three menus

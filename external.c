@@ -2,11 +2,22 @@
 #include "timing.h"
 #include "LCD.h"
 
+char screenNum = 0;
+
+//screen1, 2 & 3 belong to main
+extern void screen1();
+extern void screen2();
+extern void screen3();
+
+//void screen1();
+//void screen2();
+
 void external_setup()
 {
 	//EXT0 for backlight
 	IT0 = 1;
 	EX0 = 1;
+	
 	EA = 1;
 	
 	//EXT1 for next screen
@@ -28,22 +39,38 @@ void check_night()
 	}
 }
 
-void ex0_isr(void) interrupt 0
+//change so that it runs timer 2 to turn on/off
+void lcdBacklight()
 {
 	unsigned char i;
 	
 	if (comparator == 0)	//If light is not on aka night time
 	{
 		backlight = 0;			//Sink current (pnp transistor)
-		for(i = 0; i < 25; i++)
-			ms_delay(200);		//5 second delay
+		for(i = 0; i < 25; i++);
+		//	ms_delay(200);		//5 second delay
 		backlight = 1;			//Pull line high to turn off pnp transistor
 	}
 }
 
-void next_screen() interrupt 1
+void next_screen()
 {
-		cmd(LCD_CLEAR);			//Wipe screen
+	if(screenNum > 2)
+		screenNum = 0;
 		
-		//Go to next screen
+	//Go to next screen	
+	switch(screenNum)
+	{
+		case 0:
+			screen1();
+			break;
+		case 1:
+			screen2();
+			break;
+		case 2:
+			screen3();
+			break;
+	}
+	ms_delay(255);
+	ms_delay(255);
 }

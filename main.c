@@ -14,9 +14,24 @@ TIMER 1 CHECKS DHT11
 
 */
 
+/*	EEPROM
+	0: max temp			1 byte signed
+	1: min temp			1 byte signed
+	2: max humidity 1 byte singed/unsigned
+	3: min humidity 1 byte singed/unsigned
+	4: max pressure 3 bytes unsigned
+	5: min pressure 3 bytes unsigned
+	
+	pos 0-10 used
+	
+*/
+
 unsigned char *p_time;
 long bmpTemp;
 long bmpPressure;
+
+const unsigned char code max[] = "MAX/MIN: ";
+//const char screenNum = 0;
 
 /*
 void print_temp()
@@ -36,105 +51,130 @@ void print_temp()
 	write_char('%');
 }
 */
-//prints the time and current sensor data
-//main screen
+
+//void check
+
+//if time is < 10 add 0. e.g. 05
+void check0(char number)
+{
+	if(number < 10)
+		write_int(0);
+}
+
 void screen1()
 {
-	//unsigned char *p_time;
-	
-	//reset to line 1 of LCD
-	cmd(LCD_LINE_1);
-	
-	//get the time
-	//p_time = rtc_get_time();
-	
+	//reset to line 1 of LCD, pos 0
+	//cmd(LCD_LINE_1);
+	cmd(LCD_HOME);
+
 	//--------------print the time-------------
-	
 	//hours
+	check0(*(p_time + 2));
 	write_int(*(p_time+2));
 	write_char(':');
 	
 	//minutes
+	check0(*(p_time + 1));
 	write_int(*(p_time+1));	
 	write_char(':');
 	
 	//seconds
+	check0(*(p_time));
 	write_int(*(p_time));
 	write_char(' ');
 	
+	//cmd(LCD_LINE_2);
+	
 	//readDHT11();
 	//print_temp();
-	
+	//ms_delay(4);
 	//print temp
 	write_int(bmpTemp/100);
 	write_char('.');
 	write_int(bmpTemp % 100);
 	//write temperature symbol *c
 	write_char(0);
-	write_char(' ');
+	//write_char(' ');
 	
 	cmd(LCD_LINE_2);
 	
 	//day
+	check0(*(p_time+4));
 	write_int(*(p_time+4));	
 	write_char('/');
 	//month
+	check0(*(p_time+5));
 	write_int(*(p_time+5));
 	write_char('/');
 	//year
+	check0(*(p_time+6));
 	write_int(*(p_time+6));
-	
-	
 	write_char(' ');
 
 	write_int(bmpPressure/1000);
 	write_int((bmpPressure % 1000) / 100);
 	write_char('.');
 	write_int(bmpPressure % 100);
+	write_char(' ');
+}
 
-	/*
-	matrixSend(0x01, bcdToDec(*(p_time)));
-	
-	matrixSend(0x02, bcdToDec(*(p_time+1)));
-	matrixSend(0x03, bcdToDec(*(p_time+2)));
-	
-	
-	//seconds
-	matrixSend(0x01, (*(p_time) & 0x0F));
-	serial_convert((*(p_time) & 0x0F));
+//show max and min temp
+void screen2()
+{
+	unsigned char value;
+	cmd(LCD_HOME);
 
-	matrixSend(0x02, (*(p_time)/10 & 0x0F));
-	serial_convert((*(p_time)/10 & 0x0F));
-	serial_send(' ');
+	write_string(max);
+	//get max temp
 	
-	//minutes
-	matrixSend(0x03, (*(p_time+1) & 0x0F));
-	serial_convert((*(p_time+1) & 0x0F));
+	value = eepromRandomRead(0,0);
+	write_int(value);
+	//serial_convert(value);
+	write_char(0);
 	
-	matrixSend(0x04, (*(p_time+1)/10 & 0x0F));
-	serial_convert((*(p_time+1)/10 & 0x0F));
-	serial_send(' ');
+	write_char(' ');
 	
-	//hours
-	matrixSend(0x05, (*(p_time+2) & 0x0F));
-	serial_convert((*(p_time+2) & 0x0F));
 	
-	matrixSend(0x06, (*(p_time+2)/10 & 0x0F));
-	serial_convert((*(p_time+2)/10 & 0x0F));
-	serial_send(' ');
+	//get min temp
+	value = eepromRandomRead(0,1);
+	write_int(value);
+	//serial_convert(value);
+	write_char(0);
 	
-	serial_send('\r');
-	serial_send('\n');
+	//get humidity
+	cmd(LCD_LINE_2);
+	write_string(max);
 	
-		/*
-		maxTest(0x04, (*(p_time)+4));
-		maxTest(0x05, (*(p_time)+5));
-		maxTest(0x06, (*(p_time)+6));
-		maxTest(0x07, (*(p_time)+3));
+	value = eepromRandomRead(0,2);
+	write_int(value);
+	//serial_convert(value);
+	write_char('%');
+	write_char(' ');
 	
-	//cmd(LCD_LINE_2);
-	*/
-//	print_pressure();
+	value = eepromRandomRead(0,3);
+	write_int(value);
+	//serial_convert(value);
+	write_char('%');
+	
+}
+
+void screen3()
+{
+	char i;
+	write_string("MAX: ");
+	
+	for(i = 4; i < 7; i++)
+	{
+		write_int(eepromRandomRead(0,i));
+	}
+	cmd(LCD_LINE_2);
+	
+	write_string("MIN: ");
+	
+	for(i = 7; i < 10; i++)
+	{
+		write_int(eepromRandomRead(0,i));
+	}
 }
 
 //Update the values
@@ -143,6 +183,17 @@ void updateData()
 	p_time = rtc_get_time();
 	bmpTemp = bmp280GetTemp();
 	bmpPressure = bmp280GetPressure();
+	
+	//refreshes the current screen
+	switch(screenNum)
+	{
+		case 0:
+			screen1();
+			break;
+		case 1:
+			screen2();
+			break;
+	}
 }
 
 void main()
@@ -182,14 +233,27 @@ void main()
 //	matrixSend(1, 0x255);
 
 	bmpReset();
+	bmpSet(0x64, 0xF5);
 	bmpSet(0xFF, 0xF4);
-	bmpSet(0x64, 0xF5);	
+	
+	//main, startup screen
+	screen1();
 	
 	//first is column second is value for column
 	while(1)
 	{
 		updateData();
-		screen1();
+		
+		//cmd(LCD_LINE_1);
+		
+		/*
+		write_int(30);
+		write_int(50);
+		write_int(4);
+		cmd(LCD_LINE_2);
+		write_int(20);
+		*/
+		
 		
 		//FIX DHT11 + INTERRUPT
 		// REPLACE VARIABLES WITH reg52.h
@@ -197,10 +261,13 @@ void main()
 
 		//(void) readDHT11();
 		
-		ms_delay(255);
-		ms_delay(255);
-		ms_delay(255);
-		ms_delay(255);
+		//ms_delay(255);
+		//delays + checks if button pushed
+		msDelayCheck();
+		msDelayCheck();
+		msDelayCheck();
+		//ms_delay(255);
+		//ms_delay(255);
 		
 		//check_night();
 	}

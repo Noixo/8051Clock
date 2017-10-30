@@ -161,18 +161,6 @@ unsigned long bmp280GetPressure()
 	
 	//convert Pa to hPa
 	//p /= 100;
-
-	//serial_convert(p);
-	/*
-	serial_send(' ');
-	serial_convert(p/1000);
-	serial_convert((p % 1000) / 100);
-	serial_send('.');
-	serial_convert(p % 100);
-	
-	serial_send('\r');
-	serial_send('\n');
-	*/
 	
 	return p;
 }

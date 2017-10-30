@@ -99,8 +99,6 @@ unsigned char readByte()
 
 unsigned char eepromRandomRead(unsigned char addr1, unsigned char addr2)
 {
-	unsigned char value;
-	
 	//dummy write
 	i2c_start();
 	i2c_device_id(at24,0);
@@ -108,11 +106,7 @@ unsigned char eepromRandomRead(unsigned char addr1, unsigned char addr2)
 	i2c_write(addr1);
 	i2c_write(addr2);
 	
-	value = readByte();
-	
-	//i2c_stop();
-	
-	return value;
+	return readByte();
 }
 /*
 unsigned char* eepromReadPage(unsigned char* addr)

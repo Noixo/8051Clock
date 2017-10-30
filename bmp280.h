@@ -10,14 +10,14 @@ static code short dig_T2 = 26369;
 static code short dig_T3 = -1000;
 
 static code unsigned short dig_P1 = 38955;
-	static code short dig_P2 = -10633;
-	static code short dig_P3 = 3024;
-	static code short dig_P4 = 2484;
-	static code short dig_P5 = 118;
-	static code short dig_P6 = -7;
-	static code short dig_P7 = 15500;
-	static code short dig_P8 = -14600;
-	static code short dig_P9 = 6000;
+static code short dig_P2 = -10633;
+static code short dig_P3 = 3024;
+static code short dig_P4 = 2484;
+static code short dig_P5 = 118;
+static code short dig_P6 = -7;
+static code short dig_P7 = 15500;
+static code short dig_P8 = -14600;
+static code short dig_P9 = 6000;
 
 //extern const unsigned char* bmp280Temp();
 extern const void bmpReset();

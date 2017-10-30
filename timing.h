@@ -20,6 +20,7 @@ sbit ET1 = 0xAB;
 
 extern void init_timing();
 extern void ms_delay(unsigned char num);
+extern void msDelayCheck();
 extern void us_delay();
 extern void dhtTimer();
 extern void us();
