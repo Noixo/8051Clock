@@ -1,9 +1,11 @@
 #ifndef _BMP280_H_
 #define _BMP280_H_
 
+#define bmp280 0x76
+
 extern data long t_fine;
 
-static code char bmp280 = 0x76;
+//static code char bmp280 0x76;
 
 static code unsigned short dig_T1 = 27314;
 static code short dig_T2 = 26369;

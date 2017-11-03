@@ -19,6 +19,7 @@ sbit comparator = 0x92;
 sbit next = 0x94;
 
 extern char screenNum;
+extern bit interruptBit;
 
 extern void external_setup();
 extern void check_night(void);

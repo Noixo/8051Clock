@@ -7,15 +7,14 @@ void i2c_setup()
 	SDA = 1;
 	SCL = 1;
 }
-/*
+
 void i2c_clock()
 {
 	SCL = 1;
 	us_delay();
 	SCL = 0;
-	us_delay();
+	//us_delay();
 }
-*/
 
 void i2c_start()
 {
@@ -68,10 +67,12 @@ char i2c_device_id(char id, char rw)
 	//rw low for write and high for read
 	SDA = rw;
 	//pulse the clock
-	//us_delay();
+	i2c_clock();
+	/*
 	SCL = 1;
 	us_delay();
 	SCL = 0;
+	*/
 	//us_delay();
 	
 	//9th bit
@@ -115,11 +116,13 @@ unsigned char i2c_read(char last_byte)
 	//else
 		//SDA = 0;	
 	
+	i2c_clock();
+	/*
 	//us_delay();
 	SCL = 1;
 	us_delay();
 	SCL = 0;
-	
+	*/
 	//SDA = 1;
 	return byte;
 }
@@ -133,11 +136,12 @@ void i2c_write(unsigned char byte)
 		SDA = byte & 0x80;	//Sends a 1 or 0 to SDA
 		
 		//pulse the clock
-		//us_delay();
+		i2c_clock();
+		/*
 		SCL = 1;
 		us_delay();
 		SCL = 0;
-		
+		*/
 		byte <<= 1;
 	}
 	

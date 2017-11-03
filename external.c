@@ -1,8 +1,10 @@
 #include "external.h"
 #include "timing.h"
-#include "LCD.h"
+//#include "LCD.h"
 
 char screenNum = 0;
+
+bit interruptBit = 0;
 
 //screen1, 2 & 3 belong to main
 extern void screen1();
@@ -18,6 +20,7 @@ void external_setup()
 	IT0 = 1;
 	EX0 = 1;
 	
+	//turn on 'global?' interrupts
 	EA = 1;
 	
 	//EXT1 for next screen
@@ -29,6 +32,8 @@ void external_setup()
 
 void check_night()
 {
+	backlight =~ comparator;
+	/*
 	if (comparator == 0)	//If night time
 	{
 		backlight = 1;			//Turn off LCD backlight
@@ -37,10 +42,11 @@ void check_night()
 	{
 		backlight = 0;			//When daytime turn on light
 	}
+	*/
 }
 
 //change so that it runs timer 2 to turn on/off
-void lcdBacklight()
+void lcdBacklight() interrupt 2
 {
 	unsigned char i;
 	
@@ -53,10 +59,24 @@ void lcdBacklight()
 	}
 }
 
+//if user wants to change screen
+//only changes a bit to avoid potential problems
+//with exiting whatver subroutine
+void nextScreen() interrupt 0
+{
+	interruptBit = 1;
+	
+	//prevents spamming
+	//ms_delay(255);
+	//ms_delay(255);
+}
+
 void next_screen()
 {
-	if(screenNum > 2)
-		screenNum = 0;
+	//reset the screen if num > 2
+	screenNum &= 3;
+	//if(screenNum > 2)
+		//screenNum = 0;
 		
 	//Go to next screen	
 	switch(screenNum)
@@ -70,7 +90,7 @@ void next_screen()
 		case 2:
 			screen3();
 			break;
+		case 3:
+			break;
 	}
-	ms_delay(255);
-	ms_delay(255);
 }

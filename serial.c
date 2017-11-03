@@ -14,7 +14,6 @@ void init_serial()
 	TR1 = 1;
 }
 
-
 void serial_convert(unsigned char value)
 {
 	//converts the char number into ASCII

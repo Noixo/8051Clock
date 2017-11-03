@@ -39,3 +39,5 @@ V:0.62 (30/10/2017)
 	- optimised EEPROM random read
 	- extended delay checking to include line change & custom values
 	- added three menus
+V:0.63 (3/11/2017)
+	- major optimisations

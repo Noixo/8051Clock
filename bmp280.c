@@ -1,6 +1,5 @@
 #include "bmp280.h"
 #include "i2c.h"
-#include "serial.h"
 
 //global variable to store value needed for pressure measurement
 long t_fine = 0;
@@ -62,8 +61,9 @@ void bmpCalibration()
 long bmp280GetTemp()
 {
 	//Keil long = 4 bytes, int = 2
-	static long adc_T = 0, var1 = 0, var2 = 0, T = 0;
-
+	static long adc_T, var1, var2;//, T = 0;
+	static short T;
+	
 	i2c_start();
 	i2c_device_id(bmp280, 0);
 
@@ -99,8 +99,8 @@ long bmp280GetTemp()
 unsigned long bmp280GetPressure()
 {
 	
-	long var1 = 0, var2 = 0, adc_P = 0;
-	unsigned long p;
+	long var1, var2, adc_P;
+	static unsigned long p;
 
 	//t_fine = t_fine;
 	//begin multi-byte data transfer
@@ -139,7 +139,7 @@ unsigned long bmp280GetPressure()
 
 	if(var1 == 0)
 	{
-		return '0';
+		return 0;
 	}
 	p = (((unsigned long) (((long)1048576) - adc_P) - (var2 >> 12))) * 3125;
 
@@ -157,7 +157,6 @@ unsigned long bmp280GetPressure()
 
 	
 	p = (unsigned long)((long)p + ((var1 + var2 + dig_P7) >> 4));
-	//p = t_fine;
 	
 	//convert Pa to hPa
 	//p /= 100;

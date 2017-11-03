@@ -1,7 +1,7 @@
 #include "eeprom.h"
 #include "i2c.h"
 #include "timing.h"
-#include "serial.h"
+//#include "serial.h"
 
 //Code for the AT24C32 
 

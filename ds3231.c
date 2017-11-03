@@ -1,11 +1,11 @@
 #include "ds3231.h"
 #include "i2c.h"
-
+/*
 unsigned char decToBcd(unsigned char convert)
 {
 	return ((convert / 10 * 16) + (convert % 10));
 }
-
+*/
 unsigned char bcdToDec(unsigned char convert)
 {
 	return ((convert / 16 * 10) + (convert % 16));
@@ -40,14 +40,14 @@ unsigned char* rtc_get_time()
 	char i;
 	
 	i2c_start();
-	(void) i2c_device_id(0x68,0);	//send address + write bit
+	(void) i2c_device_id(ds3231,0);	//send address + write bit
 	
 	i2c_write(0);	//point to location i of DS3231
 	
 	i2c_stop();
 	i2c_start();
 	
-	(void) i2c_device_id(0x68, 1);	//send address + read bit
+	(void) i2c_device_id(ds3231, 1);	//send address + read bit
 	
 	for(i = 0; i < 7; i++)
 	{
@@ -65,7 +65,7 @@ void rtc_set_time(unsigned char* setTime)
 	//multi-byte set time
 	
 	i2c_start();
-	(void) i2c_device_id(0x68, 1);
+	(void) i2c_device_id(ds3231, 1);
 	i2c_write(0);	//point to seconds
 	
 	for(i = 0; setTime != '\0'; i++)

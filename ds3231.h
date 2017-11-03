@@ -1,6 +1,8 @@
 #ifndef _DS3231_H_
 #define _DS3231_H_
 
+#define ds3231 0x68
+
 extern const unsigned char time[];	//6
 extern const unsigned char temp[];	//1
 
@@ -11,6 +13,5 @@ extern unsigned char decToBcd(unsigned char convert);
 extern unsigned char bcdToDec(unsigned char convert);
 extern void rtc_set_time();
 //extern void time rtc_get_time();
-
 
 #endif

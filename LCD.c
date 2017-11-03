@@ -47,12 +47,9 @@ void cmd(unsigned char cmd)
 	E = 0;
 	
 	if(cmd == LCD_CLEAR || cmd == LCD_HOME || cmd == LCD_LINE_1 || cmd == LCD_LINE_2)
-		ms_delay(6);
-	else
-	{
-		us_delay();
-		us_delay();
-	}
+		ms_delay(2);
+	//us_delay();
+	//us_delay();
 }
 
 void write_char(unsigned char letter)
@@ -65,7 +62,7 @@ void write_char(unsigned char letter)
 	
 	//give extra time to custom characters in LCD DRAM
 	if(letter >= '0' && letter <= '9')
-		ms_delay(5);
+		ms_delay(1);
 	us_delay();
 	us_delay();
 }
@@ -93,7 +90,7 @@ void write_string(unsigned char* string)
 	}
 }
 
-void write_int(unsigned char value)	//Rewrite later 	
+void write_int(unsigned char value)
 {
 	//converts the char number into ASCII
 	//sends the ASCII array to the LCD

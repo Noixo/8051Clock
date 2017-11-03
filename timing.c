@@ -1,7 +1,5 @@
 #include "timing.h"
 #include <intrins.h>
-#include "external.h"
-#include "lcd.h"
 #include "i2c.h"
 //#include <reg51.h>
 void init_timing()
@@ -26,7 +24,7 @@ void ms_delay(unsigned char num)	//1 miliseconds
 	}
 	TR0 = 0;						//Turns off the timer
 }
-
+/*
 void msDelayCheck()	//1 miliseconds
 {
 	unsigned char i;
@@ -47,7 +45,7 @@ void msDelayCheck()	//1 miliseconds
 				lcdBacklight();
 				break;
 			}
-			*/
+			
 			
 			if(next_screenVar == 1)
 			{
@@ -63,6 +61,7 @@ void msDelayCheck()	//1 miliseconds
 	TR1 = 0;						//Turns off the timer
 	SDA = 1;
 }
+*/
 #pragma SAVE
 #pragma OPTIMIZE(8)
 void us_delay()	//37 microsecond timer
@@ -94,7 +93,7 @@ void dhtTimer()
 	TR0 = 0;
 	TF0 = 0;
 }
-
+/*
 void dhtInterrupt1()
 {
 	/*
@@ -108,8 +107,9 @@ void dhtInterrupt1()
 	EA = 1;
 	
 	TR1 = 1;
-	*/
+	
 }
+*/
 /*
 void dhtInterrupt() interrupt 1
 {
@@ -120,13 +120,3 @@ void dhtInterrupt() interrupt 1
 	//main();
 }
 */
-/*
-void us()	//4 peek-to-peek - 6us rise to fall @ 
-{
-	;
-}
-*/
-void timeout()	//For fixing DHT11 freezes
-{
-	//TMOD
-}

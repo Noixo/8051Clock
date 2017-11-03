@@ -8,11 +8,6 @@
 #include "eeprom.h"
 #include "serial.h"
 //#include "MAX7219.h"
-/*
-ATTACH SERIAL TO TIMER 0
-TIMER 1 CHECKS DHT11
-
-*/
 
 /*	EEPROM
 	0: max temp			1 byte signed
@@ -29,10 +24,6 @@ TIMER 1 CHECKS DHT11
 unsigned char *p_time;
 long bmpTemp;
 long bmpPressure;
-
-const unsigned char code max[] = "MAX/MIN: ";
-//const char screenNum = 0;
-
 /*
 void print_temp()
 {
@@ -52,8 +43,6 @@ void print_temp()
 }
 */
 
-//void check
-
 //if time is < 10 add 0. e.g. 05
 void check0(char number)
 {
@@ -64,7 +53,6 @@ void check0(char number)
 void screen1()
 {
 	//reset to line 1 of LCD, pos 0
-	//cmd(LCD_LINE_1);
 	cmd(LCD_HOME);
 
 	//--------------print the time-------------
@@ -121,12 +109,14 @@ void screen1()
 //show max and min temp
 void screen2()
 {
+	const char code max[] = "MAX/MIN: ";
 	unsigned char value;
+	
 	cmd(LCD_HOME);
 
 	write_string(max);
-	//get max temp
 	
+	//get max temp
 	value = eepromRandomRead(0,0);
 	write_int(value);
 	//serial_convert(value);
@@ -193,6 +183,9 @@ void updateData()
 		case 1:
 			screen2();
 			break;
+		case 2:
+			screen3();
+			break;
 	}
 }
 
@@ -201,7 +194,7 @@ void main()
 	init_timing();
 	
 	//start up delay
-	ms_delay(255);
+	//ms_delay(255);
 	
 	init_serial();
 	
@@ -218,16 +211,6 @@ void main()
 	//assign ccgram pos 0 as degrees C symbol
 	customChar(degreesC, 0);
 	
-	//unsigned char arrs[2];// = {0,0};
-	//eepromWriteByte(0,0, 0x7F);
-	
-	//delay so eeprom can process data
-	//ms_delay(30);
-	//eepromWriteByte(0,1, 0x05);
-	//ms_delay(30);
-	//eepromWriteByte(1,1,0x05);
-	//ms_delay(10);
-	
 	//matrixInit();
 	//matrixClear();
 //	matrixSend(1, 0x255);
@@ -242,32 +225,20 @@ void main()
 	//first is column second is value for column
 	while(1)
 	{
-		updateData();
-		
-		//cmd(LCD_LINE_1);
-		
-		/*
-		write_int(30);
-		write_int(50);
-		write_int(4);
-		cmd(LCD_LINE_2);
-		write_int(20);
-		*/
-		
-		
+		//updateData();
+		//when 
+		if(interruptBit == 1)
+		{
+			screenNum++;
+			next_screen();
+		}
 		//FIX DHT11 + INTERRUPT
 		// REPLACE VARIABLES WITH reg52.h
-		//readDHT11();
-
 		//(void) readDHT11();
 		
-		//ms_delay(255);
-		//delays + checks if button pushed
-		msDelayCheck();
-		msDelayCheck();
-		msDelayCheck();
-		//ms_delay(255);
-		//ms_delay(255);
+		ms_delay(255);
+		ms_delay(255);
+		ms_delay(255);
 		
 		//check_night();
 	}
@@ -308,8 +279,5 @@ void main()
 
 /*	OPTIMISATION
 		-i2c generic write function for bmp280,
-		- remove redundant function from serial.c/move to sunroputine
 		- replace hardware values with reg51.h
-		- reduce size of bmp280 formula code
-		- remove uneeded header files
 */
