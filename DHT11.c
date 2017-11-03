@@ -1,12 +1,10 @@
 #include "DHT11.h"
 #include "timing.h"
-//#include "i2c.h"
-#include "lcd.h"
 
 char* readDHT11()
 {
 	unsigned char i;
-	static unsigned char store[4];//, arr[2];
+	unsigned char store[4];//, arr[2];
 	
 	//for(i = 0; i < 8; i++)
 		//ms_delay(250);	//2 second delay for device to re-test.
@@ -40,7 +38,7 @@ char* readDHT11()
 	{
 		//arr[0] = store[0];
 		//arr[1] = store[2];
-		
+		/*
 		write_int(store[0]);
 		write_char('%');
 		
@@ -50,12 +48,9 @@ char* readDHT11()
 		write_char(0);
 		
 		//write_char('C');
-		
-		return 0;
+		*/
+		return store;
 	}
-	else
-	{
-		//FIX
-		return -1;
-	}
+	//return -1 if failed
+	return -1;
 }

@@ -1,5 +1,6 @@
 #include "external.h"
 #include "timing.h"
+#include "serial.h"
 //#include "LCD.h"
 
 char screenNum = 0;
@@ -44,21 +45,40 @@ void check_night()
 	}
 	*/
 }
-
-//change so that it runs timer 2 to turn on/off
-void lcdBacklight() interrupt 2
+/*
+//runs when timer overruns
+void backlightTimerInterrupt() interrupt 3
 {
-	unsigned char i;
+	backlight = 1;
+
+	//clear overflow
+	TF1 = 0;
+	//turn off timer
+	TR1 = 0;
+}
+*/
+//change so that it runs timer 2 to turn on/off
+//TODO: start timer2 to run for 5 seconds in background
+/*
+void lcdBacklight() //interrupt 2
+{
+	//turn on display
+	backlight = 0;
 	
+	//start timer 2 interrupt
+	backlightInterrupt();
+	//unsigned char i;
+/*	
 	if (comparator == 0)	//If light is not on aka night time
 	{
-		backlight = 0;			//Sink current (pnp transistor)
+		backlight = 0			//Sink current (pnp transistor)
 		for(i = 0; i < 25; i++);
-		//	ms_delay(200);		//5 second delay
+			ms_delay(200);		//5 second delay
 		backlight = 1;			//Pull line high to turn off pnp transistor
 	}
+	
 }
-
+*/
 //if user wants to change screen
 //only changes a bit to avoid potential problems
 //with exiting whatver subroutine
@@ -67,17 +87,17 @@ void nextScreen() interrupt 0
 	interruptBit = 1;
 	
 	//prevents spamming
-	//ms_delay(255);
-	//ms_delay(255);
+	ms_delay(255);
+	ms_delay(255);
 }
 
 void next_screen()
 {
+	//serial_send(screenNum);
 	//reset the screen if num > 2
-	screenNum &= 3;
-	//if(screenNum > 2)
-		//screenNum = 0;
-		
+	if(screenNum > 2)
+		screenNum = 0;
+	
 	//Go to next screen	
 	switch(screenNum)
 	{
@@ -90,7 +110,7 @@ void next_screen()
 		case 2:
 			screen3();
 			break;
-		case 3:
-			break;
+		//case 3:
+		//	break;
 	}
 }

@@ -1,13 +1,15 @@
 #include "eeprom.h"
 #include "i2c.h"
 #include "timing.h"
-//#include "serial.h"
 
 //Code for the AT24C32 
 
 //must have 10ms delay minimum after writing a byte
 void eepromWriteByte(unsigned char addr1, unsigned char addr2, unsigned char value)
 {
+	//turns off interrupts to protect data saving
+	EA = 0;
+	
 	i2c_start();
 	i2c_device_id(at24, 0);
 	i2c_write(addr1);
@@ -17,6 +19,8 @@ void eepromWriteByte(unsigned char addr1, unsigned char addr2, unsigned char val
 	
 	i2c_write(value);
 	i2c_stop();
+	
+	EA = 1;
 }
 /*
 void eepromWritePage(unsigned char* addr, unsigned char value)
@@ -49,38 +53,6 @@ char wearCheck()
 	}
 	//check if value is not 1 or 0
 	return 0;
-}
-*/
-/*
-void eepromClear()
-{
-	unsigned char i, j;
-	for(i = 0; i < 0x0F; i++)
-	{
-		for(j = 0; j < 0xFF; j++)
-		{
-			eepromWriteByte(i, j, 0xFF);
-		}
-	}
-}
-*/
-/*
-
-MOVE TO ANOTHER C FILE
-void dumpRom()
-{
-	unsigned char i, j;
-	
-	for(i = 0; i <= 0xF; i++)
-		{
-			for(j = 0; j < 0xFF; j++)
-			{
-				serial_convert(eepromRandomRead(i,j));
-				serial_send(' ');
-			}
-			serial_send('\r');
-			serial_send('\n');
-		}
 }
 */
 

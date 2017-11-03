@@ -62,7 +62,7 @@ long bmp280GetTemp()
 {
 	//Keil long = 4 bytes, int = 2
 	static long adc_T, var1, var2;//, T = 0;
-	static short T;
+	short T;
 	
 	i2c_start();
 	i2c_device_id(bmp280, 0);
@@ -100,7 +100,7 @@ unsigned long bmp280GetPressure()
 {
 	
 	long var1, var2, adc_P;
-	static unsigned long p;
+	unsigned long p;
 
 	//t_fine = t_fine;
 	//begin multi-byte data transfer

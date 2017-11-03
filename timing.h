@@ -16,11 +16,12 @@ sbit TR1 = 0x8E;
 sbit TF1 = 0x8F;
 
 sbit ET1 = 0xAB;
-//sbit EA = 0xAF;
+sbit EA = 0xAF;
 
 extern void init_timing();
 extern void ms_delay(unsigned char num);
 extern void msDelayCheck();
+extern void backlightInterrupt();
 extern void us_delay();
 extern void dhtTimer();
 extern void us();

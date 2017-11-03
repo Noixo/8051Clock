@@ -10,7 +10,6 @@
       <TargetName>Target 1</TargetName>
       <ToolsetNumber>0x0</ToolsetNumber>
       <ToolsetName>MCS-51</ToolsetName>
-      <uAC6>0</uAC6>
       <TargetOption>
         <TargetCommonOption>
           <Device>AT89S51</Device>
@@ -488,6 +487,11 @@
               <FileName>subroutine.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\subroutine.c</FilePath>
+            </File>
+            <File>
+              <FileName>uartCmd.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\uartCmd.c</FilePath>
             </File>
           </Files>
         </Group>

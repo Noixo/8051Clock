@@ -47,7 +47,7 @@ void cmd(unsigned char cmd)
 	E = 0;
 	
 	if(cmd == LCD_CLEAR || cmd == LCD_HOME || cmd == LCD_LINE_1 || cmd == LCD_LINE_2)
-		ms_delay(2);
+		ms_delay(4);
 	//us_delay();
 	//us_delay();
 }
@@ -62,7 +62,7 @@ void write_char(unsigned char letter)
 	
 	//give extra time to custom characters in LCD DRAM
 	if(letter >= '0' && letter <= '9')
-		ms_delay(1);
+		ms_delay(3);
 	us_delay();
 	us_delay();
 }

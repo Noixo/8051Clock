@@ -7,15 +7,16 @@
 #include "bmp280.h"
 #include "eeprom.h"
 #include "serial.h"
+#include "uartCmd.h"
 //#include "MAX7219.h"
 
 /*	EEPROM
-	0: max temp			1 byte signed
-	1: min temp			1 byte signed
-	2: max humidity 1 byte singed/unsigned
-	3: min humidity 1 byte singed/unsigned
-	4: max pressure 3 bytes unsigned
-	5: min pressure 3 bytes unsigned
+	0-1: max temp			1 byte signed
+	1-2: min temp			1 byte signed
+	2-3: max humidity 1 byte singed/unsigned
+	3-4: min humidity 1 byte singed/unsigned
+	4-7: max pressure 3 bytes unsigned
+	7-10: min pressure 3 bytes unsigned
 	
 	pos 0-10 used
 	
@@ -52,37 +53,34 @@ void check0(char number)
 
 void screen1()
 {
+	//static short hPa = bmpPressure/1000;
 	//reset to line 1 of LCD, pos 0
 	cmd(LCD_HOME);
 
 	//--------------print the time-------------
 	//hours
 	check0(*(p_time + 2));
+	
 	write_int(*(p_time+2));
 	write_char(':');
-	
 	//minutes
 	check0(*(p_time + 1));
 	write_int(*(p_time+1));	
 	write_char(':');
-	
 	//seconds
 	check0(*(p_time));
 	write_int(*(p_time));
 	write_char(' ');
 	
-	//cmd(LCD_LINE_2);
-	
-	//readDHT11();
-	//print_temp();
-	//ms_delay(4);
 	//print temp
 	write_int(bmpTemp/100);
+	
 	write_char('.');
 	write_int(bmpTemp % 100);
+	//AND HERE
 	//write temperature symbol *c
 	write_char(0);
-	//write_char(' ');
+	
 	
 	cmd(LCD_LINE_2);
 	
@@ -99,6 +97,7 @@ void screen1()
 	write_int(*(p_time+6));
 	write_char(' ');
 
+	//pressure
 	write_int(bmpPressure/1000);
 	write_int((bmpPressure % 1000) / 100);
 	write_char('.');
@@ -151,6 +150,8 @@ void screen2()
 void screen3()
 {
 	char i;
+	
+	cmd(LCD_CLEAR);
 	write_string("MAX: ");
 	
 	for(i = 4; i < 7; i++)
@@ -167,6 +168,35 @@ void screen3()
 	}
 }
 
+//check and update data if necessary
+void writeSensorData()
+{
+	//array to store data in
+	unsigned char sensorData[10];
+	char i;
+	
+	//loop to put data in
+	for(i = 0; i < 10; i++)
+	{
+		sensorData[i] = eepromRandomRead(0,i);
+	}
+	
+	//if current temp is greater than the highest recorded temp
+	if(bmpTemp/100 > sensorData[0])
+	{
+		eepromWriteByte(0, 0, bmpTemp);
+		//10ms delay min needed for write
+		ms_delay(15);
+	}
+	
+	//if current temp is less than the lowest recorded temp
+	if(bmpTemp/100 < sensorData[1])
+	{
+		eepromWriteByte(0, 1, bmpTemp);
+		ms_delay(15);
+	}
+}
+
 //Update the values
 void updateData()
 {
@@ -175,18 +205,7 @@ void updateData()
 	bmpPressure = bmp280GetPressure();
 	
 	//refreshes the current screen
-	switch(screenNum)
-	{
-		case 0:
-			screen1();
-			break;
-		case 1:
-			screen2();
-			break;
-		case 2:
-			screen3();
-			break;
-	}
+	next_screen();
 }
 
 void main()
@@ -222,23 +241,27 @@ void main()
 	//main, startup screen
 	screen1();
 	
-	//first is column second is value for column
 	while(1)
 	{
-		//updateData();
-		//when 
+		//read and store sensor data
+		updateData();
+		//check and store MAX and MIN sensor data
+		writeSensorData();
+		//check if UART command was sent
+		uartCheck();
+		
+		//change screen if button pushed
 		if(interruptBit == 1)
 		{
+			interruptBit = 0;
 			screenNum++;
 			next_screen();
 		}
-		//FIX DHT11 + INTERRUPT
-		// REPLACE VARIABLES WITH reg52.h
 		//(void) readDHT11();
 		
-		ms_delay(255);
-		ms_delay(255);
-		ms_delay(255);
+		ms_delay(250);
+		ms_delay(250);
+		//ms_delay(255);
 		
 		//check_night();
 	}
@@ -254,6 +277,7 @@ void main()
 	
 	* implement daylightsavings time 
 	* time defaults to 00 rather than 0
+	* REPLACE VARIABLES WITH reg52.h
 */
 
 /*
@@ -270,11 +294,12 @@ void main()
 */
 
 /*	BUGS
-	* DHT11 prints correct data when printing in dht11 method but
-			priting pointer reference does not
+	
 	* BMP280 pressure, decimal values. if value is 1007.3, it often means 1007.03
 	* *c symbol appears twice when seconds hand loops over e.g. 0:40:0
-	* value 2 is being sent over uart
+	* UART 'e' cmd doesn't erase 0-9 locations
+		when on any bank level.
+	* UART 'c' cmd doesn't properly erase 0-9
 */
 
 /*	OPTIMISATION

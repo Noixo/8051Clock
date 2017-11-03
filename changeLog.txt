@@ -41,3 +41,9 @@ V:0.62 (30/10/2017)
 	- added three menus
 V:0.63 (3/11/2017)
 	- major optimisations
+	- added uart commands
+	- changed change screen and backlight functions back to interrupts
+	- DHT11 should return array again (maybe)
+	- added interrupts
+	- min temp now recorded
+	- fixed bug in UARTCMD 'c' command, not erasing properly
