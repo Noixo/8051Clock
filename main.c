@@ -8,23 +8,35 @@
 #include "eeprom.h"
 #include "serial.h"
 #include "uartCmd.h"
+#include "display.h"
+#include "eepromSubroutine.h"
 //#include "MAX7219.h"
 
-/*	EEPROM
+/*	EEPROM SENSOR
 	0-1: max temp			1 byte signed
 	1-2: min temp			1 byte signed
 	2-3: max humidity 1 byte singed/unsigned
 	3-4: min humidity 1 byte singed/unsigned
-	4-7: max pressure 3 bytes unsigned
-	7-10: min pressure 3 bytes unsigned
+	4-6: max pressure 3 bytes unsigned
+	6-8: min pressure 3 bytes unsigned
 	
 	pos 0-10 used
 	
 */
 
-unsigned char *p_time;
+/* EEPROM HOURLY WRITE
+STORE WITHOUT DECIMAL
+
+temp:			1 byte
+humidity:	1 byte
+pressure:	2 bytes
+*/
+
+//global variables to store sensor data
+unsigned char *p_time, eepromLocX, eepromLocY;
 long bmpTemp;
 long bmpPressure;
+
 /*
 void print_temp()
 {
@@ -44,165 +56,13 @@ void print_temp()
 }
 */
 
-//if time is < 10 add 0. e.g. 05
-void check0(char number)
-{
-	if(number < 10)
-		write_int(0);
-}
-
-void screen1()
-{
-	//static short hPa = bmpPressure/1000;
-	//reset to line 1 of LCD, pos 0
-	cmd(LCD_HOME);
-
-	//--------------print the time-------------
-	//hours
-	check0(*(p_time + 2));
-	
-	write_int(*(p_time+2));
-	write_char(':');
-	//minutes
-	check0(*(p_time + 1));
-	write_int(*(p_time+1));	
-	write_char(':');
-	//seconds
-	check0(*(p_time));
-	write_int(*(p_time));
-	write_char(' ');
-	
-	//print temp
-	write_int(bmpTemp/100);
-	
-	write_char('.');
-	write_int(bmpTemp % 100);
-	//AND HERE
-	//write temperature symbol *c
-	write_char(0);
-	
-	
-	cmd(LCD_LINE_2);
-	
-	//day
-	check0(*(p_time+4));
-	write_int(*(p_time+4));	
-	write_char('/');
-	//month
-	check0(*(p_time+5));
-	write_int(*(p_time+5));
-	write_char('/');
-	//year
-	check0(*(p_time+6));
-	write_int(*(p_time+6));
-	write_char(' ');
-
-	//pressure
-	write_int(bmpPressure/1000);
-	write_int((bmpPressure % 1000) / 100);
-	write_char('.');
-	write_int(bmpPressure % 100);
-	write_char(' ');
-}
-
-//show max and min temp
-void screen2()
-{
-	const char code max[] = "MAX/MIN: ";
-	unsigned char value;
-	
-	cmd(LCD_HOME);
-
-	write_string(max);
-	
-	//get max temp
-	value = eepromRandomRead(0,0);
-	write_int(value);
-	//serial_convert(value);
-	write_char(0);
-	
-	write_char(' ');
-	
-	
-	//get min temp
-	value = eepromRandomRead(0,1);
-	write_int(value);
-	//serial_convert(value);
-	write_char(0);
-	
-	//get humidity
-	cmd(LCD_LINE_2);
-	write_string(max);
-	
-	value = eepromRandomRead(0,2);
-	write_int(value);
-	//serial_convert(value);
-	write_char('%');
-	write_char(' ');
-	
-	value = eepromRandomRead(0,3);
-	write_int(value);
-	//serial_convert(value);
-	write_char('%');
-	
-}
-
-void screen3()
-{
-	char i;
-	
-	cmd(LCD_CLEAR);
-	write_string("MAX: ");
-	
-	for(i = 4; i < 7; i++)
-	{
-		write_int(eepromRandomRead(0,i));
-	}
-	cmd(LCD_LINE_2);
-	
-	write_string("MIN: ");
-	
-	for(i = 7; i < 10; i++)
-	{
-		write_int(eepromRandomRead(0,i));
-	}
-}
-
-//check and update data if necessary
-void writeSensorData()
-{
-	//array to store data in
-	unsigned char sensorData[10];
-	char i;
-	
-	//loop to put data in
-	for(i = 0; i < 10; i++)
-	{
-		sensorData[i] = eepromRandomRead(0,i);
-	}
-	
-	//if current temp is greater than the highest recorded temp
-	if(bmpTemp/100 > sensorData[0])
-	{
-		eepromWriteByte(0, 0, bmpTemp);
-		//10ms delay min needed for write
-		ms_delay(15);
-	}
-	
-	//if current temp is less than the lowest recorded temp
-	if(bmpTemp/100 < sensorData[1])
-	{
-		eepromWriteByte(0, 1, bmpTemp);
-		ms_delay(15);
-	}
-}
-
 //Update the values
 void updateData()
 {
 	p_time = rtc_get_time();
 	bmpTemp = bmp280GetTemp();
 	bmpPressure = bmp280GetPressure();
+	//readDHT11();
 	
 	//refreshes the current screen
 	next_screen();
@@ -210,6 +70,9 @@ void updateData()
 
 void main()
 {
+	//set to 1 to sync up to next hour when reboot
+	bit inverseINT = 1;
+	
 	init_timing();
 	
 	//start up delay
@@ -227,6 +90,12 @@ void main()
 	//I2C init
 	i2c_setup();
 
+	//setup alarm
+	ds3231Alarm();
+	
+	//rescan to find where last write was
+	eepromScan();
+	
 	//assign ccgram pos 0 as degrees C symbol
 	customChar(degreesC, 0);
 	
@@ -253,15 +122,23 @@ void main()
 		//change screen if button pushed
 		if(interruptBit == 1)
 		{
+			//reset interrupt bit
 			interruptBit = 0;
+			//allow next screen
 			screenNum++;
-			next_screen();
+			//next_screen();
 		}
-		//(void) readDHT11();
+		//activate every hour
+		if(INT == inverseINT)
+		{
+			//reset pin to activate next hour
+			inverseINT =~ inverseINT;
+			writeHourData();
+		}
 		
+		//delay to prevent excessive i2c reads
 		ms_delay(250);
 		ms_delay(250);
-		//ms_delay(255);
 		
 		//check_night();
 	}
@@ -278,6 +155,11 @@ void main()
 	* implement daylightsavings time 
 	* time defaults to 00 rather than 0
 	* REPLACE VARIABLES WITH reg52.h
+	* sleep mode?
+
+error checking:
+- bmp280 range -40-85*C temp
+	pressue range 300-1100hpa	
 */
 
 /*

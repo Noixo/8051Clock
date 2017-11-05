@@ -47,3 +47,9 @@ V:0.63 (3/11/2017)
 	- added interrupts
 	- min temp now recorded
 	- fixed bug in UARTCMD 'c' command, not erasing properly
+V:0.64 (5/11/2017)
+	- optimisations
+	- cleaned up main
+	- added eepromSubroutine $ display
+	- added methods to write max/min data to eeprom as well as hourly data
+	- started programming DS3231 alarm

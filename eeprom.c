@@ -31,31 +31,6 @@ void eepromWritePage(unsigned char* addr, unsigned char value)
 }
 */
 
-/*
-char wearCheck()
-{
-	unsigned char i, j, wear = 0;
-	
-	// fill each location in eeprom, alternating 0 and 1
-	for(i = 0; i <  0xF; i++)
-	{
-		for(j = 0; j < 0xFF; j++)
-		{
-			eepromWriteByte(i, j, wear);
-			wear ^= 1;
-			
-			serial_convert(i);
-			serial_send(' ');
-			//if(eepromReadByte() != wear)
-				//return -1;
-			ms_delay(10);
-		}
-	}
-	//check if value is not 1 or 0
-	return 0;
-}
-*/
-
 unsigned char readByte()
 {
 	unsigned char value;

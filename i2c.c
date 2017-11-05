@@ -58,22 +58,18 @@ char i2c_device_id(char id, char rw)
 		
 		//Pulses the clock
 		//us_delay();
+		i2c_clock();
+		/*
 		SCL = 1;
 		us_delay();
 		SCL = 0;
+		*/
 	}
-	//8th bit
-	//pulses the read/write bit
+	//8th bit. pulses the read/write bit
 	//rw low for write and high for read
 	SDA = rw;
 	//pulse the clock
 	i2c_clock();
-	/*
-	SCL = 1;
-	us_delay();
-	SCL = 0;
-	*/
-	//us_delay();
 	
 	//9th bit
 	//Pull sda high to ack bit
@@ -149,12 +145,15 @@ void i2c_write(unsigned char byte)
 	SDA = 1;
 	
 	//us_delay();
+	i2c_clock();
+	/*
 	SCL = 1;
 	//Get ack bit
 	//ACK = SDA;
 	
 	us_delay();
 	SCL = 0;
+	*/
 }
 /*
 //scans the bus to find all i2c devices

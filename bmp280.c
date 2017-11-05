@@ -58,7 +58,7 @@ void bmpCalibration()
 
 //must read temp before reading pressure
 //temp is stored as 3 bytes, (0xFA-0xFC)
-long bmp280GetTemp()
+short bmp280GetTemp()
 {
 	//Keil long = 4 bytes, int = 2
 	static long adc_T, var1, var2;//, T = 0;
@@ -86,7 +86,6 @@ long bmp280GetTemp()
 		
 	//32bit-fixed point formula from BMP280 documentation -pg45-46 (8.2)
 	
-	//try adc_T >> 3; then + 1 bit shift for adcT>>4
 	var1 = ((((adc_T>>3) - ((long)dig_T1<<1))) * ((long)dig_T2)) >> 11;
   var2  = (((((adc_T>>4) - ((long)dig_T1)) * ((adc_T>>4) - ((long)dig_T1))) >> 12) * ((long)dig_T3)) >> 14;
 	

@@ -369,11 +369,6 @@
               <FilePath>.\STARTUP.A51</FilePath>
             </File>
             <File>
-              <FileName>Documentation.txt</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\Documentation.txt</FilePath>
-            </File>
-            <File>
               <FileName>changeLog.txt</FileName>
               <FileType>5</FileType>
               <FilePath>.\changeLog.txt</FilePath>
@@ -492,6 +487,16 @@
               <FileName>uartCmd.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\uartCmd.c</FilePath>
+            </File>
+            <File>
+              <FileName>display.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\display.c</FilePath>
+            </File>
+            <File>
+              <FileName>eepromSubroutine.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\eepromSubroutine.c</FilePath>
             </File>
           </Files>
         </Group>

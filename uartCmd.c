@@ -14,13 +14,15 @@ s = set time
 #include "serial.h"
 #include "timing.h"
 
+//#define ENDSENSORDATA 8
+
 //Erase the EEPROM contents exclusing sensor data
 void eepromClear()
 {
 	//j starts at 10 to avoid erasing sensor data
-	unsigned char i, j = 10;
+	unsigned char i, j = 8;
 	
-	for(i = 0; i < 0x0F; i++)
+	for(i = 0; i <= 0x0F; i++)
 	{
 		for(j; j < 0xFF; j++)
 		{
@@ -40,7 +42,7 @@ void dumpRom()
 {
 	unsigned char i, j;
 	
-	for(i = 0; i < 0x0F; i++)
+	for(i = 0; i <= 0x0F; i++)
 		{
 			for(j = 0; j < 0xFF; j++)
 			{
@@ -56,11 +58,17 @@ void dumpRom()
 void eraseSensors()
 {
 	unsigned char j;
-	for(j = 0; j < 0x0A; j++)
+	
+	for(j = 0; j < 8; j++)
 	{
-		eepromWriteByte(0, j, 0xFF);
+		//20 is chosen to ensure temp readings can erase it as it goes higher and lower
+		eepromWriteByte(0, j, 20);
 		ms_delay(15);
 	}
+	/*
+	//clearing 
+	for(j = 0; j < )
+	*/
 	serial_send('D');
 	serial_send('\r');
 	serial_send('\n');

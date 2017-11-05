@@ -1,6 +1,7 @@
 #include "timing.h"
 #include <intrins.h>
 #include "i2c.h"
+
 //#include <reg51.h>
 void init_timing()
 {
@@ -24,19 +25,6 @@ void ms_delay(unsigned char num)	//1 miliseconds
 		TF0 = 0;           	//clear the timer Over flow flag
 	}
 	TR0 = 0;						//Turns off the timer
-}
-
-void backlightInterrupt()
-{
-	//set timer values
-	TH1 = 0;
-	TL1 = 0;
-	
-	//start timer 1
-	TR1 = 1;
-	
-	//set timer 1 interrupt
-	ET1 = 1;
 }
 
 #pragma SAVE
