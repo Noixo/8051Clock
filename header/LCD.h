@@ -47,16 +47,16 @@ static code unsigned char degreesC[] = {
 extern bit current_line;
 //---------------
 
-extern void lcd_init();
+extern void init_lcd();
 extern void lcd_busy();
-extern void customChar(unsigned char* array, char location);
+extern void customChar(unsigned char *array, char location);
 extern void write_char(unsigned char hex);
 extern void cmd(unsigned char cmd);
 extern void backlight_toggle(void);
 extern void backlight_light(void);
-extern void write_string(unsigned char string[]);
+extern void write_string(unsigned char *string);
 extern void new_line(void);
 //extern void int_to_ascii(unsigned char decimal, unsigned char size);
 extern void write_int(unsigned char value);
-extern void reverse_array(unsigned char array[], char i);
+//extern void reverse_array(unsigned char array[], char i);
 #endif

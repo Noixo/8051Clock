@@ -24,7 +24,7 @@ extern void msDelayCheck();
 extern void backlightInterrupt();
 extern void us_delay();
 extern void dhtTimer();
-extern void us();
+extern void lcdDelay();
 extern void dhtInterrupt1();
 extern void dhtInterrupt();
 extern void timout();

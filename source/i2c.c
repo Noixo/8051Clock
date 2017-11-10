@@ -2,7 +2,7 @@
 #include "timing.h"
 #include "lcd.h"
 
-void i2c_setup()
+void init_i2c()
 {
 	SDA = 1;
 	SCL = 1;
@@ -47,7 +47,7 @@ char i2c_device_id(char id, char rw)
 	char i, ACK;
 	
 	//check if valid i2c address
-	if(i < 8 && i > 120)
+	if(id < 8 || id > 120)
 		return 2;
 	
 	//Starting at 1 to avoid 8th bit

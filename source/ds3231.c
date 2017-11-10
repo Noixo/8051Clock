@@ -11,6 +11,7 @@ unsigned char bcdToDec(unsigned char convert)
 	return ((convert / 16 * 10) + (convert % 16));
 }
 
+/*
 void ds3231Alarm()
 {
 	//point to the ALARM1 reg
@@ -37,6 +38,7 @@ void ds3231Alarm()
 	
 	i2c_stop();
 }
+*/
 
 /*
 unsigned char* rtc_get_temp()
@@ -64,7 +66,7 @@ unsigned char* rtc_get_temp()
 */
 unsigned char* rtc_get_time()
 {
-	static unsigned char time[6];
+	static unsigned char *time;
 	char i;
 	
 	i2c_start();
@@ -96,7 +98,7 @@ void rtc_set_time(unsigned char* setTime)
 	(void) i2c_device_id(ds3231, 1);
 	i2c_write(0);	//point to seconds
 	
-	for(i = 0; setTime != '\0'; i++)
+	for(i = 0; setTime[i] != '\0'; i++)
 	{
 		i2c_write(setTime[i]);
 	}

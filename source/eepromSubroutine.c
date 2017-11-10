@@ -2,13 +2,31 @@
 #include "eeprom.h"
 #include "timing.h"
 
+//stores location of first blank eeprom location
+ unsigned char eepromLocX, eepromLocY;
+
+/**
+* @return returns 0 to indicate valid. 1 invalid.
+* 
+*/
+bit checkBMPValid()
+{
+	//BMP280 temp stored in unsigned state, even though signed
+	if(bmpTemp > 85 || bmpPressure/100 > 1100 || bmpPressure/100 < 300)
+		return 1;
+	return 0;
+}
+
 //check and update data if necessary
 void writeSensorData()
 {
 	//array to store data in
 	unsigned char sensorData[4];
 	char i, temp;
-//	short eepromPressure, pressure;
+	
+	//cancel if invalid readings
+	if(checkBMPValid == 1)
+		return;
 	
 	//loop to put data in
 	for(i = 0; i < 4; i++)
@@ -77,21 +95,28 @@ void writeSensorData()
 //scans EEPROM to find and record 0xFF location
 void eepromScan()
 {
-	for(eepromLocY = 0; eepromLocY <= 0x0F; eepromLocY++)
+	eepromFull = 0;
+	
+	for(eepromLocY = 0; eepromLocY < eepromSize; eepromLocY++)
 	{
-		//start at end of sensor data
-		for(eepromLocX = 9; eepromLocX < 0xFF; eepromLocX++)
+		//start at end of sensor data +1 to avoid getting last byte of data
+		for(eepromLocX = eepromSensorMax+1; eepromLocX < 0xFF; eepromLocX++)
 		{
 			//loop till find empty location
 			if(eepromRandomRead(eepromLocY, eepromLocX) == 0xFF)
-				break;
+				return;	//empty location found
 		}
 	}
+	eepromFull = 1;
 }
 
 
 void writeHourData()
 {
+	//cancel if invalid readings
+	if(checkBMPValid == 1 || eepromFull == 1)
+		return;
+	
 	//write temp
 	eepromWriteByte(eepromLocY, eepromLocX, bmpTemp/100);
 	checkEepromOverflow();

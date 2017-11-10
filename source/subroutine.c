@@ -30,7 +30,8 @@ char* convert(unsigned char value)
 
 void reverse_array(unsigned char *array, unsigned char end)
 {
-	unsigned char start = 0, temp = 0;
+	unsigned char start = 0, temp;
+	
 	while(start < end)
 	{
 		temp = array[start];

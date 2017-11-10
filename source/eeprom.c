@@ -10,6 +10,9 @@ void eepromWriteByte(unsigned char addr1, unsigned char addr2, unsigned char val
 	//turns off interrupts to protect data saving
 	EA = 0;
 	
+	//ensures user doesn't input an invalid address space
+	addr2 &= 0x0F;
+	
 	i2c_start();
 	i2c_device_id(at24, 0);
 	i2c_write(addr1);

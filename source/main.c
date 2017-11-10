@@ -1,3 +1,28 @@
+/*! \mainpage
+* @Author Matthew Whiteley\n
+* @Date 
+* @brief 8051 clock and data logging program.
+* \section Sensor specs:
+*	- BMP280:\n
+*	Pressure:\n
+*		Range:300-1100hPa\n
+*		Accuracy: +- 0.12hPa @ 25*C\n
+*	Temperature:\n
+*		Range: -40-85*C\n
+*		Accuracy: +-1*C ?\n
+*	\n
+* - DS3231:
+*	\n
+* - DHT11
+*		Temperature: \n
+*			Range: 0-50*C\n
+*			Accuracy: +- 2*C\n
+*		Humidity:\n
+*			Range: 20-90%RH
+*			Accuracy: +- 5%
+*	\n
+*/
+
 #include "LCD.h"
 #include "DHT11.h"
 #include "external.h"
@@ -33,9 +58,11 @@ pressure:	2 bytes
 */
 
 //global variables to store sensor data
-unsigned char *p_time, eepromLocX, eepromLocY;
-long bmpTemp;
-long bmpPressure;
+volatile unsigned char *p_time;
+volatile unsigned long bmpTemp;
+volatile unsigned short INTbmpTemp;
+volatile unsigned short INTbmpPressure;
+volatile unsigned long bmpPressure;
 
 /*
 void print_temp()
@@ -56,7 +83,11 @@ void print_temp()
 }
 */
 
-//Update the values
+/**
+* runs and stores the latest data from sensors.
+* next_screen takes the latest stored data from
+* sensors and refreshes the current screen.
+*/
 void updateData()
 {
 	p_time = rtc_get_time();
@@ -70,8 +101,10 @@ void updateData()
 
 void main()
 {
-	//set to 1 to sync up to next hour when reboot
-	bit inverseINT = 1;
+	//sets the variable to the location of where the hour data will be
+	char checkHour = *p_time+2;
+	
+	EEPROMSizeLED = 1;
 	
 	init_timing();
 	
@@ -81,17 +114,17 @@ void main()
 	init_serial();
 	
 	//INTERRUPTS
-	external_setup();
+	init_external();
 	
 	//LCD init
-	lcd_init();
+	init_lcd();
 	backlight = 0;
 	
 	//I2C init
-	i2c_setup();
+	init_i2c();
 
 	//setup alarm
-	ds3231Alarm();
+	//ds3231Alarm();
 	
 	//rescan to find where last write was
 	eepromScan();
@@ -108,12 +141,18 @@ void main()
 	bmpSet(0xFF, 0xF4);
 	
 	//main, startup screen
-	screen1();
+	//screen1();
+	//778.78 pressure
+	//2203
 	
 	while(1)
 	{
 		//read and store sensor data
 		updateData();
+		
+		checkHour++;
+		//bmpTemp = 20;
+		
 		//check and store MAX and MIN sensor data
 		writeSensorData();
 		//check if UART command was sent
@@ -128,19 +167,22 @@ void main()
 			screenNum++;
 			//next_screen();
 		}
-		//activate every hour
-		if(INT == inverseINT)
+		//activate every hour when time changes
+		if(*(p_time+2) != checkHour)
 		{
-			//reset pin to activate next hour
-			inverseINT =~ inverseINT;
+			//write latest recorded data
 			writeHourData();
+			
+			//reset pin to activate next hour
+			checkHour = *(p_time+2);
 		}
 		
 		//delay to prevent excessive i2c reads
-		ms_delay(250);
-		ms_delay(250);
 		
-		//check_night();
+		//ms_delay(250);
+		//ms_delay(250);
+		
+		check_night();
 	}
 }
 

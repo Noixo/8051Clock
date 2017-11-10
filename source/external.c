@@ -5,7 +5,7 @@
 
 char screenNum = 0;
 
-bit interruptBit = 0;
+volatile bit interruptBit = 0;
 
 /*
 //screen1, 2 & 3 belong to main
@@ -16,7 +16,7 @@ extern void screen3();
 //void screen1();
 //void screen2();
 
-void external_setup()
+void init_external()
 {
 	//EXT0 for next screen
 	IT0 = 1;
@@ -106,8 +106,8 @@ void nextScreen() interrupt 0
 	EA = 0;
 	ms_delay(255);
 	ms_delay(255);
-	EA = 1;
-	*/
+	EA = 1;*/
+	
 }
 
 void next_screen()

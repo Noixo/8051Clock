@@ -21,7 +21,7 @@ sbit next = 0x94;
 extern char screenNum;
 extern bit interruptBit;
 
-extern void external_setup();
+extern void init_external();
 extern void check_night(void);
 extern void backlightTimerInterrupt();
 extern void lcdBacklight();

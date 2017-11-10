@@ -87,7 +87,8 @@ short bmp280GetTemp()
 	//32bit-fixed point formula from BMP280 documentation -pg45-46 (8.2)
 	
 	var1 = ((((adc_T>>3) - ((long)dig_T1<<1))) * ((long)dig_T2)) >> 11;
-  var2  = (((((adc_T>>4) - ((long)dig_T1)) * ((adc_T>>4) - ((long)dig_T1))) >> 12) * ((long)dig_T3)) >> 14;
+  var2  = (((((adc_T>>4) - ((long)dig_T1)) * ((adc_T>>4)
+		- ((long)dig_T1))) >> 12) * ((long)dig_T3)) >> 14;
 	
 	t_fine = var1+var2;
 	T = (t_fine*5+128) >> 8;
@@ -133,7 +134,9 @@ unsigned long bmp280GetPressure()
 	var2 = var2 + ((var1 * ((long)dig_P5)) << 1);
 	var2 = (var2 >> 2) + (((long)dig_P4) << 16);
 	
-	var1 = (((dig_P3 * (((var1 >> 2) * (var1 >> 2)) >> 13)) >> 3) + ((((long)dig_P2) * var1) >> 1)) >> 18;
+	var1 = (((dig_P3 * (((var1 >> 2) * (var1 >> 2)) >> 13)) >> 3)
+	+ ((((long)dig_P2) * var1) >> 1)) >> 18;
+	
 	var1 = ((((32768 + var1)) * ((long) dig_P1)) >> 15);
 
 	if(var1 == 0)

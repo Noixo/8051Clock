@@ -6,7 +6,7 @@ sbit SDA = 0x80;	//Bank 0, pin 3
 sbit SCL = 0x81;	//Bank 0, pin 2
 									//Clock line
 
-extern void i2c_setup();
+extern void init_i2c();
 extern void i2c_clock();
 extern void i2c_start();
 extern void i2c_stop();

@@ -6,7 +6,7 @@
 void check0(unsigned char number)
 {
 	if(number < 10)
-		write_int(0);
+		write_char('0');
 }
 
 //display general items, time, pressure, temp

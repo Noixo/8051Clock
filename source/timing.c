@@ -27,17 +27,29 @@ void ms_delay(unsigned char num)	//1 miliseconds
 	TR0 = 0;						//Turns off the timer
 }
 
-#pragma SAVE
-#pragma OPTIMIZE(8)
-void us_delay()	//37 microsecond timer
+//aaprox 5.43us
+void us_delay()
 {
 	_nop_();
 	_nop_();
 	_nop_();
 	_nop_();
 }
-#pragma RESTORE
 
+//approx 41.2
+void lcdDelay()
+{
+	TH0 = 0xFF;	//Upper 8 bits
+	TL0 = 0xE3;	//Lower 8 bits
+	TR0 = 1;		//Starts the timer
+
+	while(TF0 == 0);		//loops till timer overflow bit = 1
+	TF0 = 0;           	//clear the timer Over flow flag
+	
+	TR0 = 0;						//Turns off the timer
+}
+
+/*
 void dhtTimer()
 {
 	TH0 = 0xFF;
@@ -48,6 +60,7 @@ void dhtTimer()
 	TR0 = 0;
 	TF0 = 0;
 }
+*/
 /*
 void dhtInterrupt1()
 {

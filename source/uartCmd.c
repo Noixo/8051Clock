@@ -9,19 +9,21 @@ e = erase EEPROM contents (11-END)
 c = clear max/min sensor data, locations: 0-10
 s = set time
 */
+
 #include "uartCmd.h"
 #include "eeprom.h"
 #include "serial.h"
 #include "timing.h"
 
 //#define ENDSENSORDATA 8
-
+extern bit eepromFull;
 //Erase the EEPROM contents exclusing sensor data
 void eepromClear()
 {
-	//j starts at 10 to avoid erasing sensor data
-	unsigned char i, j = 8;
+	//j starts at 8 to avoid erasing sensor data
+	unsigned char i, j = eepromSensorMax;
 	
+	eepromFull = 0;
 	for(i = 0; i <= 0x0F; i++)
 	{
 		for(j; j < 0xFF; j++)
@@ -59,7 +61,7 @@ void eraseSensors()
 {
 	unsigned char j;
 	
-	for(j = 0; j < 8; j++)
+	for(j = 0; j < eepromSensorMax; j++)
 	{
 		//20 is chosen to ensure temp readings can erase it as it goes higher and lower
 		eepromWriteByte(0, j, 20);
@@ -91,7 +93,7 @@ void uartCheck()
 			eraseSensors();
 			break;
 		
-		default:
-			break;
+		//default:
+			//break;
 	}
 }

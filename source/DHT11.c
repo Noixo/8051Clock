@@ -4,7 +4,7 @@
 char* readDHT11()
 {
 	unsigned char i;
-	unsigned char store[4];//, arr[2];
+	static unsigned char store[5];
 	
 	//for(i = 0; i < 8; i++)
 		//ms_delay(250);	//2 second delay for device to re-test.
@@ -31,6 +31,7 @@ char* readDHT11()
 		dhtTimer();	//30us delay maybe 
 		
 		store[i/8] |= DHT11;	//Switch least sig bit to 1
+		//loop to sync back up to logic high
 		while(DHT11 == 1);
 	}
 	

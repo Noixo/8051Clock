@@ -2,31 +2,31 @@
 #include "timing.h"
 #include "subroutine.h"
 
-void lcd_init()
+void init_lcd()
 {
 	ms_delay(15);	//Start up delay
 	
 	cmd(0x38);	//Function set (8 bit, 2 line, 5x7)
-	us_delay();
+	lcdDelay();
 
 	cmd(0x0E);	//display (Display on, cursor on)
-	us_delay();
+	lcdDelay();
 	
 	cmd(0x06);	//Entry mode (Left to right, inc)
-	us_delay();
+	lcdDelay();
 
 	cmd(0x0E);	//display (Display on, cursor on)
-	us_delay();
+	lcdDelay();
 	
 	cmd(0x06);	//Entry mode (Left to right, inc)
-	us_delay();
+	lcdDelay();
 	
 	cmd(LCD_CLEAR);	//CLEAR
 	ms_delay(2);
 }
 
 //inserts the pre-defined bitmap into the user chosen location
-void customChar(unsigned char* array, char location)
+void customChar(unsigned char *array, char location)
 {
 	char i;
 	cmd(0x40+(location*8));
@@ -43,13 +43,11 @@ void cmd(unsigned char cmd)
 	write_byte = cmd;
 	RS = 0;
 	E = 1;
-	us_delay();
+	lcdDelay();
 	E = 0;
 	
 	if(cmd == LCD_CLEAR || cmd == LCD_HOME || cmd == LCD_LINE_1 || cmd == LCD_LINE_2)
-		ms_delay(4);
-	//us_delay();
-	//us_delay();
+		ms_delay(2);
 }
 
 void write_char(unsigned char letter)
@@ -57,14 +55,12 @@ void write_char(unsigned char letter)
 	write_byte = letter;
 	RS = 1;	//word
 	E = 1;
-	us_delay();
+	lcdDelay();
 	E = 0;
 	
 	//give extra time to custom characters in LCD DRAM
-	if(letter >= '0' && letter <= '9')
-		ms_delay(3);
-	us_delay();
-	us_delay();
+	//if(letter >= '0' && letter <= '9')
+		//ms_delay(2);
 }
 /*
 void backlight_toggle()
