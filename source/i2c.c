@@ -1,6 +1,6 @@
 #include "i2c.h"
 #include "timing.h"
-#include "lcd.h"
+//#include "lcd.h"
 
 void init_i2c()
 {
@@ -13,7 +13,6 @@ void i2c_clock()
 	SCL = 1;
 	us_delay();
 	SCL = 0;
-	//us_delay();
 }
 
 void i2c_start()
@@ -26,7 +25,6 @@ void i2c_start()
 	SDA = 0;
 	us_delay();
 	SCL = 0;
-	//us_delay();
 }
 
 void i2c_stop()
@@ -39,7 +37,6 @@ void i2c_stop()
 	SCL = 1;
 	us_delay();
 	SDA = 1;
-	//us_delay();
 }
 
 char i2c_device_id(char id, char rw)
@@ -50,39 +47,37 @@ char i2c_device_id(char id, char rw)
 	if(id < 8 || id > 120)
 		return 2;
 	
-	//Starting at 1 to avoid 8th bit
-	for(i = 1; i < 8; i++)
+	//Starting at 7 to avoid last bit
+	//for(i = 1; i < 8; i++)
+	for(i = 7; i > 0; i--)
 	{
 		id <<= 1;
 		SDA = id & 0x80;	//Sends a 1 or 0 to SDA
 		
 		//Pulses the clock
-		//us_delay();
 		i2c_clock();
-		/*
-		SCL = 1;
-		us_delay();
-		SCL = 0;
-		*/
 	}
 	//8th bit. pulses the read/write bit
 	//rw low for write and high for read
 	SDA = rw;
+	
 	//pulse the clock
 	i2c_clock();
 	
 	//9th bit
 	//Pull sda high to ack bit
 	SDA = 1;
+	i2c_clock();
+	ACK = SDA;
 	
+	/*
 	us_delay();
 	SCL = 1;
 	//Get ack bit
-	ACK = SDA;
 	
 	us_delay();
 	SCL = 0;
-	
+	*/
 	return ACK;
 }
 
@@ -91,34 +86,24 @@ unsigned char i2c_read(char last_byte)
 	char i, byte = 0;
 	SDA = 1;
 	
-	for(i = 0; i < 8; i++)
+	for(i = 8; i > 0; i--)
 	{	
+		SCL = 1;
 		//bitshift byte by 1
 		byte <<= 1;
 		
-		//us_delay();
-		SCL = 1;
-		
 		//OR byte bit with SDA
 		byte |= SDA;
-		us_delay();
+		i2c_clock();
+		//us_delay();
 		
-		SCL = 0;
+		//SCL = 0;
 	}
 	
 	//9th bit master acknowledges data transfer or indicates last byte
-	//if(last_byte == 1)
-	SDA = last_byte;
-	//else
-		//SDA = 0;	
+	SDA = last_byte;	
 	
 	i2c_clock();
-	/*
-	//us_delay();
-	SCL = 1;
-	us_delay();
-	SCL = 0;
-	*/
 	//SDA = 1;
 	return byte;
 }
@@ -126,33 +111,25 @@ unsigned char i2c_read(char last_byte)
 void i2c_write(unsigned char byte)
 {
 	char i;//, ACK;
-	for(i = 0; i < 8; i++)
+	for(i = 8; i > 0; i--)
 	{
 		//bit shifts data by i and ANDs it to convert it to boolean
 		SDA = byte & 0x80;	//Sends a 1 or 0 to SDA
 		
 		//pulse the clock
 		i2c_clock();
-		/*
-		SCL = 1;
-		us_delay();
-		SCL = 0;
-		*/
+		
 		byte <<= 1;
 	}
 	
-	//For ack bit
+	//set to high to detect ack bit
 	SDA = 1;
 	
-	//us_delay();
 	i2c_clock();
+
 	/*
-	SCL = 1;
-	//Get ack bit
-	//ACK = SDA;
-	
-	us_delay();
-	SCL = 0;
+	Get ack bit
+	ACK = SDA;
 	*/
 }
 /*

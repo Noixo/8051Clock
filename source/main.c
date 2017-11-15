@@ -35,17 +35,19 @@
 #include "uartCmd.h"
 #include "display.h"
 #include "eepromSubroutine.h"
+
+//#include "GPSTime.h"
 //#include "MAX7219.h"
 
 /*	EEPROM SENSOR
-	0-1: max temp			1 byte signed
-	1-2: min temp			1 byte signed
-	2-3: max humidity 1 byte singed/unsigned
-	3-4: min humidity 1 byte singed/unsigned
-	4-6: max pressure 3 bytes unsigned
-	6-8: min pressure 3 bytes unsigned
+	0: max temp			1 byte signed
+	1: min temp			1 byte signed
+	2: max humidity 1 byte singed/unsigned
+	3: min humidity 1 byte singed/unsigned
+	4-5: max pressure 2 bytes unsigned
+	6-7: min pressure 2 bytes unsigned
 	
-	pos 0-10 used
+	pos 0-7 used
 	
 */
 
@@ -59,10 +61,15 @@ pressure:	2 bytes
 
 //global variables to store sensor data
 volatile unsigned char *p_time;
-volatile unsigned long bmpTemp;
+volatile long bmpTemp;
+volatile unsigned long bmpPressure;
+volatile unsigned char *p_dht11;
+
+//stores bmpTemp and bmpPressure without decimal
 volatile unsigned short INTbmpTemp;
 volatile unsigned short INTbmpPressure;
-volatile unsigned long bmpPressure;
+
+unsigned char screenNum;
 
 /*
 void print_temp()
@@ -93,10 +100,33 @@ void updateData()
 	p_time = rtc_get_time();
 	bmpTemp = bmp280GetTemp();
 	bmpPressure = bmp280GetPressure();
+	//p_dht11 = readDHT11();
+	
+	//removes decimal part
+	INTbmpTemp = bmpTemp / 100;
+	INTbmpPressure = bmpPressure / 100;
+	
 	//readDHT11();
 	
-	//refreshes the current screen
-	next_screen();
+		//refreshes the current screen
+	if(screenNum > 2) //reset the screen if num > 2
+		screenNum = 0;
+	
+	//Go to next screen	
+	switch(screenNum)
+	{
+		case 0:
+			screen1();
+			break;
+		case 1:
+			screen2();
+			break;
+		case 2:
+			screen3();
+			break;
+		//case 3:
+		//	break;
+	}
 }
 
 void main()
@@ -107,9 +137,6 @@ void main()
 	EEPROMSizeLED = 1;
 	
 	init_timing();
-	
-	//start up delay
-	//ms_delay(255);
 	
 	init_serial();
 	
@@ -122,12 +149,9 @@ void main()
 	
 	//I2C init
 	init_i2c();
-
-	//setup alarm
-	//ds3231Alarm();
 	
 	//rescan to find where last write was
-	eepromScan();
+	//eepromScan();
 	
 	//assign ccgram pos 0 as degrees C symbol
 	customChar(degreesC, 0);
@@ -147,31 +171,34 @@ void main()
 	
 	while(1)
 	{
-		//read and store sensor data
-		updateData();
-		
-		checkHour++;
-		//bmpTemp = 20;
-		
-		//check and store MAX and MIN sensor data
-		writeSensorData();
-		//check if UART command was sent
-		uartCheck();
-		
 		//change screen if button pushed
 		if(interruptBit == 1)
 		{
 			//reset interrupt bit
 			interruptBit = 0;
+			
 			//allow next screen
 			screenNum++;
-			//next_screen();
+			
+			//clear screen to prevent garbage characters from old screens
+			cmd(LCD_CLEAR);
 		}
+		
+		//read and store sensor data as well as update display
+		updateData();
+		
+		//check and store MAX and MIN sensor data
+		writeSensorData();
+		
+		//check if UART command was sent
+		uartCheck();
+
 		//activate every hour when time changes
 		if(*(p_time+2) != checkHour)
 		{
 			//write latest recorded data
-			writeHourData();
+			
+			//writeHourData();
 			
 			//reset pin to activate next hour
 			checkHour = *(p_time+2);
@@ -179,12 +206,14 @@ void main()
 		
 		//delay to prevent excessive i2c reads
 		
-		//ms_delay(250);
-		//ms_delay(250);
+		ms_delay(250);
+		ms_delay(250);
 		
-		check_night();
+		//check_night();
 	}
 }
+
+//LED to indicate write
 
 /*
 	--------------TODO---------------
@@ -193,22 +222,12 @@ void main()
 	* then reset timer
 	* use 8x8 matrix and make a binary clock
 	* make ds3231 getData get temperature as well
-	
-	* implement daylightsavings time 
-	* time defaults to 00 rather than 0
-	* REPLACE VARIABLES WITH reg52.h
-	* sleep mode?
 
 error checking:
 - bmp280 range -40-85*C temp
 	pressue range 300-1100hpa	
 */
 
-/*
-	---------------Small issues--------------
-	* i2c.c needs lcd.c to print variable. Not efficient
-	* clean up code
-*/
 
 /* Boot idea
 	image appearing in middle of lcd
@@ -220,10 +239,6 @@ error checking:
 /*	BUGS
 	
 	* BMP280 pressure, decimal values. if value is 1007.3, it often means 1007.03
-	* *c symbol appears twice when seconds hand loops over e.g. 0:40:0
-	* UART 'e' cmd doesn't erase 0-9 locations
-		when on any bank level.
-	* UART 'c' cmd doesn't properly erase 0-9
 */
 
 /*	OPTIMISATION

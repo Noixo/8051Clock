@@ -2,6 +2,8 @@
 #include "lcd.h"
 #include "eeprom.h"
 
+unsigned char printSwap;
+
 //if time is < 10 add 0. e.g. 05
 void check0(unsigned char number)
 {
@@ -33,7 +35,7 @@ void screen1()
 	
 	//print temp
 	//if(bmpTemp > 0)
-	write_int(bmpTemp/100);
+	write_int(INTbmpTemp);
 	
 	write_char('.');
 	check0(bmpTemp % 100);
@@ -55,15 +57,31 @@ void screen1()
 	check0(*(p_time+6));
 	write_int(*(p_time+6));
 	write_char(' ');
-
-	//pressure
-	write_int(bmpPressure/1000);
-	write_int((bmpPressure % 1000) / 100);
-	write_char('.');
-	check0(bmpPressure % 100);
-	write_int(bmpPressure % 100);
-	write_char(' ');
+	
+	//increment printSwap
+	printSwap++;
+	//reset when printSwap has been going for 10 seconds
+	if(printSwap > 19)
+		printSwap = 0;
+	
+	//if 10 refreshes have occured (5 seconds) print pressure
+	if(printSwap > 9)
+	{
+		//pressure
+		write_int(bmpPressure/1000);
+		write_int((bmpPressure % 1000) / 100);
+		write_char('.');
+		check0(bmpPressure % 100);
+		write_int(bmpPressure % 100);
+	}
+	else
+	{
+		//print humidity
+		write_int(*p_dht11+2);
+		write_string(".00% ");
+	}
 }
+
 
 //display max and min temp/%
 void screen2()

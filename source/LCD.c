@@ -21,7 +21,7 @@ void init_lcd()
 	cmd(0x06);	//Entry mode (Left to right, inc)
 	lcdDelay();
 	
-	cmd(LCD_CLEAR);	//CLEAR
+	cmd(LCD_CLEAR);	//CLEAR screen to remove any garbage
 	ms_delay(2);
 }
 
@@ -40,12 +40,15 @@ void customChar(unsigned char *array, char location)
 
 void cmd(unsigned char cmd)
 {
+	//load the command onto the bus (8 bit mode)
 	write_byte = cmd;
+	//command
 	RS = 0;
 	E = 1;
 	lcdDelay();
 	E = 0;
 	
+	//give extra time for slower commands.
 	if(cmd == LCD_CLEAR || cmd == LCD_HOME || cmd == LCD_LINE_1 || cmd == LCD_LINE_2)
 		ms_delay(2);
 }
@@ -57,10 +60,6 @@ void write_char(unsigned char letter)
 	E = 1;
 	lcdDelay();
 	E = 0;
-	
-	//give extra time to custom characters in LCD DRAM
-	//if(letter >= '0' && letter <= '9')
-		//ms_delay(2);
 }
 /*
 void backlight_toggle()
@@ -88,7 +87,7 @@ void write_string(unsigned char* string)
 
 void write_int(unsigned char value)
 {
-	//converts the char number into ASCII
+	//converts the unsigned char number into ASCII
 	//sends the ASCII array to the LCD
 	write_string(convert(value));
 }

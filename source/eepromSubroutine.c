@@ -1,6 +1,6 @@
 #include "eepromSubroutine.h"
 #include "eeprom.h"
-#include "timing.h"
+//#include "timing.h"
 
 //stores location of first blank eeprom location
  unsigned char eepromLocX, eepromLocY;
@@ -12,24 +12,38 @@
 bit checkBMPValid()
 {
 	//BMP280 temp stored in unsigned state, even though signed
-	if(bmpTemp > 85 || bmpPressure/100 > 1100 || bmpPressure/100 < 300)
+	if(INTbmpTemp > 85 || INTbmpPressure > 1100 || INTbmpPressure < 300)
 		return 1;
 	return 0;
 }
-
+/*
+void compare(unsigned char )
+{
+	if(INTbmpTemp > sensorData[tempMax])
+	{
+		eepromWriteByte(0, tempMax, INTbmpTemp);
+	}
+	
+	//if current temp is less than the lowest recorded temp
+	if(INTbmpTemp < sensorData[tempMin])
+	{
+		eepromWriteByte(0, tempMin, INTbmpTemp);
+	}
+}
+*/
 //check and update data if necessary
 void writeSensorData()
 {
 	//array to store data in
-	unsigned char sensorData[4];
-	char i, temp;
+	unsigned char sensorData[eepromSensorMax];
+	char i;
 	
 	//cancel if invalid readings
-	if(checkBMPValid == 1)
+	if(checkBMPValid() == 1)
 		return;
 	
-	//loop to put data in
-	for(i = 0; i < 4; i++)
+	//loop to put sensor data in
+	for(i = 0; i < eepromSensorMax; i++)
 	{
 		sensorData[i] = eepromRandomRead(0,i);
 	}
@@ -41,57 +55,33 @@ void writeSensorData()
 	*/
 	
 	//---------------------------------------
-	
-	//transfer global data to variable
-	//removes decimal part
-	temp = bmpTemp/100;
-	
+
 	//if current temp is greater than the highest recorded temp
-	if(temp > sensorData[0])
+	if(INTbmpTemp > sensorData[tempMax])
 	{
-		eepromWriteByte(0, 0, temp);
-		//10ms delay min needed for write
-		ms_delay(15);
+		eepromWriteByte(0, tempMax, INTbmpTemp);
 	}
 	
 	//if current temp is less than the lowest recorded temp
-	if(temp < sensorData[1])
+	if(INTbmpTemp < sensorData[tempMin])
 	{
-		eepromWriteByte(0, 1, temp);
-		ms_delay(15);
+		eepromWriteByte(0, tempMin, INTbmpTemp);
 	}
-	
-	/*
-	//change to check pressure
-	//removes decimal part
-	pressure = bmpPressure/100;
 	
 	//if latest pressure is bigger than eeprom pressure
-	if(pressure > eepromPressure)
+	//checks first 2 values
+	if(INTbmpPressure / 100 > sensorData[pressureMaxUpper])
 	{
-		eepromWriteByte(0, 4, bmpPressure/1000);
-		ms_delay(15);
-		eepromWriteByte(0, 5, (bmpPressure % 1000) / 100);
-		ms_delay(15);
+		eepromWriteByte(0, pressureMaxUpper, INTbmpPressure/100);
 	}
-	*/
-	/*
-	eepromPressure = readByte();
-	eepromPressure <<= 8;
-	eepromPressure = readByte();
-	eepromPressure <<= 8;
-	eepromPressure = readByte();
 	
-	if(pressure > eepromPressure)
+	// checks if lower two values are larger
+	if(INTbmpPressure % 100 > sensorData[pressureMaxLower])
 	{
-		eepromWriteByte(0, 4, bmpPressure/1000);
-		ms_delay(15);
-		eepromWriteByte(0, 5, (bmpPressure % 1000) / 100);
-		ms_delay(15);
+		eepromWriteByte(0, pressureMaxLower, pressureMaxLower % 100);
 	}
-	*/
 }
-
+/*
 //scans EEPROM to find and record 0xFF location
 void eepromScan()
 {
@@ -109,7 +99,7 @@ void eepromScan()
 	}
 	eepromFull = 1;
 }
-
+*/
 
 void writeHourData()
 {
@@ -118,7 +108,7 @@ void writeHourData()
 		return;
 	
 	//write temp
-	eepromWriteByte(eepromLocY, eepromLocX, bmpTemp/100);
+	eepromWriteByte(eepromLocY, eepromLocX, INTbmpTemp);
 	checkEepromOverflow();
 	
 	/*

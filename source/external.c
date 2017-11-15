@@ -3,9 +3,9 @@
 #include "serial.h"
 #include "display.h"
 
-char screenNum = 0;
+//char screenNum = 0;
 
-volatile bit interruptBit = 0;
+volatile char interruptBit = 0;
 
 /*
 //screen1, 2 & 3 belong to main
@@ -47,6 +47,7 @@ void check_night()
 	*/
 }
 
+//when physical button pushed
 void backlightInterrupt() interrupt 2
 {
 	//turn on display
@@ -100,36 +101,4 @@ void lcdBacklight() //interrupt 2
 void nextScreen() interrupt 0
 {
 	interruptBit = 1;
-	
-	//prevents spamming
-	/*
-	EA = 0;
-	ms_delay(255);
-	ms_delay(255);
-	EA = 1;*/
-	
-}
-
-void next_screen()
-{
-	//serial_send(screenNum);
-	//reset the screen if num > 2
-	if(screenNum > 3)
-		screenNum = 0;
-	
-	//Go to next screen	
-	switch(screenNum)
-	{
-		case 0:
-			screen1();
-			break;
-		case 1:
-			screen2();
-			break;
-		case 2:
-			screen3();
-			break;
-		//case 3:
-		//	break;
-	}
 }

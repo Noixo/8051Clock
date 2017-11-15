@@ -18,14 +18,14 @@ sbit backlight = 0x91;//B2;	//Port 0, bit 6
 sbit comparator = 0x92;
 sbit next = 0x94;
 
-extern char screenNum;
-extern bit interruptBit;
+//extern char screenNum;
+extern char interruptBit;
 
 extern void init_external();
 extern void check_night(void);
 extern void backlightTimerInterrupt();
 extern void lcdBacklight();
 extern void nextScreen();
-extern void next_screen(void);
+//extern void next_screen(void);
 
 #endif

@@ -2,7 +2,7 @@
 #define _UARTCMD_H_
 
 //WARNING 2 DECLARATIONS OF THIS DEFINE
-#define eepromSensorMax 8
+//#define eepromSensorMax 8
 
 extern void eepromClear();
 extern void dumpRom();

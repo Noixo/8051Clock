@@ -16,6 +16,7 @@ void ms_delay(unsigned char num)	//1 miliseconds
 	unsigned char i;
 
 	for(i = 0; i < num; i++)
+	//for(i = num; i > 0; i--)
 	{
 		TH0 = 0xFC;	//Upper 8 bits
 		TL0 = 0x17;	//Lower 8 bits
@@ -49,18 +50,6 @@ void lcdDelay()
 	TR0 = 0;						//Turns off the timer
 }
 
-/*
-void dhtTimer()
-{
-	TH0 = 0xFF;
-	TL0 = 0xF1;
-	TR0 = 1;
-	
-	while(TF0 == 0);
-	TR0 = 0;
-	TF0 = 0;
-}
-*/
 /*
 void dhtInterrupt1()
 {

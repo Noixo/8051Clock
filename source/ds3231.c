@@ -66,7 +66,7 @@ unsigned char* rtc_get_temp()
 */
 unsigned char* rtc_get_time()
 {
-	static unsigned char *time;
+	static unsigned char time[8];
 	char i;
 	
 	i2c_start();

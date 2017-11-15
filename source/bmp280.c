@@ -21,9 +21,9 @@ void bmpSet(unsigned char settings, unsigned char reg)
 	i2c_start();
 	i2c_device_id(bmp280, 0);
 	i2c_write(reg);
-	
+	//
 	//i2c_start();
-	
+	//
 	//i2c_device_id(bmp280, 0);
 	i2c_write(settings);
 	i2c_stop();

@@ -4,6 +4,10 @@
 #define EEPROMSizeX 0xFF
 #define EEPROMSizeY 0x0F
 
+//lights up when eeprom is written to
+//0 = OFF, 1 = ON
+sbit writeLED = 0x82;
+
 static code char at24 = 0x57;
 
 extern void eepromWriteByte(unsigned char addr1, unsigned char addr2, unsigned char value);

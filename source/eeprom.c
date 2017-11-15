@@ -2,14 +2,15 @@
 #include "i2c.h"
 #include "timing.h"
 
-//Code for the AT24C32 
+//Code for the AT24C32
 
 //must have 10ms delay minimum after writing a byte
 void eepromWriteByte(unsigned char addr1, unsigned char addr2, unsigned char value)
 {
 	//turns off interrupts to protect data saving
 	EA = 0;
-	
+	//turn on LED
+	writeLED = 0;
 	//ensures user doesn't input an invalid address space
 	addr2 &= 0x0F;
 	
@@ -18,11 +19,12 @@ void eepromWriteByte(unsigned char addr1, unsigned char addr2, unsigned char val
 	i2c_write(addr1);
 	i2c_write(addr2);
 	
-	//i2c_stop();
-	
 	i2c_write(value);
 	i2c_stop();
 	
+	ms_delay(10);
+	//turn off LED
+	writeLED = 2;
 	EA = 1;
 }
 /*

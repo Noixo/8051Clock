@@ -14,9 +14,10 @@ s = set time
 #include "eeprom.h"
 #include "serial.h"
 #include "timing.h"
+#include "eepromSubroutine.h"
 
 //#define ENDSENSORDATA 8
-extern bit eepromFull;
+//extern bit eepromFull;
 //Erase the EEPROM contents exclusing sensor data
 void eepromClear()
 {
@@ -29,7 +30,7 @@ void eepromClear()
 		for(j; j < 0xFF; j++)
 		{
 			eepromWriteByte(i, j, 0xFF);
-			ms_delay(15);
+			//ms_delay(15);
 		}
 		//change j to 0 to reset and let it erase 0-9 after sensor data
 		j = 0;
@@ -62,10 +63,11 @@ void eraseSensors()
 	unsigned char j;
 	
 	for(j = 0; j < eepromSensorMax; j++)
+	//for(j = eepromSensorMax; j >= 0; j--)
 	{
 		//20 is chosen to ensure temp readings can erase it as it goes higher and lower
 		eepromWriteByte(0, j, 20);
-		ms_delay(15);
+		//ms_delay(15);
 	}
 	/*
 	//clearing 

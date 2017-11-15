@@ -28,7 +28,8 @@ char* readDHT11()
 		store[i/8] <<= 1;	//Push value to the right by 1 bit
 		while(DHT11 == 0);	//Loop to skip when pin is pulled low.
 		
-		dhtTimer();	//30us delay maybe 
+		//lazy re-use :) approx 41us
+		lcdDelay();	//30us delay maybe 
 		
 		store[i/8] |= DHT11;	//Switch least sig bit to 1
 		//loop to sync back up to logic high

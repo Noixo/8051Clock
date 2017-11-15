@@ -53,3 +53,9 @@ V:0.64 (5/11/2017)
 	- added eepromSubroutine $ display
 	- added methods to write max/min data to eeprom as well as hourly data
 	- started programming DS3231 alarm
+V:0.65 (16/11/2017)
+	- optimisations
+	- fixed bug, switching screens works properly now
+	- added more code to max/min sensor recording
+	- every 5 seconds, humidity & pressure alternate on screen 1
+	- LED added. Turns on when EEPROM write happens.
