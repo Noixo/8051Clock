@@ -74,7 +74,7 @@ unsigned char* rtc_get_time()
 	
 	i2c_write(0);	//point to location i of DS3231
 	
-	i2c_stop();
+	//i2c_stop();
 	i2c_start();
 	
 	(void) i2c_device_id(ds3231, 1);	//send address + read bit
@@ -98,7 +98,9 @@ void rtc_set_time(unsigned char* setTime)
 	(void) i2c_device_id(ds3231, 1);
 	i2c_write(0);	//point to seconds
 	
-	for(i = 0; setTime[i] != '\0'; i++)
+	//i2c_start();
+	
+	for(i = 0; i < 7; i++)//setTime[i] != '\0'; i++)
 	{
 		i2c_write(setTime[i]);
 	}

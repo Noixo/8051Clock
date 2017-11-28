@@ -8,5 +8,6 @@ extern void eepromClear();
 extern void dumpRom();
 extern void eraseSensors();
 extern void uartCheck();
+extern void uartCheck();
 
 #endif

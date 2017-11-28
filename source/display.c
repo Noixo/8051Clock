@@ -136,6 +136,8 @@ void screen3()
 	for(i = 4; i < 6; i++)
 	{
 		write_int(eepromRandomRead(0,i));
+		
+		//check0();
 	}
 	
 	cmd(LCD_LINE_2);
@@ -144,6 +146,7 @@ void screen3()
 	
 	for(i = 6; i < 8; i++)
 	{
+		//check0();
 		write_int(eepromRandomRead(0,i));
 	}
 }

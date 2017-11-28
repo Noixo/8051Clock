@@ -41,7 +41,7 @@ static code short dig_P9 = 6000;
 extern const void bmpReset();
 extern const void bmpCalibration();
 extern unsigned long bmp280GetPressure();
-extern short bmp280GetTemp();
+extern long bmp280GetTemp();
 extern void bmpSet(unsigned char settings, unsigned char reg);
 
 //unsigned char*

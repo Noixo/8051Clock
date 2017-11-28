@@ -59,16 +59,23 @@ humidity:	1 byte
 pressure:	2 bytes
 */
 
-//global variables to store sensor data
-volatile unsigned char *p_time;
-volatile long bmpTemp;
-volatile unsigned long bmpPressure;
-volatile unsigned char *p_dht11;
+	//global variables to store sensor data
+	volatile unsigned char *p_time;
+	volatile short bmpTemp;
+	volatile unsigned long bmpPressure;
 
-//stores bmpTemp and bmpPressure without decimal
-volatile unsigned short INTbmpTemp;
-volatile unsigned short INTbmpPressure;
+	//stores bmpTemp and bmpPressure without decimal
+	volatile char INTbmpTemp;
+	//volatile unsigned char dht11Humidity;
+	volatile unsigned char *p_dht11;
+	volatile unsigned short INTbmpPressure;
 
+/*struct apple
+{		
+	
+	//char *pointer = INTbmpTemp;
+};
+*/
 unsigned char screenNum;
 
 /*
@@ -209,11 +216,20 @@ void main()
 		ms_delay(250);
 		ms_delay(250);
 		
-		//check_night();
+		//turns off LCD display if night time
+		check_night();
 	}
 }
 
-//LED to indicate write
+/* focus TODO
+	- DHT11 timer to prevent lock ups
+	- finish writing sensor data
+	- finish writing hourly sensor data
+	- make space to add check0(); for screen3
+*/
+
+//ds3231 call BCD
+// move BCD to subroutine
 
 /*
 	--------------TODO---------------

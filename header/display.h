@@ -2,10 +2,10 @@
 #define _DISPLAY_H_
 
 extern unsigned char *p_time, eepromLocX, eepromLocY;
-extern long bmpTemp;
+extern short bmpTemp;
 extern unsigned long bmpPressure;
 extern unsigned char *p_dht11;
-extern unsigned short INTbmpTemp;
+extern char INTbmpTemp;
 extern unsigned short INTbmpPressure;
 
 extern unsigned char printSwap;

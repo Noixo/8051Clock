@@ -3,10 +3,10 @@
 
 sbit DHT11 = 0x87;
 
-extern char *dht11;
+extern char dht11;
 
 //----------------
 
-extern char* readDHT11();
+extern char *readDHT11();
 
 #endif

@@ -1,7 +1,7 @@
 #include "DHT11.h"
 #include "timing.h"
 
-char* readDHT11()
+char *readDHT11()
 {
 	unsigned char i;
 	static unsigned char store[5];
@@ -51,6 +51,7 @@ char* readDHT11()
 		
 		//write_char('C');
 		*/
+		//return humidity
 		return store;
 	}
 	//return -1 if failed

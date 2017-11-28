@@ -6,15 +6,16 @@ COMMANDS:
 d = dump EEPROM contents
 e = erase EEPROM contents (11-END)
 
-c = clear max/min sensor data, locations: 0-10
+c = clear max/min sensor data, locations: 0-8
 s = set time
 */
 
 #include "uartCmd.h"
 #include "eeprom.h"
 #include "serial.h"
-#include "timing.h"
+//#include "timing.h"
 #include "eepromSubroutine.h"
+#include "ds3231.h"
 
 //#define ENDSENSORDATA 8
 //extern bit eepromFull;
@@ -62,20 +63,28 @@ void eraseSensors()
 {
 	unsigned char j;
 	
-	for(j = 0; j < eepromSensorMax; j++)
+	//crappy optimisation, saves 5 bytes
+	//starts at humidity
+	for(j = eepromSensorMax; j; j--)
 	//for(j = eepromSensorMax; j >= 0; j--)
 	{
-		//20 is chosen to ensure temp readings can erase it as it goes higher and lower
-		eepromWriteByte(0, j, 20);
-		//ms_delay(15);
+		//10 is chosen to ensure readings can erase it as it goes higher and lower
+		eepromWriteByte(0, j-1, 10);	//-1 to ensure num goes down to 0
 	}
-	/*
-	//clearing 
-	for(j = 0; j < )
-	*/
 	serial_send('D');
 	serial_send('\r');
 	serial_send('\n');
+}
+
+void setTime()
+{
+	//char arr[8];
+	
+	serial_recieve_array();
+	
+	rtc_set_time();
+	
+	//input checking?
 }
 
 //main program to check and run subprocedures.
@@ -95,7 +104,11 @@ void uartCheck()
 			eraseSensors();
 			break;
 		
-		//default:
-			//break;
+		case 's':
+			setTime();
+			break;
+		
+		default:
+			break;
 	}
 }

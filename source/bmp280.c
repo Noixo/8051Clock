@@ -58,7 +58,7 @@ void bmpCalibration()
 
 //must read temp before reading pressure
 //temp is stored as 3 bytes, (0xFA-0xFC)
-short bmp280GetTemp()
+long bmp280GetTemp()
 {
 	//Keil long = 4 bytes, int = 2
 	static long adc_T, var1, var2;//, T = 0;

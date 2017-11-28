@@ -16,27 +16,28 @@ bit checkBMPValid()
 		return 1;
 	return 0;
 }
-/*
-void compare(unsigned char )
+
+
+void compare(unsigned char currentValue, unsigned char eepromValue, char eepromLoc)
 {
-	if(INTbmpTemp > sensorData[tempMax])
+	if(currentValue > eepromValue)
 	{
-		eepromWriteByte(0, tempMax, INTbmpTemp);
+		eepromWriteByte(0, eepromLoc, currentValue);
 	}
 	
-	//if current temp is less than the lowest recorded temp
-	if(INTbmpTemp < sensorData[tempMin])
+	if(currentValue < eepromValue)
 	{
-		eepromWriteByte(0, tempMin, INTbmpTemp);
+		eepromWriteByte(0, eepromLoc+1, currentValue);
 	}
 }
-*/
+
 //check and update data if necessary
 void writeSensorData()
 {
 	//array to store data in
 	unsigned char sensorData[eepromSensorMax];
 	char i;
+	//unsigned char *pointer = &INTbmpTemp;
 	
 	//cancel if invalid readings
 	if(checkBMPValid() == 1)
@@ -47,15 +48,37 @@ void writeSensorData()
 	{
 		sensorData[i] = eepromRandomRead(0,i);
 	}
+	
+	//0-7
+	//for(i = 0; i < eepromSensorMax; i++)
+	//{
+	
+	compare(INTbmpTemp, sensorData[0], tempMax);
+	
+	compare(p_dht11[2], sensorData[2], humidityMax);
+	
+	compare(INTbmpPressure / 100, sensorData[4], pressureMaxUpper);
+	compare(INTbmpPressure % 100, sensorData[6], pressureMinUpper);
+	
 	/*
-	//get eeprom MAX pressure data 4-7
-	eepromPressure = readByte();
-	eepromPressure <<= 8;
-	eepromPressure = readByte();
+	//write data if larger or smaller
+	for(pointer; pointer != 0x80; pointer++)
+	{
+		if(&pointer > sensorData[i])
+		{
+			//return 
+			eepromWriteByte(0, i, *pointer);
+		}
+		if(&pointer < sensorData[i])
+		{
+			//return 
+			eepromWriteByte(0, i, *pointer);
+		}
+	}
 	*/
 	
-	//---------------------------------------
-
+	//-----------------------------------------------------------
+/*
 	//if current temp is greater than the highest recorded temp
 	if(INTbmpTemp > sensorData[tempMax])
 	{
@@ -67,7 +90,13 @@ void writeSensorData()
 	{
 		eepromWriteByte(0, tempMin, INTbmpTemp);
 	}
+	//-----------------------------------------------------------
 	
+	//DHT11 PRESSURE DATA
+	//--
+	//--
+	
+	//-----------------------------------------------------------
 	//if latest pressure is bigger than eeprom pressure
 	//checks first 2 values
 	if(INTbmpPressure / 100 > sensorData[pressureMaxUpper])
@@ -78,8 +107,19 @@ void writeSensorData()
 	// checks if lower two values are larger
 	if(INTbmpPressure % 100 > sensorData[pressureMaxLower])
 	{
-		eepromWriteByte(0, pressureMaxLower, pressureMaxLower % 100);
+		eepromWriteByte(0, pressureMaxLower, INTbmpPressure % 100);
 	}
+	//-----------------------------------------------------------
+	if(INTbmpPressure / 100 < sensorData[pressureMinUpper])
+	{
+		eepromWriteByte(0, pressureMinUpper, INTbmpPressure / 100);
+	}
+	
+	if(INTbmpPressure % 100 < sensorData[pressureMinLower])
+	{
+		eepromWriteByte(0, pressureMinLower, INTbmpPressure % 100);
+	}
+	*/
 }
 /*
 //scans EEPROM to find and record 0xFF location

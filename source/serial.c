@@ -27,9 +27,7 @@ void serial_send_array(unsigned char* array)
 	unsigned char i;
 	for(i = 0; array[i] != '\0'; i++)
 	{
-		SBUF = array[i];
-		while(TI == 0);
-		TI = 0;
+		serial_send(array[i]);
 	}
 }
 
@@ -56,4 +54,16 @@ unsigned char serial_receive()
 		test = SBUF;
 	}
 	return test;
+}
+
+unsigned char* serial_recieve_array()
+{
+	unsigned char arr[12];
+	char i;
+	
+	for(i = 0; i < 12; i++)
+	{
+		arr[i % 2] <<= serial_receive();
+	}
+	return arr;
 }

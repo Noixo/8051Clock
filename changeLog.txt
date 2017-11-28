@@ -59,3 +59,7 @@ V:0.65 (16/11/2017)
 	- added more code to max/min sensor recording
 	- every 5 seconds, humidity & pressure alternate on screen 1
 	- LED added. Turns on when EEPROM write happens.
+V: 0.66 ()
+	- fixed bug in sensor write
+	- corrected eraseSensors
+	- reversed printing for sensor data on screen3
