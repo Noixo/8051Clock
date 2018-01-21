@@ -12,13 +12,13 @@
       <ToolsetName>MCS-51</ToolsetName>
       <TargetOption>
         <TargetCommonOption>
-          <Device>AT89S51</Device>
+          <Device>AT89S52</Device>
           <Vendor>Atmel</Vendor>
-          <Cpu>IRAM(0-0x7F) IROM(0-0xFFF) CLOCK(33000000) MODP2</Cpu>
+          <Cpu>IRAM(0-0xFF) IROM(0-0x1FFF) CLOCK(33000000) MODP2</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile>"LIB\STARTUP.A51" ("Standard 8051 Startup Code")</StartupFile>
           <FlashDriverDll></FlashDriverDll>
-          <DeviceId>3409</DeviceId>
+          <DeviceId>3411</DeviceId>
           <RegisterFile>REGX51.H</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
@@ -35,7 +35,7 @@
           <BinPath>C:\Keil_v5\C51\BIN\</BinPath>
           <IncludePath></IncludePath>
           <LibPath></LibPath>
-          <RegisterFilePath></RegisterFilePath>
+          <RegisterFilePath>Atmel\</RegisterFilePath>
           <DBRegisterFilePath>Atmel\</DBRegisterFilePath>
           <TargetStatus>
             <Error>0</Error>
@@ -109,11 +109,11 @@
           <SimDllName>S8051.DLL</SimDllName>
           <SimDllArguments></SimDllArguments>
           <SimDlgDll>DP51.DLL</SimDlgDll>
-          <SimDlgDllArguments>-pAT51</SimDlgDllArguments>
+          <SimDlgDllArguments>-pAT52</SimDlgDllArguments>
           <TargetDllName>S8051.DLL</TargetDllName>
           <TargetDllArguments></TargetDllArguments>
           <TargetDlgDll>TP51.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-pAT51</TargetDlgDllArguments>
+          <TargetDlgDllArguments>-pAT52</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -176,7 +176,7 @@
           </Flash1>
           <bUseTDR>0</bUseTDR>
           <Flash2></Flash2>
-          <Flash3>"C:\Users\flato\Desktop\progisp1.72\progisp.exe" ()</Flash3>
+          <Flash3></Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -190,9 +190,9 @@
             <RomSize>2</RomSize>
             <DataHold>0</DataHold>
             <XDataHold>0</XDataHold>
-            <UseOnchipRom>1</UseOnchipRom>
+            <UseOnchipRom>0</UseOnchipRom>
             <UseOnchipArithmetic>0</UseOnchipArithmetic>
-            <UseMultipleDPTR>1</UseMultipleDPTR>
+            <UseMultipleDPTR>0</UseMultipleDPTR>
             <UseOnchipXram>0</UseOnchipXram>
             <HadIRAM>1</HadIRAM>
             <HadXRAM>0</HadXRAM>
@@ -270,12 +270,12 @@
               <IRO>
                 <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x1000</Size>
+                <Size>0x2000</Size>
               </IRO>
               <IRA>
                 <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x80</Size>
+                <Size>0x100</Size>
               </IRA>
               <XRA>
                 <Type>0</Type>
@@ -443,6 +443,11 @@
               <FileType>5</FileType>
               <FilePath>.\header\uartCmd.h</FilePath>
             </File>
+            <File>
+              <FileName>debug.h</FileName>
+              <FileType>5</FileType>
+              <FilePath>.\debug.h</FilePath>
+            </File>
           </Files>
         </Group>
         <Group>
@@ -517,6 +522,11 @@
               <FileName>uartCmd.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\source\uartCmd.c</FilePath>
+            </File>
+            <File>
+              <FileName>debug.c</FileName>
+              <FileType>1</FileType>
+              <FilePath>.\debug.c</FilePath>
             </File>
           </Files>
         </Group>

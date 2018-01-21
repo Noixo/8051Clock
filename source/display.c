@@ -3,7 +3,7 @@
 #include "eeprom.h"
 
 unsigned char printSwap;
-
+/*
 //if time is < 10 add 0. e.g. 05
 void check0(unsigned char number)
 {
@@ -150,3 +150,4 @@ void screen3()
 		write_int(eepromRandomRead(0,i));
 	}
 }
+*/

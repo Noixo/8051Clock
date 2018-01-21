@@ -20,6 +20,7 @@ s = set time
 //#define ENDSENSORDATA 8
 //extern bit eepromFull;
 //Erase the EEPROM contents exclusing sensor data
+/*
 void eepromClear()
 {
 	//j starts at 8 to avoid erasing sensor data
@@ -40,7 +41,8 @@ void eepromClear()
 	serial_send('\r');
 	serial_send('\n');
 }
-
+*/
+/*
 //dumps entire EEPROM through UART
 void dumpRom()
 {
@@ -57,7 +59,7 @@ void dumpRom()
 			serial_send('\n');
 		}
 }
-
+*/
 //erase only the sensor portion of data
 void eraseSensors()
 {
@@ -68,9 +70,9 @@ void eraseSensors()
 	for(j = eepromSensorMax; j; j--)
 	//for(j = eepromSensorMax; j >= 0; j--)
 	{
-		//10 is chosen to ensure readings can erase it as it goes higher and lower
-		eepromWriteByte(0, j-1, 10);	//-1 to ensure num goes down to 0
+		eepromWriteByte(0, j-1, 0xFF);	//-1 to ensure num goes down to 0
 	}
+	
 	serial_send('D');
 	serial_send('\r');
 	serial_send('\n');
@@ -95,11 +97,11 @@ void uartCheck()
 		case 'd':
 			dumpRom();
 			break;
-		
+		/*
 		case 'e':
 			eepromClear();
 			break;
-		
+		*/
 		case 'c':
 			eraseSensors();
 			break;

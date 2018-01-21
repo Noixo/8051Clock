@@ -6,7 +6,7 @@
 extern const unsigned char time[];
 extern const unsigned char temp[];
 
-unsigned char* rtc_get_temp();
+extern unsigned char* rtc_get_temp();
 extern unsigned char* rtc_get_time();
 //extern void ds3231Alarm();
 extern unsigned char decToBcd(unsigned char convert);

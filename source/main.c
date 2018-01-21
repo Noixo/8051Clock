@@ -36,6 +36,8 @@
 #include "display.h"
 #include "eepromSubroutine.h"
 
+#include "debug.h"
+
 //#include "GPSTime.h"
 //#include "MAX7219.h"
 
@@ -59,43 +61,24 @@ humidity:	1 byte
 pressure:	2 bytes
 */
 
-	//global variables to store sensor data
-	volatile unsigned char *p_time;
-	volatile short bmpTemp;
-	volatile unsigned long bmpPressure;
+//---------------------------------------------------
 
-	//stores bmpTemp and bmpPressure without decimal
-	volatile char INTbmpTemp;
-	//volatile unsigned char dht11Humidity;
-	volatile unsigned char *p_dht11;
-	volatile unsigned short INTbmpPressure;
+//global variables to store sensor data
+volatile unsigned char *p_time;
+volatile unsigned char *p_dht11;
+volatile short bmpTemp;
+volatile unsigned long bmpPressure;
 
-/*struct apple
-{		
-	
-	//char *pointer = INTbmpTemp;
-};
-*/
+//stores bmpTemp and bmpPressure without decimal
+volatile char INTbmpTemp;
+volatile unsigned short INTbmpPressure;
+
+//idk if this is safe
 unsigned char screenNum;
+unsigned DHTcounter;
 
-/*
-void print_temp()
-{
-	//unsigned char *p_temp;
-	
-	//get temp and humidty
-	//p_temp = readDHT11();
-	
-	//print temp
-	write_int(*(p_temp)+2);
-	write_char(0);
-	write_char(' ');
-	
-	//print humidity
-	write_int(*(p_temp));
-	write_char('%');
-}
-*/
+//2 = 1 second since 2, 250ms delays used
+#define DELAYTIME 4
 
 /**
 * runs and stores the latest data from sensors.
@@ -107,15 +90,35 @@ void updateData()
 	p_time = rtc_get_time();
 	bmpTemp = bmp280GetTemp();
 	bmpPressure = bmp280GetPressure();
-	//p_dht11 = readDHT11();
 	
+	//check if 2 seconds have passed
+	if(DHTcounter == DELAYTIME)
+	{
+		DHTcounter = 0;
+		p_dht11 = readDHT11();
+		
+		/*
+		//Ensure overflow and timer are off
+		TR1 = 0;
+		TF1 = 0;
+		ET1 = 0;
+		
+		timeout = 0;
+		*/
+		serial_send_array("send\r\n");
+	}
+	else
+	{
+		DHTcounter++;
+	}
+	
+	//serial_convert(DHTcounter);
+	//serial_send_array("\r\n");
 	//removes decimal part
 	INTbmpTemp = bmpTemp / 100;
 	INTbmpPressure = bmpPressure / 100;
 	
-	//readDHT11();
-	
-		//refreshes the current screen
+	//refreshes the current screen
 	if(screenNum > 2) //reset the screen if num > 2
 		screenNum = 0;
 	
@@ -123,7 +126,7 @@ void updateData()
 	switch(screenNum)
 	{
 		case 0:
-			screen1();
+			//screen1();
 			break;
 		case 1:
 			screen2();
@@ -139,10 +142,11 @@ void updateData()
 void main()
 {
 	//sets the variable to the location of where the hour data will be
-	char checkHour = *p_time+2;
+	//char checkHour = *p_time+2;
 	
-	EEPROMSizeLED = 1;
-	
+	//EEPROMSizeLED = 1;
+	//------------------------------------------------------------------
+	//initalise components
 	init_timing();
 	
 	init_serial();
@@ -170,12 +174,8 @@ void main()
 	bmpReset();
 	bmpSet(0x64, 0xF5);
 	bmpSet(0xFF, 0xF4);
-	
-	//main, startup screen
-	//screen1();
-	//778.78 pressure
-	//2203
-	
+	//------------------------------------------------------------------
+
 	while(1)
 	{
 		//change screen if button pushed
@@ -193,13 +193,15 @@ void main()
 		
 		//read and store sensor data as well as update display
 		updateData();
+		debug();
 		
 		//check and store MAX and MIN sensor data
-		writeSensorData();
+		//writeSensorData();
 		
 		//check if UART command was sent
 		uartCheck();
-
+		
+		/*
 		//activate every hour when time changes
 		if(*(p_time+2) != checkHour)
 		{
@@ -210,7 +212,7 @@ void main()
 			//reset pin to activate next hour
 			checkHour = *(p_time+2);
 		}
-		
+		*/
 		//delay to prevent excessive i2c reads
 		
 		ms_delay(250);

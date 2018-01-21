@@ -1,11 +1,18 @@
 #include "timing.h"
 #include <intrins.h>
-#include "i2c.h"
+//#include "i2c.h"
+
+//#include "DHT11.h"
+
+//#include "serial.h"
 
 //#include <reg51.h>
+
 void init_timing()
 {
 	TMOD |= 0x01;	//Turns on mode 1 16 bit timer for timer 0
+	//EA = 1;
+	//TMOD |= 0x10;//0x10; // mode 1 timer for timer 1?
 	//EAÅ = 1;
 }
 
@@ -14,6 +21,8 @@ void init_timing()
 void ms_delay(unsigned char num)	//1 miliseconds
 {
 	unsigned char i;
+	
+	//init_timing();
 
 	for(i = 0; i < num; i++)
 	//for(i = num; i > 0; i--)
@@ -37,33 +46,44 @@ void us_delay()
 	_nop_();
 }
 
+//31us delay?
+void dht11Delay()
+{
+	//init_timing();
+	
+	TH0 = 0xFF;
+	TL0 = 0xF1;
+	TR0 = 1;	//start timer
+	
+	while(TF0 == 0);		//loops till timer overflow bit = 1
+	TR0 = 0;						//Turns off the timer
+	TF0 = 0;           	//clear the timer Over flow flag
+}
+
 //approx 41.2
 void lcdDelay()
 {
+	//init_timing();
+	
 	TH0 = 0xFF;	//Upper 8 bits
-	TL0 = 0xE3;	//Lower 8 bits
+	TL0 = 0xE9;	//Lower 8 bits
 	TR0 = 1;		//Starts the timer
 
 	while(TF0 == 0);		//loops till timer overflow bit = 1
-	TF0 = 0;           	//clear the timer Over flow flag
-	
 	TR0 = 0;						//Turns off the timer
+	TF0 = 0;           	//clear the timer Over flow flag
 }
-
 /*
-void dhtInterrupt1()
+//start timer, when overflow jump to a counter. When counter reaches number, cancel
+void dhtInterrupt() 
 {
-	/*
-	TMOD &= 0xF0;
-	TMOD |= 0x02;
-	
-	TH1 = 0x05;
-	TL1 = 0x05;
+	TMOD = 0x10;//0x10; // mode 1 timer for timer 1?
 	
 	ET1 = 1;
-	EA = 1;
 	
-	TR1 = 1;
+	TH1 = 0x00;
+	TL1 = 0x00;
 	
+	TR1 = 1;	//starts the timer
 }
 */

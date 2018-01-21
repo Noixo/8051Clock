@@ -28,33 +28,7 @@ void bmpSet(unsigned char settings, unsigned char reg)
 	i2c_write(settings);
 	i2c_stop();
 }
-/*
-//convert to char array/struct
-void bmpCalibration()
-{
-	char i;
-	
-	i2c_start();
-		
-	i2c_device_id(bmp280, 0);
-		
-	i2c_write(0x88);
-		
-	//quick start
-	i2c_start();
-	i2c_device_id(bmp280, 1);
-	
-	for(i = 0; i < 12; i++)
-	{
-		serial_convert(i2c_read(0));
-		serial_convert(i2c_read(0));
-	}
-	
-	i2c_read(1);
-	
-	i2c_stop();
-}
-*/
+
 
 //must read temp before reading pressure
 //temp is stored as 3 bytes, (0xFA-0xFC)

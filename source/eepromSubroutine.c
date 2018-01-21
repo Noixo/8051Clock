@@ -17,7 +17,6 @@ bit checkBMPValid()
 	return 0;
 }
 
-
 void compare(unsigned char currentValue, unsigned char eepromValue, char eepromLoc)
 {
 	if(currentValue > eepromValue)
@@ -49,16 +48,38 @@ void writeSensorData()
 		sensorData[i] = eepromRandomRead(0,i);
 	}
 	
-	//0-7
-	//for(i = 0; i < eepromSensorMax; i++)
-	//{
+	//check if INTbmpTemp is 0xFF, if so then data has be wiped
+	if(INTbmpTemp == 0xFF)
+	{
+		//compare(INTbmpTemp, 0, );
+		/*
+		eepromWriteByte(0, 0, INTbmpTemp);
+		eepromWriteByte(0, 1, INTbmpTemp);
+		
+		//humidity
+		eepromWriteByte(0, 2, *(p_dht11));
+		eepromWriteByte(0, 3, *(p_dht11));
+		
+		eepromWriteByte(0, 4, INTbmpPressure);
+		eepromWriteByte(0, 5, INTbmpPressure);
+		
+		eepromWriteByte(0, 6, INTbmpPressure);
+		eepromWriteByte(0, 7, INTbmpPressure);
+		*/
+	}
+	else
+	{
+		compare(INTbmpTemp, sensorData[0], tempMax);
 	
-	compare(INTbmpTemp, sensorData[0], tempMax);
-	
-	compare(p_dht11[2], sensorData[2], humidityMax);
-	
-	compare(INTbmpPressure / 100, sensorData[4], pressureMaxUpper);
-	compare(INTbmpPressure % 100, sensorData[6], pressureMinUpper);
+		compare(p_dht11[2], sensorData[2], humidityMax);
+		
+		//????
+		compare(INTbmpPressure / 100, sensorData[4], pressureMaxUpper);
+		compare(INTbmpPressure % 100, sensorData[5], pressureMaxUpper);
+		
+		compare(INTbmpPressure / 100, sensorData[6], pressureMinUpper);
+		compare(INTbmpPressure % 100, sensorData[7], pressureMinUpper);
+	}
 	
 	/*
 	//write data if larger or smaller
@@ -140,7 +161,7 @@ void eepromScan()
 	eepromFull = 1;
 }
 */
-
+/*
 void writeHourData()
 {
 	//cancel if invalid readings
@@ -163,9 +184,10 @@ void writeHourData()
 	checkEepromOverflow();
 	eepromWriteByte(eepromLocY, eepromLocX, bmpTemp/100);
 	checkEepromOverflow();
-	*/
+	
 }
-
+*/
+/*
 //turn on LED if running out of room and make sure location
 //doesn't overflow
 void checkEepromOverflow()
@@ -177,7 +199,7 @@ void checkEepromOverflow()
 	if(eepromLocX == 0xFF)
 		eepromLocY++;
 }
-
+*/
 /*
 char wearCheck()
 {

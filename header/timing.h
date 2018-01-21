@@ -23,6 +23,7 @@ extern void ms_delay(unsigned char num);
 extern void msDelayCheck();
 extern void backlightInterrupt();
 extern void us_delay();
+extern void dht11Delay();
 extern void dhtTimer();
 extern void lcdDelay();
 extern void dhtInterrupt1();

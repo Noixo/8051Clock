@@ -5,7 +5,7 @@
 #define bmp280 0x76
 
 //global variable to store temperature in (used for pressure)
-extern data long t_fine;
+extern long t_fine;
 
 #define dig_T1 27314
 #define dig_T2 26369

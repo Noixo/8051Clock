@@ -3,10 +3,13 @@
 
 sbit DHT11 = 0x87;
 
-extern char dht11;
+extern unsigned char timeout;
+
+extern const unsigned char store[];
 
 //----------------
 
 extern char *readDHT11();
+extern void DHT11Timeout();
 
 #endif
