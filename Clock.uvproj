@@ -12,13 +12,13 @@
       <ToolsetName>MCS-51</ToolsetName>
       <TargetOption>
         <TargetCommonOption>
-          <Device>AT89S52</Device>
+          <Device>AT89S51</Device>
           <Vendor>Atmel</Vendor>
-          <Cpu>IRAM(0-0xFF) IROM(0-0x1FFF) CLOCK(33000000) MODP2</Cpu>
+          <Cpu>IRAM(0-0x7F) IROM(0-0xFFF) CLOCK(33000000) MODP2</Cpu>
           <FlashUtilSpec></FlashUtilSpec>
           <StartupFile>"LIB\STARTUP.A51" ("Standard 8051 Startup Code")</StartupFile>
           <FlashDriverDll></FlashDriverDll>
-          <DeviceId>3411</DeviceId>
+          <DeviceId>3409</DeviceId>
           <RegisterFile>REGX51.H</RegisterFile>
           <MemoryEnv></MemoryEnv>
           <Cmp></Cmp>
@@ -109,11 +109,11 @@
           <SimDllName>S8051.DLL</SimDllName>
           <SimDllArguments></SimDllArguments>
           <SimDlgDll>DP51.DLL</SimDlgDll>
-          <SimDlgDllArguments>-pAT52</SimDlgDllArguments>
+          <SimDlgDllArguments>-pAT51</SimDlgDllArguments>
           <TargetDllName>S8051.DLL</TargetDllName>
           <TargetDllArguments></TargetDllArguments>
           <TargetDlgDll>TP51.DLL</TargetDlgDll>
-          <TargetDlgDllArguments>-pAT52</TargetDlgDllArguments>
+          <TargetDlgDllArguments>-pAT51</TargetDlgDllArguments>
         </DllOption>
         <DebugOption>
           <OPTHX>
@@ -176,7 +176,7 @@
           </Flash1>
           <bUseTDR>0</bUseTDR>
           <Flash2></Flash2>
-          <Flash3></Flash3>
+          <Flash3>"" ()</Flash3>
           <Flash4></Flash4>
           <pFcarmOut></pFcarmOut>
           <pFcarmGrp></pFcarmGrp>
@@ -270,12 +270,12 @@
               <IRO>
                 <Type>1</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x2000</Size>
+                <Size>0x1000</Size>
               </IRO>
               <IRA>
                 <Type>0</Type>
                 <StartAddress>0x0</StartAddress>
-                <Size>0x100</Size>
+                <Size>0x80</Size>
               </IRA>
               <XRA>
                 <Type>0</Type>
@@ -299,7 +299,7 @@
             <VariablesInOrder>0</VariablesInOrder>
             <IntegerPromotion>1</IntegerPromotion>
             <uAregs>0</uAregs>
-            <UseInterruptVector>1</UseInterruptVector>
+            <UseInterruptVector>0</UseInterruptVector>
             <Fuzzy>3</Fuzzy>
             <Optimize>9</Optimize>
             <WarningLevel>2</WarningLevel>
@@ -343,7 +343,7 @@
             <UserClasses></UserClasses>
             <CSection></CSection>
             <UserSection></UserSection>
-            <CodeBaseAddress>0X0000-0X0FFF</CodeBaseAddress>
+            <CodeBaseAddress>0X0010-0X0FFF</CodeBaseAddress>
             <XDataBaseAddress>0x00-0x80</XDataBaseAddress>
             <PDataBaseAddress></PDataBaseAddress>
             <BitBaseAddress></BitBaseAddress>
@@ -407,11 +407,6 @@
               <FileName>eepromSubroutine.h</FileName>
               <FileType>5</FileType>
               <FilePath>.\header\eepromSubroutine.h</FilePath>
-            </File>
-            <File>
-              <FileName>external.h</FileName>
-              <FileType>5</FileType>
-              <FilePath>.\header\external.h</FilePath>
             </File>
             <File>
               <FileName>i2c.h</FileName>
@@ -482,11 +477,6 @@
               <FileName>eepromSubroutine.c</FileName>
               <FileType>1</FileType>
               <FilePath>.\source\eepromSubroutine.c</FilePath>
-            </File>
-            <File>
-              <FileName>external.c</FileName>
-              <FileType>1</FileType>
-              <FilePath>.\source\external.c</FilePath>
             </File>
             <File>
               <FileName>i2c.c</FileName>

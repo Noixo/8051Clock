@@ -3,7 +3,7 @@
 #include "eeprom.h"
 
 unsigned char printSwap;
-/*
+
 //if time is < 10 add 0. e.g. 05
 void check0(unsigned char number)
 {
@@ -34,12 +34,21 @@ void screen1()
 	write_char(' ');
 	
 	//print temp
-	//if(bmpTemp > 0)
+	//if temp < 10, add 0 to prevent double degree symbol bug and keep consistancy
+	check0(INTbmpTemp);
+	
+	//check if temperature is negative or positive
+	if(bmpTemp < 0)
+		write_char('-');
+	//else
+		//write_char('+');
+	
 	write_int(INTbmpTemp);
 	
 	write_char('.');
 	check0(bmpTemp % 100);
 	write_int(bmpTemp % 100);
+	
 	//write temperature symbol *c
 	write_char(0);
 	
@@ -64,8 +73,8 @@ void screen1()
 	if(printSwap > 19)
 		printSwap = 0;
 	
-	//if 10 refreshes have occured (5 seconds) print pressure
-	if(printSwap > 9)
+	//if 8 refreshes have occured (approx 2.5 seconds) print pressure
+	if(printSwap > 7)
 	{
 		//pressure
 		write_int(bmpPressure/1000);
@@ -78,10 +87,9 @@ void screen1()
 	{
 		//print humidity
 		write_int(*p_dht11+2);
-		write_string(".00% ");
+		write_string(".00% ");	//extra space is cheeky way of preventing display issues (only works on 16x2)
 	}
 }
-
 
 //display max and min temp/%
 void screen2()
@@ -150,4 +158,3 @@ void screen3()
 		write_int(eepromRandomRead(0,i));
 	}
 }
-*/

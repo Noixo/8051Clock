@@ -60,6 +60,7 @@ void dumpRom()
 		}
 }
 */
+
 //erase only the sensor portion of data
 void eraseSensors()
 {
@@ -94,9 +95,11 @@ void uartCheck()
 {
 	switch(serial_receive())
 	{
+		/*
 		case 'd':
 			dumpRom();
 			break;
+		*/
 		/*
 		case 'e':
 			eepromClear();

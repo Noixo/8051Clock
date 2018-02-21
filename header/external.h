@@ -11,15 +11,16 @@ sbit EX0 = 0xA8;
 sbit EX1 = 0xAA;
 //sbit EA = 0xAF;
 
-sbit backlight = 0x91;//B2;	//Port 0, bit 6
+sbit backlight = 0x93;//0x91;//B2;	//Port 0, bit 6
 //sbit next_screenVar = 0x85;
 //sbit lcd_button = 0x86;	//Port 1, bit 1	
 
 sbit comparator = 0x92;
-sbit next = 0x94;
+sbit next = 0x90;// 0x94;
+sbit onBacklight = 0x91;
 
 //extern char screenNum;
-extern char interruptBit;
+//extern char interruptBit;
 
 extern void init_external();
 extern void check_night(void);

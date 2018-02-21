@@ -1,11 +1,11 @@
-#include "external.h"
-#include "timing.h"
-#include "serial.h"
-#include "display.h"
+//#include "external.h"
+//#include "timing.h"
+//#include "serial.h"
+//#include "display.h"
 
 //char screenNum = 0;
 
-volatile char interruptBit = 0;
+//volatile char interruptBit = 0;
 
 /*
 //screen1, 2 & 3 belong to main
@@ -15,7 +15,7 @@ extern void screen3();
 */
 //void screen1();
 //void screen2();
-
+/*
 void init_external()
 {
 	//EXT0 for next screen
@@ -31,7 +31,8 @@ void init_external()
 	
 	backlight = 0;	//Turn on display
 }
-
+*/
+/*
 void check_night()
 {
 	backlight =~ comparator;
@@ -44,9 +45,10 @@ void check_night()
 	{
 		backlight = 0;			//When daytime turn on light
 	}
-	*/
+	
 }
-
+*/
+/*
 //when physical button pushed
 void backlightInterrupt() interrupt 2
 {
@@ -60,7 +62,8 @@ void backlightInterrupt() interrupt 2
 	//start timer 1
 	TR1 = 1;
 }
-
+*/
+/*
 //runs when timer overruns
 void backlightTimerInterrupt() interrupt 3
 {
@@ -72,7 +75,7 @@ void backlightTimerInterrupt() interrupt 3
 	//turn off timer
 	TR1 = 0;
 }
-
+*/
 //change so that it runs timer 2 to turn on/off
 //TODO: start timer2 to run for 5 seconds in background
 /*
@@ -98,7 +101,9 @@ void lcdBacklight() //interrupt 2
 //if user wants to change screen
 //only changes a bit to avoid potential problems
 //with exiting whatver subroutine
+/*
 void nextScreen() interrupt 0
 {
 	interruptBit = 1;
 }
+*/

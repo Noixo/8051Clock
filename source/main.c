@@ -1,5 +1,5 @@
 /*! \mainpage
-* @Author Matthew Whiteley\n
+* @Author M Whiteley\n
 * @Date 
 * @brief 8051 clock and data logging program.
 * \section Sensor specs:
@@ -25,7 +25,6 @@
 
 #include "LCD.h"
 #include "DHT11.h"
-#include "external.h"
 #include "timing.h"
 #include "i2c.h"
 #include "ds3231.h"
@@ -63,6 +62,12 @@ pressure:	2 bytes
 
 //---------------------------------------------------
 
+//BMP280
+#define CTRL_MEAS 0xF4
+#define CONFIG 0xF5
+
+//---------------------------------------------------
+
 //global variables to store sensor data
 volatile unsigned char *p_time;
 volatile unsigned char *p_dht11;
@@ -77,8 +82,19 @@ volatile unsigned short INTbmpPressure;
 unsigned char screenNum;
 unsigned DHTcounter;
 
-//2 = 1 second since 2, 250ms delays used
-#define DELAYTIME 4
+//2 = 0.5 second since 2, 250ms delays used
+#define DELAYTIME 8
+
+//pin blocks to pull up
+//0x80 has no pullups
+sfr blockOne = 0x90;
+sfr blockTwo = 0xA0;
+sfr blockThree = 0xB0;
+
+sbit comparator = 0x92;
+sbit next = 0x90;// 0x94;
+sbit onBacklight = 0x91;
+sbit backlight = 0x93;
 
 /**
 * runs and stores the latest data from sensors.
@@ -91,29 +107,17 @@ void updateData()
 	bmpTemp = bmp280GetTemp();
 	bmpPressure = bmp280GetPressure();
 	
-	//check if 2 seconds have passed
+	//check if 2.5 seconds have passed
 	if(DHTcounter == DELAYTIME)
 	{
 		DHTcounter = 0;
 		p_dht11 = readDHT11();
-		
-		/*
-		//Ensure overflow and timer are off
-		TR1 = 0;
-		TF1 = 0;
-		ET1 = 0;
-		
-		timeout = 0;
-		*/
-		serial_send_array("send\r\n");
 	}
 	else
 	{
 		DHTcounter++;
 	}
 	
-	//serial_convert(DHTcounter);
-	//serial_send_array("\r\n");
 	//removes decimal part
 	INTbmpTemp = bmpTemp / 100;
 	INTbmpPressure = bmpPressure / 100;
@@ -122,11 +126,11 @@ void updateData()
 	if(screenNum > 2) //reset the screen if num > 2
 		screenNum = 0;
 	
-	//Go to next screen	
+	//Go to next screen
 	switch(screenNum)
 	{
 		case 0:
-			//screen1();
+			screen1();
 			break;
 		case 1:
 			screen2();
@@ -139,20 +143,42 @@ void updateData()
 	}
 }
 
+//check button inputs
+void buttonCheck()
+{
+	//check left button (backlight)
+	
+	//check right button (next screen)
+	if(next == 1)
+	{
+			//allow next screen
+			screenNum++;
+			
+			//clear screen to prevent garbage characters from old screens
+			cmd(LCD_CLEAR);
+	}
+}
+
 void main()
 {
-	//sets the variable to the location of where the hour data will be
-	//char checkHour = *p_time+2;
-	
-	//EEPROMSizeLED = 1;
 	//------------------------------------------------------------------
 	//initalise components
+		
+	//pulling all pins high for power saving
+	blockOne = 0xFF;
+	blockTwo = 0xFF;
+	blockThree = 0xFF;
+	
+	//pull button inputs low
+	onBacklight = 0;
+	next = 0;
+	
 	init_timing();
 	
 	init_serial();
 	
-	//INTERRUPTS
-	init_external();
+	//init_external();
+	backlight = 0;	//Turn on display
 	
 	//LCD init
 	init_lcd();
@@ -161,39 +187,21 @@ void main()
 	//I2C init
 	init_i2c();
 	
-	//rescan to find where last write was
-	//eepromScan();
-	
 	//assign ccgram pos 0 as degrees C symbol
 	customChar(degreesC, 0);
-	
-	//matrixInit();
-	//matrixClear();
-//	matrixSend(1, 0x255);
 
 	bmpReset();
-	bmpSet(0x64, 0xF5);
-	bmpSet(0xFF, 0xF4);
+	
+	//setting up sampling parameters
+	bmpSet(0x64, CONFIG); //standby time = 250ms, IIR filter = 
+	bmpSet(0xFF, CTRL_MEAS); //x16 temperature oversampling, x16 pressure measurement, normal mode
 	//------------------------------------------------------------------
 
 	while(1)
 	{
-		//change screen if button pushed
-		if(interruptBit == 1)
-		{
-			//reset interrupt bit
-			interruptBit = 0;
-			
-			//allow next screen
-			screenNum++;
-			
-			//clear screen to prevent garbage characters from old screens
-			cmd(LCD_CLEAR);
-		}
-		
 		//read and store sensor data as well as update display
 		updateData();
-		debug();
+		//debug();
 		
 		//check and store MAX and MIN sensor data
 		//writeSensorData();
@@ -201,27 +209,25 @@ void main()
 		//check if UART command was sent
 		uartCheck();
 		
-		/*
-		//activate every hour when time changes
-		if(*(p_time+2) != checkHour)
-		{
-			//write latest recorded data
-			
-			//writeHourData();
-			
-			//reset pin to activate next hour
-			checkHour = *(p_time+2);
-		}
-		*/
 		//delay to prevent excessive i2c reads
-		
 		ms_delay(250);
+		buttonCheck();
+		ms_delay(250);
+		buttonCheck();
 		ms_delay(250);
 		
 		//turns off LCD display if night time
-		check_night();
+		backlight =~ comparator;
 	}
 }
+
+/*How writing time will work
+
+check if a single key was sent e.g. c for clock
+then go into a new subroutine where all stuff freezes
+until a clock time is inputted or timeout occurs.
+
+*/
 
 /* focus TODO
 	- DHT11 timer to prevent lock ups
@@ -236,8 +242,6 @@ void main()
 /*
 	--------------TODO---------------
 	* Add interupt to break DHT11 if stuck for too long
-	* make a check in main to see if timer is up. if so run dht11 method
-	* then reset timer
 	* use 8x8 matrix and make a binary clock
 	* make ds3231 getData get temperature as well
 

@@ -60,13 +60,13 @@ void dht11Delay()
 	TF0 = 0;           	//clear the timer Over flow flag
 }
 
-//approx 41.2
+//approx 41.2us?
 void lcdDelay()
 {
 	//init_timing();
 	
 	TH0 = 0xFF;	//Upper 8 bits
-	TL0 = 0xE9;	//Lower 8 bits
+	TL0 = 0xE3;	//Lower 8 bits
 	TR0 = 1;		//Starts the timer
 
 	while(TF0 == 0);		//loops till timer overflow bit = 1

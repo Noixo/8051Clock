@@ -68,3 +68,6 @@ V: 0.70 (22/01/2018)
 	- DHT11 only updates data every 2 seconds
 	- removed hourly updates
 	- partially removed some UART commands
+V:0.71 (20/02/2018)
+	- depreciated 'external.c'
+	- changed various pin positions

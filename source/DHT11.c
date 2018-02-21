@@ -1,7 +1,7 @@
 #include "DHT11.h"
 #include "timing.h"
 
-#include "i2c.h"
+//#include "i2c.h"
 /*
 unsigned char *readDHT11()
 {

@@ -36,8 +36,8 @@ sbit D6 = 0xA6;
 sbit D7 = 0xA7;
 
 //sbit RW = 0x90;
-sbit RS = 0x93;	//Port 1, bit 3
-sbit E = 0x94;	//Port 1 bit 4
+sbit E = 0x87;//0x94;//0x86;//0x94;	//Port 1 bit 4
+sbit RS = 0x86;//0x93;//0x87;//0x93;	//Port 1, bit 3
 //---------------
 
 static code unsigned char degreesC[] = {
