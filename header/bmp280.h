@@ -7,6 +7,7 @@
 //global variable to store temperature in (used for pressure)
 extern long t_fine;
 
+//factory calibration data
 #define dig_T1 27314
 #define dig_T2 26369
 #define dig_T3 -1000

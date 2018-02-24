@@ -12,10 +12,7 @@ extern void i2c_start();
 extern void i2c_stop();
 extern void i2c_write(unsigned char byte);
 extern char i2c_device_id(char id, char rw);
-extern void i2c_read_id();
+//extern void i2c_read_id();
 extern unsigned char i2c_read(char last_byte);
 
-//implement later
-extern void i2c_slaveWrite();
-extern void i2c_slaveRead();
 #endif

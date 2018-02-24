@@ -35,7 +35,7 @@
 #include "display.h"
 #include "eepromSubroutine.h"
 
-#include "debug.h"
+//#include "debug.h"
 
 //#include "GPSTime.h"
 //#include "MAX7219.h"
@@ -51,20 +51,18 @@
 	pos 0-7 used
 	
 */
-
-/* EEPROM HOURLY WRITE
-STORE WITHOUT DECIMAL
-
-temp:			1 byte
-humidity:	1 byte
-pressure:	2 bytes
-*/
-
 //---------------------------------------------------
 
 //BMP280
 #define CTRL_MEAS 0xF4
 #define CONFIG 0xF5
+
+//MAIN
+#define DELAYLENGTH 6 //length of the delay between screen updates
+
+//UPDATEDATA
+//delay 2 seconds / delay time = DHT11DELAYTIME
+#define DHT11DELAYTIME 6
 
 //---------------------------------------------------
 
@@ -82,8 +80,7 @@ volatile unsigned short INTbmpPressure;
 unsigned char screenNum;
 unsigned DHTcounter;
 
-//2 = 0.5 second since 2, 250ms delays used
-#define DELAYTIME 8
+//---------------------------------------------------
 
 //pin blocks to pull up
 //0x80 has no pullups
@@ -91,10 +88,12 @@ sfr blockOne = 0x90;
 sfr blockTwo = 0xA0;
 sfr blockThree = 0xB0;
 
-sbit comparator = 0x92;
-sbit next = 0x90;// 0x94;
-sbit onBacklight = 0x91;
-sbit backlight = 0x93;
+sbit comparator = 0x92;		//op-amp comparator output
+sbit next = 0x90;					//loads the next display
+sbit onBacklight = 0x91;	//backlight buton
+sbit backlight = 0x93;		//connected to display 
+
+//---------------------------------------------------
 
 /**
 * runs and stores the latest data from sensors.
@@ -103,30 +102,28 @@ sbit backlight = 0x93;
 */
 void updateData()
 {
+	//pulls data from sensors
 	p_time = rtc_get_time();
 	bmpTemp = bmp280GetTemp();
 	bmpPressure = bmp280GetPressure();
 	
-	//check if 2.5 seconds have passed
-	if(DHTcounter == DELAYTIME)
+	DHTcounter++;
+	
+	//DHT11 requires 2 seconds between measurements
+	//check if 2 seconds have approximately passed
+	if(DHTcounter == DHT11DELAYTIME)
 	{
 		DHTcounter = 0;
 		p_dht11 = readDHT11();
 	}
-	else
-	{
-		DHTcounter++;
-	}
 	
 	//removes decimal part
 	INTbmpTemp = bmpTemp / 100;
-	INTbmpPressure = bmpPressure / 100;
 	
-	//refreshes the current screen
 	if(screenNum > 2) //reset the screen if num > 2
 		screenNum = 0;
 	
-	//Go to next screen
+	//Go to next screen/refresh current with latest data
 	switch(screenNum)
 	{
 		case 0:
@@ -138,8 +135,6 @@ void updateData()
 		case 2:
 			screen3();
 			break;
-		//case 3:
-		//	break;
 	}
 }
 
@@ -147,6 +142,10 @@ void updateData()
 void buttonCheck()
 {
 	//check left button (backlight)
+	if(onBacklight == 1)	//if button pushed, turn on backlight
+	{
+		backlight = 0;	//logic low turns on display
+	}
 	
 	//check right button (next screen)
 	if(next == 1)
@@ -156,11 +155,17 @@ void buttonCheck()
 			
 			//clear screen to prevent garbage characters from old screens
 			cmd(LCD_CLEAR);
+		
+			//prevent skipping of screens
+			ms_delay(100);
 	}
 }
 
 void main()
 {
+	//for delay length loop
+	char i;
+	
 	//------------------------------------------------------------------
 	//initalise components
 		
@@ -209,15 +214,16 @@ void main()
 		//check if UART command was sent
 		uartCheck();
 		
-		//delay to prevent excessive i2c reads
-		ms_delay(250);
-		buttonCheck();
-		ms_delay(250);
-		buttonCheck();
-		ms_delay(250);
-		
-		//turns off LCD display if night time
-		backlight =~ comparator;
+		//delay to prevent excessive i2c reads and checks if button input
+		for(i = 0; i < DELAYLENGTH; i++)	//delay per screen update
+		{
+			ms_delay(100);
+			buttonCheck();
+		}
+
+		//turns off LCD display if night time, if button isn't pushed
+		if(onBacklight == 0)
+			backlight =~ comparator;
 	}
 }
 
@@ -248,14 +254,6 @@ until a clock time is inputted or timeout occurs.
 error checking:
 - bmp280 range -40-85*C temp
 	pressue range 300-1100hpa	
-*/
-
-
-/* Boot idea
-	image appearing in middle of lcd
-	made out of bitmaps.
-	Load 8 bitmaps into lcd.
-	Run them and then reload next 8.
 */
 
 /*	BUGS

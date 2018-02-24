@@ -5,12 +5,10 @@
 //11.0592Mhz
 
 //0xFD = 9600 baurd
-
 //0xFF = 	28,800 baurd
 void init_serial()
 {
 	TMOD |= 0x20;	//mode 2: 8 bit auto reload
-	//TMOD |= 0x20;	//mode 2: 8 bit auto reload
 	SCON = 0x50;
 	TH1 = 0xFD;
 	//TH1 = 256 - (11059200UL)/(long)(32*12*baudrate);
@@ -35,8 +33,6 @@ void serial_send_array(unsigned char* array)
 
 void serial_send(unsigned char byte)
 {
-	//init_serial();
-	
 	//load data into register
 	SBUF = byte;
 	//wait till data is transmitted
@@ -49,14 +45,10 @@ unsigned char serial_receive()
 {
 	unsigned char test = 0;
 	
-	//init_serial();
-	
 	//if there is a character in the buffer
 	if(RI == 1)
 	{
 		RI = 0;
-	//while(RI == 0);
-	//RI = 0;
 		test = SBUF;
 	}
 	return test;

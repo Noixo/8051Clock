@@ -1,4 +1,4 @@
-/* V1.0, by Matthew Whiteley
+/*
 Purpose: Read UART and perform
 operations based on that.
 

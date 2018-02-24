@@ -71,3 +71,10 @@ V: 0.70 (22/01/2018)
 V:0.71 (20/02/2018)
 	- depreciated 'external.c'
 	- changed various pin positions
+V:0.72 (/02/2018)
+	- improved aesthetics of display
+	- backlight button now functioning
+	- improved reaction time between button push and action occuring on display
+	- cleaned up old and dead code
+	- added delay to next screen button to prevent screen skipping
+	- removed 'external.c'/.h from git repo

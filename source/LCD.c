@@ -8,14 +8,11 @@ void init_lcd()
 	
 	cmd(0x38);	//Function set (8 bit, 2 line, 5x7)
 	lcdDelay();
-
-	cmd(0x0E);	//display (Display on, cursor on)
-	lcdDelay();
 	
 	cmd(0x06);	//Entry mode (Left to right, inc)
 	lcdDelay();
 
-	cmd(0x0E);	//display (Display on, cursor on)
+	cmd(0x0C);	//display (Display on, cursor on)
 	lcdDelay();
 	
 	cmd(0x06);	//Entry mode (Left to right, inc)
@@ -61,12 +58,6 @@ void write_char(unsigned char letter)
 	lcdDelay();
 	E = 0;
 }
-/*
-void backlight_toggle()
-{
-	backlight = ~backlight;
-}
-*/
 
 void write_string(unsigned char* string)
 {

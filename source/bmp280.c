@@ -21,14 +21,10 @@ void bmpSet(unsigned char settings, unsigned char reg)
 	i2c_start();
 	i2c_device_id(bmp280, 0);
 	i2c_write(reg);
-	//
-	//i2c_start();
-	//
-	//i2c_device_id(bmp280, 0);
+
 	i2c_write(settings);
 	i2c_stop();
 }
-
 
 //must read temp before reading pressure
 //temp is stored as 3 bytes, (0xFA-0xFC)
@@ -133,9 +129,6 @@ unsigned long bmp280GetPressure()
 
 	
 	p = (unsigned long)((long)p + ((var1 + var2 + dig_P7) >> 4));
-	
-	//convert Pa to hPa
-	//p /= 100;
 	
 	return p;
 }

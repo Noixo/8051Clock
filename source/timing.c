@@ -1,19 +1,9 @@
 #include "timing.h"
 #include <intrins.h>
-//#include "i2c.h"
-
-//#include "DHT11.h"
-
-//#include "serial.h"
-
-//#include <reg51.h>
 
 void init_timing()
 {
 	TMOD |= 0x01;	//Turns on mode 1 16 bit timer for timer 0
-	//EA = 1;
-	//TMOD |= 0x10;//0x10; // mode 1 timer for timer 1?
-	//EAÅ = 1;
 }
 
 // Time is 1/(crystal(mhz)/12(prescaler)) = x uS
@@ -21,11 +11,9 @@ void init_timing()
 void ms_delay(unsigned char num)	//1 miliseconds
 {
 	unsigned char i;
-	
-	//init_timing();
 
-	for(i = 0; i < num; i++)
-	//for(i = num; i > 0; i--)
+	//for(i = 0; i < num; i++)
+	for(i = num; i > 0; i--)
 	{
 		TH0 = 0xFC;	//Upper 8 bits
 		TL0 = 0x17;	//Lower 8 bits
@@ -49,10 +37,9 @@ void us_delay()
 //31us delay?
 void dht11Delay()
 {
-	//init_timing();
-	
 	TH0 = 0xFF;
 	TL0 = 0xF1;
+	
 	TR0 = 1;	//start timer
 	
 	while(TF0 == 0);		//loops till timer overflow bit = 1
@@ -63,8 +50,6 @@ void dht11Delay()
 //approx 41.2us?
 void lcdDelay()
 {
-	//init_timing();
-	
 	TH0 = 0xFF;	//Upper 8 bits
 	TL0 = 0xE3;	//Lower 8 bits
 	TR0 = 1;		//Starts the timer

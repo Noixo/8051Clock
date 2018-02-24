@@ -1,6 +1,5 @@
 #include "i2c.h"
 #include "timing.h"
-//#include "lcd.h"
 
 void init_i2c()
 {
@@ -48,7 +47,6 @@ char i2c_device_id(char id, char rw)
 		return 2;
 	
 	//Starting at 7 to avoid last bit
-	//for(i = 1; i < 8; i++)
 	for(i = 7; i > 0; i--)
 	{
 		id <<= 1;
@@ -69,15 +67,7 @@ char i2c_device_id(char id, char rw)
 	SDA = 1;
 	i2c_clock();
 	ACK = SDA;
-	
-	/*
-	us_delay();
-	SCL = 1;
-	//Get ack bit
-	
-	us_delay();
-	SCL = 0;
-	*/
+
 	return ACK;
 }
 
@@ -95,22 +85,19 @@ unsigned char i2c_read(char last_byte)
 		//OR byte bit with SDA
 		byte |= SDA;
 		i2c_clock();
-		//us_delay();
-		
-		//SCL = 0;
 	}
 	
 	//9th bit master acknowledges data transfer or indicates last byte
 	SDA = last_byte;	
 	
 	i2c_clock();
-	//SDA = 1;
+	
 	return byte;
 }
 
 void i2c_write(unsigned char byte)
 {
-	char i;//, ACK;
+	char i;
 	for(i = 8; i > 0; i--)
 	{
 		//bit shifts data by i and ANDs it to convert it to boolean
@@ -127,11 +114,8 @@ void i2c_write(unsigned char byte)
 	
 	i2c_clock();
 
-	/*
-	Get ack bit
-	ACK = SDA;
-	*/
 }
+
 /*
 //scans the bus to find all i2c devices
 void i2c_read_id()

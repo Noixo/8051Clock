@@ -1,18 +1,14 @@
 #include "eepromSubroutine.h"
 #include "eeprom.h"
-//#include "timing.h"
-
-//stores location of first blank eeprom location
- unsigned char eepromLocX, eepromLocY;
 
 /**
 * @return returns 0 to indicate valid. 1 invalid.
 * 
 */
-bit checkBMPValid()
+bit checkValid()
 {
-	//BMP280 temp stored in unsigned state, even though signed
-	if(INTbmpTemp > 85 || INTbmpPressure > 1100 || INTbmpPressure < 300)
+	if(INTbmpTemp > 85 || INTbmpPressure > 1100 || INTbmpPressure < 300
+		|| (*p_dht11+2) > 100)	//MOVE POINTER TO CHAR IF RUN OUT OF SPACE
 		return 1;
 	return 0;
 }
@@ -39,7 +35,7 @@ void writeSensorData()
 	//unsigned char *pointer = &INTbmpTemp;
 	
 	//cancel if invalid readings
-	if(checkBMPValid() == 1)
+	if(checkValid() == 1)
 		return;
 	
 	//loop to put sensor data in

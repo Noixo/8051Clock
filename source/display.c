@@ -4,6 +4,10 @@
 
 unsigned char printSwap;
 
+//constants to define how long pressure it shown before switching to humidity
+#define SWAPRESETNUM 19
+#define SWAPLENGTH 5
+
 //if time is < 10 add 0. e.g. 05
 void check0(unsigned char number)
 {
@@ -14,7 +18,6 @@ void check0(unsigned char number)
 //display general items, time, pressure, temp
 void screen1()
 {
-	//static short hPa = bmpPressure/1000;
 	//reset to line 1 of LCD, pos 0
 	cmd(LCD_HOME);
 
@@ -40,8 +43,8 @@ void screen1()
 	//check if temperature is negative or positive
 	if(bmpTemp < 0)
 		write_char('-');
-	//else
-		//write_char('+');
+	else
+		write_char(' ');
 	
 	write_int(INTbmpTemp);
 	
@@ -69,14 +72,16 @@ void screen1()
 	
 	//increment printSwap
 	printSwap++;
-	//reset when printSwap has been going for 10 seconds
-	if(printSwap > 19)
+	//reset when printSwap has been going for 7 seconds
+	if(printSwap > SWAPRESETNUM)
 		printSwap = 0;
 	
 	//if 8 refreshes have occured (approx 2.5 seconds) print pressure
-	if(printSwap > 7)
+	if(printSwap > SWAPLENGTH)
 	{
 		//pressure
+		if(bmpPressure/1000 < 100)
+			write_char(' ');
 		write_int(bmpPressure/1000);
 		write_int((bmpPressure % 1000) / 100);
 		write_char('.');
@@ -86,8 +91,9 @@ void screen1()
 	else
 	{
 		//print humidity
+		write_char(' ');
 		write_int(*p_dht11+2);
-		write_string(".00% ");	//extra space is cheeky way of preventing display issues (only works on 16x2)
+		write_string("%RH ");
 	}
 }
 

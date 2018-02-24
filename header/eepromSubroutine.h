@@ -19,8 +19,6 @@
 #define pressureMinUpper 6
 #define pressureMinLower 7
 
-sbit EEPROMSizeLED = 0x82;
-
 extern unsigned char *p_time, eepromLocX, eepromLocY;
 
 extern char eepromFull;
@@ -30,7 +28,7 @@ extern unsigned char *p_dht11;
 extern char INTbmpTemp;
 extern unsigned short INTbmpPressure;
 
-extern bit checkBMPValid();
+extern bit checkValid();
 extern void compare();
 extern void writeSensorData();
 extern void eepromScan();
