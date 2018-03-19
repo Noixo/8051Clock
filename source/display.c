@@ -46,8 +46,8 @@ void screen1()
 	else
 		write_char(' ');
 	
+	//write temperature data
 	write_int(INTbmpTemp);
-	
 	write_char('.');
 	check0(bmpTemp % 100);
 	write_int(bmpTemp % 100);

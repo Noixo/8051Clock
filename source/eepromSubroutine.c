@@ -5,6 +5,7 @@
 * @return returns 0 to indicate valid. 1 invalid.
 * 
 */
+/*
 bit checkValid()
 {
 	if(INTbmpTemp > 85 || INTbmpPressure > 1100 || INTbmpPressure < 300
@@ -61,7 +62,7 @@ void writeSensorData()
 		
 		eepromWriteByte(0, 6, INTbmpPressure);
 		eepromWriteByte(0, 7, INTbmpPressure);
-		*/
+		//
 	}
 	else
 	{
@@ -76,7 +77,7 @@ void writeSensorData()
 		compare(INTbmpPressure / 100, sensorData[6], pressureMinUpper);
 		compare(INTbmpPressure % 100, sensorData[7], pressureMinUpper);
 	}
-	
+	*/
 	/*
 	//write data if larger or smaller
 	for(pointer; pointer != 0x80; pointer++)
@@ -137,7 +138,7 @@ void writeSensorData()
 		eepromWriteByte(0, pressureMinLower, INTbmpPressure % 100);
 	}
 	*/
-}
+//}
 /*
 //scans EEPROM to find and record 0xFF location
 void eepromScan()

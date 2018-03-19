@@ -59,6 +59,8 @@
 
 //MAIN
 #define DELAYLENGTH 6 //length of the delay between screen updates
+#define BACKLIGHTDELAY 10 //length of time delay for keeping the backlight on
+
 
 //UPDATEDATA
 //delay 2 seconds / delay time = DHT11DELAYTIME
@@ -76,9 +78,10 @@ volatile unsigned long bmpPressure;
 volatile char INTbmpTemp;
 volatile unsigned short INTbmpPressure;
 
-//idk if this is safe
-unsigned char screenNum;
-unsigned DHTcounter;
+unsigned char screenNum;	//stores current screen number
+unsigned char DHTcounter;	//stores num of cycles until DHT11 can be read again
+
+unsigned char backlightBool;
 
 //---------------------------------------------------
 
@@ -144,7 +147,8 @@ void buttonCheck()
 	//check left button (backlight)
 	if(onBacklight == 1)	//if button pushed, turn on backlight
 	{
-		backlight = 0;	//logic low turns on display
+			backlightBool = 1;	//indicate that the timer is on
+			backlight = 0;	//logic low turns on display
 	}
 	
 	//check right button (next screen)
@@ -161,10 +165,27 @@ void buttonCheck()
 	}
 }
 
+void daylightSavingCheck()
+{
+	if(*(p_time + 5) >= 10 && *(p_time + 5) <= 4)	//check if month in daylight savings region
+	{
+		if(*(p_time + 3) == 7)	//if day is sunday
+		{
+			*(p_time + 2) += 1;		//increase if daylight savings. Won't cause issue since time reset every cycle
+			
+			if(*(p_time + 2) > 24) //correction to prevent invalid hour
+				*(p_time + 2) = 0;
+		}
+			//*(p_time + 4)++;		//increase date if daylight savings
+	}
+	//no daylight savings. Do nothing
+}
+
 void main()
 {
 	//for delay length loop
 	char i;
+	unsigned char backlightCount; //stores the number of counts the backlight has been on for
 	
 	//------------------------------------------------------------------
 	//initalise components
@@ -204,9 +225,11 @@ void main()
 
 	while(1)
 	{
+		//check if it's daylight savings
+		daylightSavingCheck();
+		
 		//read and store sensor data as well as update display
 		updateData();
-		//debug();
 		
 		//check and store MAX and MIN sensor data
 		//writeSensorData();
@@ -220,9 +243,21 @@ void main()
 			ms_delay(100);
 			buttonCheck();
 		}
+		
+		//check if backlight has been on for correct amount of time and resets if so
+		if(backlightCount > BACKLIGHTDELAY)
+		{
+			//reset counters
+			backlightCount = 0;
+			backlightBool = 0;
+		}
+		
+		//start counting if flag is set
+		if(backlightBool == 1)
+			backlightCount++;
 
-		//turns off LCD display if night time, if button isn't pushed
-		if(onBacklight == 0)
+		//turns off LCD display if night time and button delay expired
+		if(onBacklight == 0 && !backlightCount)
 			backlight =~ comparator;
 	}
 }
