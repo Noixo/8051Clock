@@ -8,15 +8,16 @@
 char* convert(unsigned char value)
 {
 	char i;
-	static unsigned char array[3];
+	//support max of size char + NULL terminator
+	static unsigned char array[4];	//3
 	
-	for(i = 0; i < 3; i++)
+	for(i = 0; i < 4; i++)
 	{
 		//puts value in array after being split by 1 character and converted to ascii.
 		array[i] = value % 10 + '0';
 		
-		//checks if it's the last digit to process
-		if(value / 10 == 0 && i < 3)
+		//checks if it's the last digit to process && ensures that it won't go out of bounds
+		if(value / 10 == 0)// && i < 3)
 		{
 			//if the number of digits uses is less than 3 e.g. 24, 1
 			//set a terminator value in the next position

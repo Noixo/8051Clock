@@ -2,6 +2,8 @@
 #include "timing.h"
 #include "subroutine.h"
 
+#define UARTTIME 8//14
+
 //11.0592Mhz
 
 //0xFD = 9600 baurd
@@ -53,15 +55,22 @@ unsigned char serial_receive()
 	}
 	return test;
 }
-
+/*
 unsigned char* serial_recieve_array()
 {
-	unsigned char arr[12];
+	unsigned char arr[UARTTIME];
 	char i;
 	
-	for(i = 0; i < 12; i++)
+	for(i = 0; i < UARTTIME; i++)
 	{
-		arr[i % 2] <<= serial_receive();
+		//reads in each byte and concatenates them together
+		arr[i % 2] = serial_receive();
+		arr[i % 2] *= 10;
+		arr[i % 2] += serial_receive();
+		//ensures that 
+		//if(arr[i % 2] > 60 && arr[i % 2] != 7)	//error checking
+			//arr[i % 2] = 0;
 	}
 	return arr;
 }
+*/

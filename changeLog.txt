@@ -82,3 +82,20 @@ V:0.73 (9/03/2018)
 	- added delay so the backlight won't turn off instantly
 V:0.74 (12/03/2018)
 	- added daylight savings compensation
+V:0.80 (15/03/2018)
+	- removed daylight savings compensation
+	- worked on DS3231 write time code
+	- added define statements to make more readable
+	- optimisations/code clean up in display.c
+	- fixed issue in subroutine.c where array could go out of bounds
+	- added check to see if bit 0 is set in location 1 of EEPROM. If set, new data is stored in EEPROM
+	- changed wipe sensor data so that it forces latest sensor data to be written
+	- re-wrote code for comparing latest sensor data and EEPROM value
+V:1.0 (16/03/2018)
+	- released final state (hopefully)
+	- added code to allow the display to work with negative temperature i.e. -5*c e.c.t
+	- commented out unused code
+	- added reworked daylight savings compensation to be more primitive
+	- finished writing code to write data to EEPROM
+	- cleaned up some files
+	- added "hPa" to screen3 output

@@ -12,7 +12,7 @@ void init_lcd()
 	cmd(0x06);	//Entry mode (Left to right, inc)
 	lcdDelay();
 
-	cmd(0x0C);	//display (Display on, cursor on)
+	cmd(0x0C);	//display (Display on, cursor off)
 	lcdDelay();
 	
 	cmd(0x06);	//Entry mode (Left to right, inc)

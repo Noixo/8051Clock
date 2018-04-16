@@ -41,11 +41,12 @@ void rtc_set_time(unsigned char* setTime)
 	//multi-byte set time
 	
 	i2c_start();
-	(void) i2c_device_id(ds3231, 1);
+	(void) i2c_device_id(ds3231, 0);	//1
 	i2c_write(0);	//point to seconds
 	
 	//i2c_start();
 	
+	//7 is where the time registers end
 	for(i = 0; i < 7; i++)//setTime[i] != '\0'; i++)
 	{
 		i2c_write(setTime[i]);

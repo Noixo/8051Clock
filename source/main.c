@@ -41,14 +41,16 @@
 //#include "MAX7219.h"
 
 /*	EEPROM SENSOR
-	0: max temp			1 byte signed
-	1: min temp			1 byte signed
-	2: max humidity 1 byte singed/unsigned
-	3: min humidity 1 byte singed/unsigned
-	4-5: max pressure 2 bytes unsigned
-	6-7: min pressure 2 bytes unsigned
+	0: RESERVED FOR Daylight savings or maybe status idk idc
+	maybe bit to turn off DHT11 readings?
+	1: max temp			1 byte signed
+	2: min temp			1 byte signed
+	3: max humidity 1 byte singed/unsigned
+	4: min humidity 1 byte singed/unsigned
+	5-6: max pressure 2 bytes unsigned
+	7-8: min pressure 2 bytes unsigned
 	
-	pos 0-7 used
+	pos 0-8 used
 	
 */
 //---------------------------------------------------
@@ -61,6 +63,10 @@
 #define DELAYLENGTH 6 //length of the delay between screen updates
 #define BACKLIGHTDELAY 10 //length of time delay for keeping the backlight on
 
+//
+#define MONTH 5	//define DS3231 month location
+#define DAY 3 //define DS3231 day (mon,tues,wed ect) location
+#define HOUR 2 // define DS3231 hour location
 
 //UPDATEDATA
 //delay 2 seconds / delay time = DHT11DELAYTIME
@@ -76,7 +82,6 @@ volatile unsigned long bmpPressure;
 
 //stores bmpTemp and bmpPressure without decimal
 volatile char INTbmpTemp;
-volatile unsigned short INTbmpPressure;
 
 unsigned char screenNum;	//stores current screen number
 unsigned char DHTcounter;	//stores num of cycles until DHT11 can be read again
@@ -98,6 +103,20 @@ sbit backlight = 0x93;		//connected to display
 
 //---------------------------------------------------
 
+void daylightSavingCheck()
+{
+	if(*(p_time + MONTH) >= 10 && *(p_time + MONTH) < 4)	//check if month in daylight savings region
+	{
+		*(p_time + HOUR) += 1;		//increase if daylight savings
+
+		if(*(p_time + HOUR) > 23) //correction to prevent invalid hour
+		{
+			*(p_time + HOUR) = 0;
+			*(p_time + DAY) += 1;	//change day
+		}	//WARNING: THIS CAN CAUSE A DODGY MONTH
+	}
+}
+
 /**
 * runs and stores the latest data from sensors.
 * next_screen takes the latest stored data from
@@ -110,15 +129,17 @@ void updateData()
 	bmpTemp = bmp280GetTemp();
 	bmpPressure = bmp280GetPressure();
 	
-	DHTcounter++;
+	DHTcounter--;
 	
 	//DHT11 requires 2 seconds between measurements
 	//check if 2 seconds have approximately passed
-	if(DHTcounter == DHT11DELAYTIME)
+	if(DHTcounter == 0)
 	{
-		DHTcounter = 0;
+		DHTcounter = DHT11DELAYTIME;
 		p_dht11 = readDHT11();
 	}
+	//check if it's daylight savings
+	daylightSavingCheck();
 	
 	//removes decimal part
 	INTbmpTemp = bmpTemp / 100;
@@ -165,28 +186,12 @@ void buttonCheck()
 	}
 }
 
-void daylightSavingCheck()
-{
-	if(*(p_time + 5) >= 10 && *(p_time + 5) <= 4)	//check if month in daylight savings region
-	{
-		if(*(p_time + 3) == 7)	//if day is sunday
-		{
-			*(p_time + 2) += 1;		//increase if daylight savings. Won't cause issue since time reset every cycle
-			
-			if(*(p_time + 2) > 24) //correction to prevent invalid hour
-				*(p_time + 2) = 0;
-		}
-			//*(p_time + 4)++;		//increase date if daylight savings
-	}
-	//no daylight savings. Do nothing
-}
-
 void main()
 {
 	//for delay length loop
 	char i;
 	unsigned char backlightCount; //stores the number of counts the backlight has been on for
-	
+
 	//------------------------------------------------------------------
 	//initalise components
 		
@@ -200,6 +205,9 @@ void main()
 	next = 0;
 	
 	init_timing();
+	//500 ms delay to allow caps to charge
+	ms_delay(0xFF);
+	ms_delay(0xFF);
 	
 	init_serial();
 	
@@ -221,21 +229,22 @@ void main()
 	//setting up sampling parameters
 	bmpSet(0x64, CONFIG); //standby time = 250ms, IIR filter = 
 	bmpSet(0xFF, CTRL_MEAS); //x16 temperature oversampling, x16 pressure measurement, normal mode
+	
+	//initial readings on power on (mostly used to ensure EEPROM gets correct value)
+	p_dht11 = readDHT11();
+	bmp280GetTemp();
+	
 	//------------------------------------------------------------------
-
 	while(1)
-	{
-		//check if it's daylight savings
-		daylightSavingCheck();
+	{		
+		//check if UART command was sent
+		uartCheck();
 		
 		//read and store sensor data as well as update display
 		updateData();
 		
 		//check and store MAX and MIN sensor data
-		//writeSensorData();
-		
-		//check if UART command was sent
-		uartCheck();
+		writeSensorData();
 		
 		//delay to prevent excessive i2c reads and checks if button input
 		for(i = 0; i < DELAYLENGTH; i++)	//delay per screen update
@@ -261,42 +270,3 @@ void main()
 			backlight =~ comparator;
 	}
 }
-
-/*How writing time will work
-
-check if a single key was sent e.g. c for clock
-then go into a new subroutine where all stuff freezes
-until a clock time is inputted or timeout occurs.
-
-*/
-
-/* focus TODO
-	- DHT11 timer to prevent lock ups
-	- finish writing sensor data
-	- finish writing hourly sensor data
-	- make space to add check0(); for screen3
-*/
-
-//ds3231 call BCD
-// move BCD to subroutine
-
-/*
-	--------------TODO---------------
-	* Add interupt to break DHT11 if stuck for too long
-	* use 8x8 matrix and make a binary clock
-	* make ds3231 getData get temperature as well
-
-error checking:
-- bmp280 range -40-85*C temp
-	pressue range 300-1100hpa	
-*/
-
-/*	BUGS
-	
-	* BMP280 pressure, decimal values. if value is 1007.3, it often means 1007.03
-*/
-
-/*	OPTIMISATION
-		-i2c generic write function for bmp280,
-		- replace hardware values with reg51.h
-*/

@@ -11,7 +11,7 @@ extern unsigned char* rtc_get_time();
 //extern void ds3231Alarm();
 extern unsigned char decToBcd(unsigned char convert);
 extern unsigned char bcdToDec(unsigned char convert);
-extern void rtc_set_time();
+extern void rtc_set_time(unsigned char *time);
 //extern void time rtc_get_time();
 
 #endif

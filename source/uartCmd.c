@@ -13,35 +13,9 @@ s = set time
 #include "uartCmd.h"
 #include "eeprom.h"
 #include "serial.h"
-//#include "timing.h"
 #include "eepromSubroutine.h"
 #include "ds3231.h"
 
-//#define ENDSENSORDATA 8
-//extern bit eepromFull;
-//Erase the EEPROM contents exclusing sensor data
-/*
-void eepromClear()
-{
-	//j starts at 8 to avoid erasing sensor data
-	unsigned char i, j = eepromSensorMax;
-	
-	eepromFull = 0;
-	for(i = 0; i <= 0x0F; i++)
-	{
-		for(j; j < 0xFF; j++)
-		{
-			eepromWriteByte(i, j, 0xFF);
-			//ms_delay(15);
-		}
-		//change j to 0 to reset and let it erase 0-9 after sensor data
-		j = 0;
-	}
-	serial_send('D');
-	serial_send('\r');
-	serial_send('\n');
-}
-*/
 /*
 //dumps entire EEPROM through UART
 void dumpRom()
@@ -64,32 +38,24 @@ void dumpRom()
 //erase only the sensor portion of data
 void eraseSensors()
 {
-	unsigned char j;
-	
-	//crappy optimisation, saves 5 bytes
-	//starts at humidity
-	for(j = eepromSensorMax; j; j--)
-	//for(j = eepromSensorMax; j >= 0; j--)
-	{
-		eepromWriteByte(0, j-1, 0xFF);	//-1 to ensure num goes down to 0
-	}
-	
-	serial_send('D');
-	serial_send('\r');
-	serial_send('\n');
+	//force the EEPROM data to be replaced
+	forceStore();
 }
 
+/*FORMAT SEQUENCE: 1. Enter 's'
+2. type in date in format: sec (00), min (00), hour (00) month(00), year(00), day/century(00)
+no spaces*/
+/*
 void setTime()
 {
-	//char arr[8];
+	//set up array to store time in
+	unsigned char *time;
 	
-	serial_recieve_array();
+	time = serial_recieve_array();
 	
-	rtc_set_time();
-	
-	//input checking?
+	rtc_set_time(time);
 }
-
+*/
 //main program to check and run subprocedures.
 void uartCheck()
 {
@@ -108,12 +74,13 @@ void uartCheck()
 		case 'c':
 			eraseSensors();
 			break;
-		
+		/*
 		case 's':
 			setTime();
 			break;
-		
+		*/
 		default:
 			break;
 	}
+	serial_send_array("D\r\n");
 }

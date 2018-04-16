@@ -2,40 +2,30 @@
 #define _EEPROMSUBROUTINE_H_
 
 //32kb eeprom
-#define eepromSize 16
+//#define EEPROMSIZE 16
 
-//WARNING 2 DECLARATIONS OF THIS DEFINE
-#define eepromSensorMax 8
+#define tempMax 1
+#define tempMin 2
 
-#define tempMax 0
-#define tempMin 1
+#define humidityMax 3
+#define humidityMin 4
 
-#define humidityMax 2
-#define humidityMin 3
+#define pressureMaxUpper 5
+#define pressureMaxLower 6
 
-#define pressureMaxUpper 4
-#define pressureMaxLower 5
-
-#define pressureMinUpper 6
-#define pressureMinLower 7
-
-extern unsigned char *p_time, eepromLocX, eepromLocY;
+#define pressureMinUpper 7
+#define pressureMinLower 8
 
 extern char eepromFull;
-//extern long bmpTemp;
-//extern unsigned long bmpPressure;
 extern unsigned char *p_dht11;
 extern char INTbmpTemp;
-extern unsigned short INTbmpPressure;
+extern unsigned long bmpPressure;
 
-extern bit checkValid();
-extern void compare();
+extern char checkValid();
+extern void compare(unsigned char currentValue, char max, char min);
 extern void writeSensorData();
 extern void eepromScan();
 extern void writeHourData();
 extern void checkEepromOverflow();
-
-
-//void compare(unsigned char currentValue unsigned char eepromValue);
 
 #endif
